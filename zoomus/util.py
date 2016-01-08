@@ -166,10 +166,9 @@ def is_str_type(val):
              instance of str or unicode. In python3 it will return ``True`` if
              it is an instance of str
     """
-    return isinstance(val, str)
     with ignored(NameError):
-        return isinstance(val, unicode)
-    return False
+        return isinstance(val, basestring)
+    return isinstance(val, str)
 
 
 def require_keys(d, keys, allow_none=True):
