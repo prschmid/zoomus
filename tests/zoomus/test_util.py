@@ -16,6 +16,7 @@ def suite():
     suite.addTest(unittest.makeSuite(ApiClientTestCase))
     suite.addTest(unittest.makeSuite(RequireKeysTestCase))
     suite.addTest(unittest.makeSuite(DateToStrTestCase))
+    suite.addTest(unittest.makeSuite(IsStrTypeTestCase))
     return suite
 
 
@@ -488,6 +489,27 @@ class DateToStrTestCase(unittest.TestCase):
             util.date_to_str(d),
             "2015-12-08T23:21:37Z")
 
+
+class IsStrTypeTestCase(unittest.TestCase):
+
+    from sys import version_info
+
+    def test_str_is_str_type(self):
+        self.assertTrue(util.is_str_type('s'))
+
+    def test_numeric_str_is_str_type(self):
+        self.assertTrue(util.is_str_type('5'))
+
+    def test_non_str_is_not_str_type(self):
+        self.assertFalse(util.is_str_type(5))
+
+    @unittest.skipIf(version_info[0] >= 3, "No applicable to Python 3+")
+    def test_unicode_is_str_type(self):
+        self.assertTrue(util.is_str_type(unicode('s')))
+
+    @unittest.skipIf(version_info[0] >= 3, "No applicable to Python 3+")
+    def test_numeric_unicode_is_str_type(self):
+        self.assertTrue(util.is_str_type(unicode('5')))
 
 
 if __name__ == '__main__':
