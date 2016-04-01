@@ -4,8 +4,8 @@ import codecs
 import os
 import re
 
-
 here = os.path.abspath(os.path.dirname(__file__))
+
 
 def read(file_paths, default=""):
     # intentionally *not* adding an encoding option to open
@@ -17,8 +17,8 @@ def read(file_paths, default=""):
 
 def find_version(file_paths):
     version_file = read(file_paths)
-    version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                              version_file, re.M)
+    version_match = re.search(
+        r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
     if version_match:
         return version_match.group(1)
     raise RuntimeError("Unable to find version string.")
@@ -37,7 +37,7 @@ setup(
     author_email='prschmid@act.md',
     description=description,
     long_description=long_description,
-    packages=['zoomus'],
+    packages=['zoomus', 'zoomus.components'],
     include_package_data=True,
     platforms='any',
     zip_safe=False,
