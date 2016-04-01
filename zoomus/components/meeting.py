@@ -26,16 +26,16 @@ class MeetingComponent(base.BaseComponent):
         util.require_keys(kwargs, ['id', 'host_id'])
         if kwargs.get('start_time'):
             kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
-        self.post_request("/meeting/update", params=kwargs)
+        return self.post_request("/meeting/update", params=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/meeting/delete", params=kwargs)
+        return self.post_request("/meeting/delete", params=kwargs)
 
     def end(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/meeting/end", params=kwargs)
+        return self.post_request("/meeting/end", params=kwargs)
 
     def get(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/meeting/get", params=kwargs)
+        return self.post_request("/meeting/get", params=kwargs)
