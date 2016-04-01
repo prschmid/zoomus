@@ -21,20 +21,20 @@ class UserComponent(base.BaseComponent):
 
     def update(self, **kwargs):
         util.require_keys(kwargs, 'id')
-        self.post_request("/user/update", params=kwargs)
+        return self.post_request("/user/update", params=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, 'id')
-        self.post_request("/user/delete", params=kwargs)
+        return self.post_request("/user/delete", params=kwargs)
 
     def cust_create(self, **kwargs):
         util.require_keys(kwargs, ['type', 'email'])
-        self.post_request("/user/custcreate", params=kwargs)
+        return self.post_request("/user/custcreate", params=kwargs)
 
     def get(self, **kwargs):
         util.require_keys(kwargs, 'id')
-        self.post_request("/user/get", params=kwargs)
+        return self.post_request("/user/get", params=kwargs)
 
     def get_by_email(self, **kwargs):
         util.require_keys(kwargs, ['email', 'login_type'])
-        self.post_request("/user/getbyemail", params=kwargs)
+        return self.post_request("/user/getbyemail", params=kwargs)

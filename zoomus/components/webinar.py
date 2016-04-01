@@ -26,16 +26,16 @@ class WebinarComponent(base.BaseComponent):
         util.require_keys(kwargs, ['id', 'host_id'])
         if kwargs.get('start_time'):
             kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
-        self.post_request("/webinar/update", params=kwargs)
+        return self.post_request("/webinar/update", params=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/webinar/delete", params=kwargs)
+        return self.post_request("/webinar/delete", params=kwargs)
 
     def end(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/webinar/end", params=kwargs)
+        return self.post_request("/webinar/end", params=kwargs)
 
     def get(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
-        self.post_request("/webinar/get", params=kwargs)
+        return self.post_request("/webinar/get", params=kwargs)
