@@ -40,7 +40,7 @@ from zoomus import ZoomClient
 
 client = ZoomClient('API_KEY', 'API_SECRET')
 
-for user in client.user.list():
+for user in json.loads(client.user.list())['users']:
     user_id = user['id']
     print client.meeting.list('host_id': user_id)
 ```
@@ -72,6 +72,7 @@ Available methods
 * client.webinar.list(...)
 * client.webinar.get(...)
 * client.webinar.end(...)
+* client.webinar.register(...)
 
 Contributing
 ------------
