@@ -39,3 +39,9 @@ class WebinarComponent(base.BaseComponent):
     def get(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
         return self.post_request("/webinar/get", params=kwargs)
+
+    def register(self, **kwargs):
+        util.require_keys(kwargs, ['id', 'email', 'first_name', 'last_name'])
+        if kwargs.get('start_time'):
+            kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
+        return self.post_request("/webinar/register", params=kwargs)
