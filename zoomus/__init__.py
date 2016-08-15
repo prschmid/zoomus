@@ -4,6 +4,6 @@ from __future__ import (
 
 """Python wrapper around the Zoom.us REST API"""
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 from zoomus.client import ZoomClient
