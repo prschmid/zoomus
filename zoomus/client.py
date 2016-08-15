@@ -45,6 +45,12 @@ class ZoomClient(util.ApiClient):
                 base_uri=ZoomClient.BASE_URI, config=self.config)
         }
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return
+
     @property
     def api_key(self):
         """The Zoom.us api_key"""

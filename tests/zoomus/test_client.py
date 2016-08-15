@@ -107,6 +107,13 @@ class ZoomClientTestCase(unittest.TestCase):
             components.webinar.WebinarComponent
         )
 
+    def test_can_use_client_with_context(self):
+        with ZoomClient('KEY', 'SECRET') as client:
+            self.assertIsInstance(
+                client,
+                ZoomClient
+            )
+
 
 if __name__ == '__main__':
     unittest.main()

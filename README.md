@@ -45,6 +45,15 @@ for user in json.loads(client.user.list())['users']:
     print client.meeting.list('host_id': user_id)
 ```
 
+### Using with a manage context
+
+```python
+with ZoomClient('API_KEY', 'API_SECRET') as client:
+    users = client.users.list()
+    ...
+```
+
+
 Available methods
 -----------------
 
