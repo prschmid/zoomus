@@ -42,6 +42,8 @@ class ZoomClient(util.ApiClient):
             'user': components.user.UserComponent(
                 base_uri=ZoomClient.BASE_URI, config=self.config),
             'webinar': components.webinar.WebinarComponent(
+                base_uri=ZoomClient.BASE_URI, config=self.config),
+            'recording': components.recording.RecordingComponent(
                 base_uri=ZoomClient.BASE_URI, config=self.config)
         }
 
@@ -90,3 +92,8 @@ class ZoomClient(util.ApiClient):
     def webinar(self):
         """Get the webinar component"""
         return self.components.get('webinar')
+
+    @property
+    def recording(self):
+        """Get the recording component"""
+        return self.components.get('recording')
