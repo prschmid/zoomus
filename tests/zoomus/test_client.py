@@ -41,7 +41,7 @@ class ZoomClientTestCase(unittest.TestCase):
     def test_init_creates_all_components(self):
         client = ZoomClient('KEY', 'SECRET')
         self.assertEqual(
-            set(['meeting', 'report', 'user', 'webinar']),
+            set(['meeting', 'report', 'user', 'webinar', 'recording']),
             set(client.components.keys())
         )
         self.assertIsInstance(
@@ -59,6 +59,10 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertIsInstance(
             client.components['webinar'],
             components.webinar.WebinarComponent
+        )
+        self.assertIsInstance(
+            client.components['recording'],
+            components.recording.RecordingComponent
         )
 
     def test_can_get_api_key(self):
@@ -105,6 +109,13 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertIsInstance(
             client.webinar,
             components.webinar.WebinarComponent
+        )
+
+    def test_can_get_recording_component(self):
+        client = ZoomClient('KEY', 'SECRET')
+        self.assertIsInstance(
+            client.recording,
+            components.recording.RecordingComponent
         )
 
     def test_can_use_client_with_context(self):
