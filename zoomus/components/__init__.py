@@ -8,4 +8,5 @@ from . import (
     meeting,
     report,
     user,
-    webinar)
+    webinar,
+    recording)
