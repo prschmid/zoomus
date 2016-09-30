@@ -12,10 +12,12 @@ class RecordingComponent(base.BaseComponent):
 
     def list(self, **kwargs):
         util.require_keys(kwargs, 'host_id')
-        if kwargs.get('from'):
-            kwargs['from'] = util.date_to_str(kwargs['from'])
-        if kwargs.get('to'):
-            kwargs['to'] = util.date_to_str(kwargs['to'])
+        start = kwargs.pop('start', None)
+        if start:
+            kwargs['from'] = util.date_to_str(start)
+        end = kwargs.pop('end', None)
+        if end:
+            kwargs['to'] = util.date_to_str(end)
         return self.post_request("/recording/list", params=kwargs)
 
     def delete(self, **kwargs):

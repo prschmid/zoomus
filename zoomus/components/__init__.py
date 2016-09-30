@@ -6,7 +6,7 @@ __email__ = "prschmid@act.md"
 
 from . import (
     meeting,
+    recording,
     report,
     user,
-    webinar,
-    recording)
+    webinar)
