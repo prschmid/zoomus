@@ -1,11 +1,13 @@
 """Zoom.us REST API Python Client"""
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
+from __future__ import absolute_import
 
 from zoomus import (
     components,
     util)
+
+__author__ = "Patrick R. Schmid"
+__email__ = "prschmid@act.md"
 
 
 class ZoomClient(util.ApiClient):
@@ -42,6 +44,8 @@ class ZoomClient(util.ApiClient):
             'user': components.user.UserComponent(
                 base_uri=ZoomClient.BASE_URI, config=self.config),
             'webinar': components.webinar.WebinarComponent(
+                base_uri=ZoomClient.BASE_URI, config=self.config),
+            'recording': components.recording.RecordingComponent(
                 base_uri=ZoomClient.BASE_URI, config=self.config)
         }
 
@@ -90,3 +94,8 @@ class ZoomClient(util.ApiClient):
     def webinar(self):
         """Get the webinar component"""
         return self.components.get('webinar')
+
+    @property
+    def recording(self):
+        """Get the recording component"""
+        return self.components.get('recording')

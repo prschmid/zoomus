@@ -1,10 +1,12 @@
 """Zoom.us REST API Python Client -- Webinar component"""
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
+from __future__ import absolute_import
 
 from zoomus import util
 from zoomus.components import base
+
+__author__ = "Patrick R. Schmid"
+__email__ = "prschmid@act.md"
 
 
 class WebinarComponent(base.BaseComponent):
