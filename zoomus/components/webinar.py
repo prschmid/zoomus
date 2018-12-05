@@ -1,10 +1,12 @@
 """Zoom.us REST API Python Client -- Webinar component"""
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
+from __future__ import absolute_import
 
 from zoomus import util
 from zoomus.components import base
+
+__author__ = "Patrick R. Schmid"
+__email__ = "prschmid@act.md"
 
 
 class WebinarComponent(base.BaseComponent):
@@ -15,6 +17,12 @@ class WebinarComponent(base.BaseComponent):
         if kwargs.get('start_time'):
             kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
         return self.post_request("/webinar/list", params=kwargs)
+
+    def upcoming(self, **kwargs):
+        util.require_keys(kwargs, 'host_id')
+        if kwargs.get('start_time'):
+            kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
+        return self.post_request("/webinar/list/registration", params=kwargs)
 
     def create(self, **kwargs):
         util.require_keys(kwargs, ['host_id', 'topic'])

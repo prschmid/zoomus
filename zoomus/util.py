@@ -1,13 +1,15 @@
 """Utility classes and functions"""
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
+from __future__ import absolute_import
 
 import contextlib
 import json
 import requests
 import time
 import jwt
+
+__author__ = "Patrick R. Schmid"
+__email__ = "prschmid@act.md"
 
 
 class ApiClient(object):
