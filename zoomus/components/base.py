@@ -38,7 +38,10 @@ class BaseComponent(util.ApiClient):
         :return: The :class:``requests.Response`` object for this request
         """
         params = params or {}
-        params.update(self.config)
+        if self.config['version']  == 1:
+            params.update(self.config)
+        if headers is None and self.config.get('version') == 2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return super(BaseComponent, self).post_request(
             endpoint, params=params, data=data, headers=headers,
             cookies=cookies)

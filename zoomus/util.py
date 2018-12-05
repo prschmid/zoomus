@@ -6,6 +6,8 @@ __email__ = "prschmid@act.md"
 import contextlib
 import json
 import requests
+import time
+import jwt
 
 
 class ApiClient(object):
@@ -71,6 +73,8 @@ class ApiClient(object):
         :param headers: request headers
         :return: The :class:``requests.Response`` object for this request
         """
+        if headers is None and self.config.get('version') == 2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.get(
             self.url_for(endpoint),
             params=params,
@@ -91,6 +95,8 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
+        if headers is None and self.config.get('version') == 2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.post(
             self.url_for(endpoint),
             params=params,
@@ -113,6 +119,8 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
+        if headers is None and self.config.get('version') == 2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.patch(
             self.url_for(endpoint),
             params=params,
@@ -135,6 +143,8 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
+        if headers is None and self.config.get('version') == 2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.delete(
             self.url_for(endpoint),
             params=params,
@@ -202,3 +212,18 @@ def date_to_str(d):
     :returns: The string representation of the date
     """
     return d.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def generate_jwt(key, secret):
+    header = {
+        "alg": "HS256",
+        "typ": "JWT"
+    }
+
+    payload = {
+        "iss": key,
+        "exp": int(time.time() + 3600)
+    }
+
+    token = jwt.encode(payload, secret, algorithm='HS256', headers=header)
+    return token.decode('utf-8')

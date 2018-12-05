@@ -5,7 +5,8 @@ import unittest
 
 from zoomus import (
     components,
-    ZoomClient)
+    ZoomClient,
+    util)
 
 
 def suite():
@@ -24,7 +25,9 @@ class ZoomClientTestCase(unittest.TestCase):
             {
                 'api_key': 'KEY',
                 'api_secret': 'SECRET',
-                'data_type': 'json'
+                'data_type': 'json',
+                'token': util.generate_jwt('KEY', 'SECRET'),
+                'version': 1,
             }
         )
 

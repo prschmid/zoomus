@@ -90,7 +90,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.get_request('endpoint')
 
         mocked_get.assert_called_with(
@@ -105,7 +105,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.get_request('endpoint', params={'foo': 'bar'})
 
         mocked_get.assert_called_with(
@@ -120,7 +120,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.get_request('endpoint', headers={'foo': 'bar'})
 
         mocked_get.assert_called_with(
@@ -135,7 +135,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint')
 
         mocked_post.assert_called_with(
@@ -152,7 +152,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint', params={'foo': 'bar'})
 
         mocked_post.assert_called_with(
@@ -169,7 +169,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint', data={'foo': 'bar'})
 
         mocked_post.assert_called_with(
@@ -186,7 +186,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint', data=json.dumps({'foo': 'bar'}))
 
         mocked_post.assert_called_with(
@@ -203,7 +203,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint', headers={'foo': 'bar'})
 
         mocked_post.assert_called_with(
@@ -220,7 +220,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.post_request('endpoint', cookies={'foo': 'bar'})
 
         mocked_post.assert_called_with(
@@ -237,7 +237,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint')
 
         mocked_patch.assert_called_with(
@@ -254,7 +254,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint', params={'foo': 'bar'})
 
         mocked_patch.assert_called_with(
@@ -271,7 +271,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint', data={'foo': 'bar'})
 
         mocked_patch.assert_called_with(
@@ -288,7 +288,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint', data=json.dumps({'foo': 'bar'}))
 
         mocked_patch.assert_called_with(
@@ -305,7 +305,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint', headers={'foo': 'bar'})
 
         mocked_patch.assert_called_with(
@@ -322,7 +322,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.patch_request('endpoint', cookies={'foo': 'bar'})
 
         mocked_patch.assert_called_with(
@@ -339,7 +339,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint')
 
         mocked_delete.assert_called_with(
@@ -356,7 +356,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint', params={'foo': 'bar'})
 
         mocked_delete.assert_called_with(
@@ -373,7 +373,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint', data={'foo': 'bar'})
 
         mocked_delete.assert_called_with(
@@ -390,7 +390,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint', data=json.dumps({'foo': 'bar'}))
 
         mocked_delete.assert_called_with(
@@ -407,7 +407,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint', headers={'foo': 'bar'})
 
         mocked_delete.assert_called_with(
@@ -424,7 +424,7 @@ class ApiClientTestCase(unittest.TestCase):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
 
-        client = util.ApiClient(base_uri="http://www.foo.com")
+        client = util.ApiClient(base_uri="http://www.foo.com", config={'version': 1})
         client.delete_request('endpoint', cookies={'foo': 'bar'})
 
         mocked_delete.assert_called_with(

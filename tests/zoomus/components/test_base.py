@@ -26,7 +26,7 @@ class BaseComponentTestCase(unittest.TestCase):
 
             component = components.base.BaseComponent(
                 base_uri="http://www.foo.com",
-                config={'api_key': 'KEY', 'api_secret': 'SECRET'})
+                config={'api_key': 'KEY', 'api_secret': 'SECRET', 'version': 1})
             component.post_request("foo")
             mock_post_request.assert_called_with(
                 "foo",
@@ -43,7 +43,7 @@ class BaseComponentTestCase(unittest.TestCase):
 
             component = components.base.BaseComponent(
                 base_uri="http://www.foo.com",
-                config={'api_key': 'KEY', 'api_secret': 'SECRET'})
+                config={'api_key': 'KEY', 'api_secret': 'SECRET', 'version': 1})
             component.post_request("foo", params={'foo': 'bar'})
 
             params = {'foo': 'bar'}
