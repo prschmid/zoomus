@@ -34,7 +34,7 @@ setup(
     url='http://github.com/actmd/zoomus/',
     license='Apache Software License',
     author='Patrick R. Schmid',
-    install_requires=['requests'],
+    install_requires=['requests', 'PyJWT'],
     author_email='prschmid@act.md',
     description=description,
     long_description=long_description,
