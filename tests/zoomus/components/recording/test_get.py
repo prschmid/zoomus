@@ -1,6 +1,3 @@
-__author__ = "Tomas Garzon"
-__email__ = "tomasgarzonhervas@gmail.com"
-
 import unittest
 
 from mock import patch

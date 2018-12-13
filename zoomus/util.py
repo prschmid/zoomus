@@ -8,9 +8,6 @@ import requests
 import time
 import jwt
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 
 class ApiClient(object):
     """Simple wrapper for REST API requests"""

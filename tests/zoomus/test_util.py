@@ -1,6 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import datetime
 import json
 import unittest

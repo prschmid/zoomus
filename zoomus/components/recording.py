@@ -1,8 +1,4 @@
 """Zoom.us REST API Python Client -- Recording component"""
-
-__author__ = "Tomas Garzon"
-__email__ = "tomasgarzonhervas@gmail.com"
-
 from zoomus import util
 from zoomus.components import base
 

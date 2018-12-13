@@ -5,9 +5,6 @@ from __future__ import absolute_import
 from zoomus import util
 from zoomus.components import base
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 
 class WebinarComponent(base.BaseComponent):
     """Component dealing with all webinar related matters"""

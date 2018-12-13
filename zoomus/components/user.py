@@ -6,10 +6,6 @@ from zoomus import util
 from zoomus.components import base
 
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
-
 class UserComponent(base.BaseComponent):
     """Component dealing with all user related matters"""
 

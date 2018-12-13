@@ -6,9 +6,6 @@ from zoomus import (
     components,
     util)
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 
 class ZoomClient(util.ApiClient):
     """Zoom.us REST API Python Client"""
