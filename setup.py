@@ -29,13 +29,13 @@ description = 'Python client library for Zoom.us REST API v1 and v2'
 long_description = read('README.md', default=description)
 
 setup(
-    name='zoomus2',
+    name='zoomus',
     version=find_version(['zoomus', '__init__.py']),
-    url='https://github.com/exolever/zoomus',
+    url='https://github.com/actmd/zoomus',
     license='Apache Software License',
-    author='Tomas Garzon, based on Patrick R. Schmid',
+    author='Zoomus Contributors',
     install_requires=['requests', 'PyJWT'],
-    author_email='tomas@exolever.com',
+    author_email='zoomus@googlegroups.com',
     description=description,
     long_description=long_description,
     packages=['zoomus', 'zoomus.components'],
