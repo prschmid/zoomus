@@ -1,6 +1,6 @@
 zoomus
 ==========
-![](https://travis-ci.org/actmd/zoomus.svg?branch=master)
+[![Build Status](https://travis-ci.org/actmd/zoomus.svg?branch=master)](https://travis-ci.org/actmd/zoomus)
 
 [https://github.com/actmd/zoomus](https://github.com/actmd/zoomus)
 
