@@ -1,8 +1,8 @@
 zoomus
 ==========
-![](https://travis-ci.org/exolever/zoomus.svg?branch=master)
+![](https://travis-ci.org/actmd/zoomus.svg?branch=master)
 
-[https://github.com/exolever/zoomus](https://github.com/exolever/zoomus)
+[https://github.com/actmd/zoomus](https://github.com/actmd/zoomus)
 
 Python wrapper around the [Zoom.us](http://zoom.us) REST API v1 and v2.
 
@@ -20,7 +20,7 @@ pip install zoomus2
 Compatability
 -------------
 
-Zoomus has been tested for Python 2.6, 3.2, 3.3, 3.4, and pypy using [Travis CI](https://travis-ci.org/exolever/zoomus)
+Zoomus has been tested for Python 2.6, 3.2, 3.3, 3.4, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
 
 Example Usage
 -------------
