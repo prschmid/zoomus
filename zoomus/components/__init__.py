@@ -8,6 +8,3 @@ from . import (
     report,
     user,
     webinar)
-
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"

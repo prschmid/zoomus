@@ -1,6 +1,3 @@
-__author__ = "Francisco J. Garcia"
-__email__ = "navega@appfluence.com"
-
 import datetime
 import unittest
 

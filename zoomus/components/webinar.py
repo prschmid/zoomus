@@ -5,9 +5,6 @@ from __future__ import absolute_import
 from zoomus import util
 from zoomus.components import base
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 
 class WebinarComponent(base.BaseComponent):
     """Component dealing with all webinar related matters"""
@@ -53,3 +50,31 @@ class WebinarComponent(base.BaseComponent):
         if kwargs.get('start_time'):
             kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
         return self.post_request("/webinar/register", params=kwargs)
+
+
+class WebinarComponentV2(base.BaseComponent):
+    """Component dealing with all webinar related matters"""
+
+    def list(self, **kwargs):
+        util.require_keys(kwargs, 'user_id')
+        return self.get_request(
+            "/users/{}/webinars".format(kwargs.get('user_id')),
+            params=kwargs)
+
+    def create(self, **kwargs):
+        util.require_keys(kwargs, 'user_id')
+        return self.post_request(
+            "/users/{}/webinars".format(kwargs.get('user_id')),
+            params=kwargs)
+
+    def update(self, **kwargs):
+        util.require_keys(kwargs, 'meeting_id')
+        return self.patch_request(
+            "/webinars/{}".format(kwargs.get('meeting_id')),
+            params=kwargs)
+
+    def delete(self, **kwargs):
+        util.require_keys(kwargs, 'meeting_id')
+        return self.delete_request(
+            "/webinars/{}".format(kwargs.get('meeting_id')),
+            params=kwargs)

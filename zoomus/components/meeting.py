@@ -5,9 +5,6 @@ from __future__ import absolute_import
 from zoomus import util
 from zoomus.components import base
 
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 
 class MeetingComponent(base.BaseComponent):
     """Component dealing with all meeting related matters"""
@@ -41,3 +38,36 @@ class MeetingComponent(base.BaseComponent):
     def get(self, **kwargs):
         util.require_keys(kwargs, ['id', 'host_id'])
         return self.post_request("/meeting/get", params=kwargs)
+
+
+class MeetingComponentV2(base.BaseComponent):
+
+    def list(self, **kwargs):
+        util.require_keys(kwargs, 'user_id')
+        return self.get_request(
+            "users/{}/meetings".format(kwargs.get('user_id')),
+            params=kwargs)
+
+    def create(self, **kwargs):
+        util.require_keys(kwargs, 'user_id')
+        return self.post_request(
+            "users/{}/meetings".format(kwargs.get('user_id')),
+            params=kwargs)
+
+    def retrieve(self, **kwargs):
+        util.require_keys(kwargs, 'id')
+        return self.get_request(
+            "meetings/{}".format(kwargs.get('id')),
+            params=kwargs)
+
+    def update(self, **kwargs):
+        util.require_keys(kwargs, 'id')
+        return self.patch_request(
+            "meetings/{}".format(kwargs.get('id')),
+            params=kwargs)
+
+    def delete(self, **kwargs):
+        util.require_keys(kwargs, 'id')
+        return self.delete_request(
+            "meetings/{}".format(kwargs.get('id')),
+            params=kwargs)

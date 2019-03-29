@@ -1,10 +1,10 @@
 zoomus
 ==========
-![](https://travis-ci.org/actmd/zoomus.svg?branch=master)
+![](https://travis-ci.org/exolever/zoomus.svg?branch=master)
 
-[http://github.com/actmd/zoomus](http://github.com/actmd/zoomus)
+[https://github.com/exolever/zoomus](https://github.com/exolever/zoomus)
 
-Python wrapper around the [Zoom.us](http://zoom.us) REST API.
+Python wrapper around the [Zoom.us](http://zoom.us) REST API v1 and v2.
 
 This work is heavily inspired by the Ruby GEM of the same name, [Zoomus](https://github.com/mllocs/zoomus)
 
@@ -14,31 +14,35 @@ Installation
 ### The easy way
 
 ```sh
-pip install zoomus
-```
-
-### The developer way
-
-```sh
-git clone git@github.com:actmd/zoomus.git
-cd zoomus
-python setup.py install
+pip install zoomus2
 ```
 
 Compatability
 -------------
 
-Zoomus has been tested for Python 2.6, 3.2, 3.3, 3.4, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
+Zoomus has been tested for Python 2.6, 3.2, 3.3, 3.4, and pypy using [Travis CI](https://travis-ci.org/exolever/zoomus)
 
 Example Usage
 -------------
 
-### Create the client
+### Create the client v1
 
 ```python
 from zoomus import ZoomClient
 
 client = ZoomClient('API_KEY', 'API_SECRET')
+
+for user in json.loads(client.user.list())['users']:
+    user_id = user['id']
+    print client.meeting.list('host_id': user_id)
+```
+
+### Create the client v2
+
+```python
+from zoomus import ZoomClient
+
+client = ZoomClient('API_KEY', 'API_SECRET', version=2)
 
 for user in json.loads(client.user.list())['users']:
     user_id = user['id']
@@ -59,7 +63,7 @@ Available methods
 
 * client.user.create(...)
 * client.user.cust_create(...)
-* client.user.update(...)* 
+* client.user.update(...)*
 * client.user.list(...)
 * client.user.pending(...)
 * client.user.get(...)
