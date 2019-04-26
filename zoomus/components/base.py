@@ -1,6 +1,6 @@
 """Zoom.us REST API Python Client"""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 from zoomus import util
 
@@ -14,7 +14,7 @@ class BaseComponent(util.ApiClient):
         :param base_uri: The base URI to the API
         :param config: The config details
         :param timeout: The timeout to use for requests
-        :param \*\*kwargs: Any other attributes. These will be added as
+        :param kwargs: Any other attributes. These will be added as
                            attributes to the ApiClient object.
         """
         super(BaseComponent, self).__init__(
@@ -37,9 +37,9 @@ class BaseComponent(util.ApiClient):
         :return: The :class:``requests.Response`` object for this request
         """
         params = params or {}
-        if self.config['version']  == 1:
+        if self.config['version'] == util.API_VERSION_1:
             params.update(self.config)
-        if headers is None and self.config.get('version') == 2:
+        if headers is None and self.config.get('version') == util.API_VERSION_2:
             headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return super(BaseComponent, self).post_request(
             endpoint, params=params, data=data, headers=headers,
