@@ -1,12 +1,16 @@
 """Utility classes and functions"""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 import contextlib
 import json
 import requests
 import time
 import jwt
+
+
+API_VERSION_1 = 1
+API_VERSION_2 = 2
 
 
 class ApiClient(object):
@@ -17,7 +21,7 @@ class ApiClient(object):
 
         :param base_uri: The base URI to the API
         :param timeout: The timeout to use for requests
-        :param \*\*kwargs: Any other attributes. These will be added as
+        :param kwargs: Any other attributes. These will be added as
                            attributes to the ApiClient object.
         """
         self.base_uri = base_uri
@@ -36,7 +40,7 @@ class ApiClient(object):
         if value is not None:
             try:
                 value = int(value)
-            except:
+            except ValueError:
                 raise ValueError("timeout value must be an integer")
         self._timeout = value
 
@@ -72,7 +76,7 @@ class ApiClient(object):
         :param headers: request headers
         :return: The :class:``requests.Response`` object for this request
         """
-        if headers is None and self.config.get('version') == 2:
+        if headers is None and self.config.get('version') == API_VERSION_2:
             headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.get(
             self.url_for(endpoint),
@@ -94,7 +98,7 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == 2:
+        if headers is None and self.config.get('version') == API_VERSION_2:
             headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.post(
             self.url_for(endpoint),
@@ -118,7 +122,7 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == 2:
+        if headers is None and self.config.get('version') == API_VERSION_2:
             headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.patch(
             self.url_for(endpoint),
@@ -142,7 +146,7 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == 2:
+        if headers is None and self.config.get('version') == API_VERSION_2:
             headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
         return requests.delete(
             self.url_for(endpoint),

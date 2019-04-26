@@ -1,14 +1,10 @@
 """Zoom.us REST API Python Client"""
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
-from zoomus import (
-    components,
-    util)
+from zoomus import components, util
+from zoomus.util import API_VERSION_1, API_VERSION_2
 
-
-API_VERSION_1 = 1
-API_VERSION_2 = 2
 
 API_BASE_URIS = {
     API_VERSION_1: 'https://api.zoom.us/v1',
