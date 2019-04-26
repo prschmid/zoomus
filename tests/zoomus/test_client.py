@@ -1,9 +1,10 @@
 import unittest
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
-from zoomus import (
-    components,
-    ZoomClient,
-    util)
+from zoomus import API_VERSION_1, components, ZoomClient, util
 
 
 def suite():
@@ -24,7 +25,7 @@ class ZoomClientTestCase(unittest.TestCase):
                 'api_secret': 'SECRET',
                 'data_type': 'json',
                 'token': util.generate_jwt('KEY', 'SECRET'),
-                'version': 1,
+                'version': API_VERSION_1,
             }
         )
 
@@ -64,6 +65,10 @@ class ZoomClientTestCase(unittest.TestCase):
             client.components['recording'],
             components.recording.RecordingComponent
         )
+
+    def test_api_version_defaults_to_1(self):
+        client = ZoomClient('KEY', 'SECRET')
+        self.assertEqual(client.config['version'], API_VERSION_1)
 
     def test_can_get_api_key(self):
         client = ZoomClient('KEY', 'SECRET')
@@ -124,6 +129,13 @@ class ZoomClientTestCase(unittest.TestCase):
                 client,
                 ZoomClient
             )
+
+    @mock.patch('zoomus.client.util.generate_jwt')
+    def test_refresh_token_replaces_config_token_with_new_jwt(self, mock_jwt):
+        client = ZoomClient('KEY', 'SECRET')
+        client.refresh_token()
+        mock_jwt.assert_called_with('KEY', 'SECRET')
+        self.assertEqual(client.config['token'], (mock_jwt.return_value, ))
 
 
 if __name__ == '__main__':
