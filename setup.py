@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from setuptools import setup
 import codecs
@@ -12,7 +12,7 @@ def read(file_paths, default=""):
     # intentionally *not* adding an encoding option to open
     try:
         return codecs.open(os.path.join(here, *file_paths), 'r').read()
-    except:
+    except Exception:
         return default
 
 
@@ -38,6 +38,7 @@ setup(
     author_email='zoomus@googlegroups.com',
     description=description,
     long_description=long_description,
+    long_description_content_type='text/x-markdown',
     packages=['zoomus', 'zoomus.components'],
     include_package_data=True,
     platforms='any',
