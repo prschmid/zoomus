@@ -29,6 +29,10 @@ class ZoomClientTestCase(unittest.TestCase):
             }
         )
 
+    def test_invalid_api_version_raises_error(self):
+        with self.assertRaisesRegexp(RuntimeError, "API version not supported: 42"):
+            ZoomClient('KEY', 'SECRET', version=42)
+
     def test_init_sets_config_with_timeout(self):
         client = ZoomClient('KEY', 'SECRET', timeout=500)
         self.assertEqual(client.timeout, 500)
