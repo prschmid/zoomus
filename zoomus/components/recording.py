@@ -37,14 +37,14 @@ class RecordingComponentV2(base.BaseComponent):
         if end:
             kwargs['to'] = util.date_to_str(end)
         return self.get_request(
-            "users/{}/recordings".format(kwargs.get('user_id')), params=kwargs)
+            "/users/{}/recordings".format(kwargs.get('user_id')), params=kwargs)
 
     def retrieve(self, **kwargs):
         util.require_keys(kwargs, 'meeting_id')
         return self.get_request(
-            "meetings/{}/recordings".format(kwargs.get('meeting_id')), params=kwargs)
+            "/meetings/{}/recordings".format(kwargs.get('meeting_id')), params=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, 'meeting_id')
         return self.delete_request(
-            "meetings/{}/recordings".format(kwargs.get('meeting_id')), params=kwargs)
+            "/meetings/{}/recordings".format(kwargs.get('meeting_id')), params=kwargs)
