@@ -39,7 +39,7 @@ class RecordingComponentV2(base.BaseComponent):
         return self.get_request(
             "/users/{}/recordings".format(kwargs.get('user_id')), params=kwargs)
 
-    def retrieve(self, **kwargs):
+    def get(self, **kwargs):
         util.require_keys(kwargs, 'meeting_id')
         return self.get_request(
             "/meetings/{}/recordings".format(kwargs.get('meeting_id')), params=kwargs)
