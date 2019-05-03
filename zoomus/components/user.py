@@ -49,17 +49,17 @@ class UserComponentV2(base.BaseComponent):
     def update(self, **kwargs):
         util.require_keys(kwargs, 'id')
         return self.patch_request(
-            "/users/{user_id}".format(kwargs.get('id')),
+            "/users/{}".format(kwargs.get('id')),
             params=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, 'id')
         return self.delete_request(
-            "/users/{user_id}".format(kwargs.get('id')),
+            "/users/{}".format(kwargs.get('id')),
             params=kwargs)
 
-    def retrieve(self, **kwargs):
+    def get(self, **kwargs):
         util.require_keys(kwargs, 'id')
         return self.get_request(
-            "/users/{user_id}".format(kwargs.get('id')),
+            "/users/{}".format(kwargs.get('id')),
             params=kwargs)
