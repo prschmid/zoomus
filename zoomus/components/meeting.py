@@ -56,7 +56,7 @@ class MeetingComponentV2(base.BaseComponent):
             "/users/{}/meetings".format(kwargs.get('user_id')),
             params=kwargs)
 
-    def retrieve(self, **kwargs):
+    def get(self, **kwargs):
         util.require_keys(kwargs, 'id')
         return self.get_request(
             "/meetings/{}".format(kwargs.get('id')),
