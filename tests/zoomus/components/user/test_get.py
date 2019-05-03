@@ -15,7 +15,7 @@ def suite():
 class GetTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.component = components.meeting.MeetingComponent(
+        self.component = components.user.UserComponent(
             base_uri="http://foo.com",
             config={
                 'api_key': 'KEY',
@@ -23,14 +23,14 @@ class GetTestCase(unittest.TestCase):
             }
         )
 
-    def test_can_end(self):
+    def test_can_get(self):
         with patch.object(components.base.BaseComponent, 'post_request',
                           return_value=True) as mock_post_request:
 
             self.component.get(id='ID', host_id='ID')
 
             mock_post_request.assert_called_with(
-                "/meeting/get",
+                "/user/get",
                 params={
                     'id': 'ID',
                     'host_id': 'ID'
@@ -38,16 +38,8 @@ class GetTestCase(unittest.TestCase):
             )
 
     def test_requires_id(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'id' must be set"):
             self.component.get()
-            self.assertEqual(
-                context.exception.message, "'id' must be set")
-
-    def test_requires_host_id(self):
-        with self.assertRaises(ValueError) as context:
-            self.component.get(id='ID')
-            self.assertEqual(
-                context.exception.message, "'host_id' must be set")
 
 
 if __name__ == '__main__':
