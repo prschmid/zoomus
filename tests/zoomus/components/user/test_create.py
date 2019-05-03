@@ -35,5 +35,25 @@ class CreateTestCase(unittest.TestCase):
             )
 
 
+class CreateV2TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.component = components.user.UserComponentV2(
+            base_uri="http://foo.com",
+            config={
+                'api_key': 'KEY',
+                'api_secret': 'SECRET'
+            }
+        )
+
+    @patch.object(components.base.BaseComponent, 'post_request', return_value=True)
+    def test_can_create(self, mock_post_request):
+        self.component.create(foo="bar")
+        mock_post_request.assert_called_with(
+            "/users",
+            params={'foo': 'bar'}
+        )
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -12,7 +12,7 @@ def suite():
     return suite
 
 
-class UpdateTestCase(unittest.TestCase):
+class CustCreateTestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
@@ -39,13 +39,13 @@ class UpdateTestCase(unittest.TestCase):
 
     def test_requires_type(self):
         with self.assertRaises(ValueError) as context:
-            self.component.get_by_email()
+            self.component.cust_create()
             self.assertEqual(
                 context.exception.message, "'type' must be set")
 
     def test_requires_email(self):
         with self.assertRaises(ValueError) as context:
-            self.component.get_by_email()
+            self.component.cust_create()
             self.assertEqual(
                 context.exception.message, "'email' must be set")
 
