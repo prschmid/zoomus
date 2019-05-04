@@ -68,13 +68,31 @@ class WebinarComponentV2(base.BaseComponent):
             params=kwargs)
 
     def update(self, **kwargs):
-        util.require_keys(kwargs, 'meeting_id')
+        util.require_keys(kwargs, 'id')
         return self.patch_request(
-            "/webinars/{}".format(kwargs.get('meeting_id')),
+            "/webinars/{}".format(kwargs.get('id')),
             params=kwargs)
 
     def delete(self, **kwargs):
-        util.require_keys(kwargs, 'meeting_id')
+        util.require_keys(kwargs, 'id')
         return self.delete_request(
-            "/webinars/{}".format(kwargs.get('meeting_id')),
+            "/webinars/{}".format(kwargs.get('id')),
+            params=kwargs)
+
+    def end(self, **kwargs):
+        util.require_keys(kwargs, 'id')
+        return self.put_request(
+            "/webinars/{}/status".format(kwargs.get('id')),
+            params={'status': 'end'})
+
+    def get(self, **kwargs):
+        util.require_keys(kwargs, 'id')
+        return self.get_request(
+            "/webinars/{}".format(kwargs.get('id')),
+            params=kwargs)
+
+    def register(self, **kwargs):
+        util.require_keys(kwargs, ['id', 'email', 'first_name', 'last_name'])
+        return self.post_request(
+            "/webinars/{}/registrants".format(kwargs.get('id')),
             params=kwargs)
