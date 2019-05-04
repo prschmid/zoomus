@@ -156,6 +156,30 @@ class ApiClient(object):
             cookies=cookies,
             timeout=self.timeout)
 
+    def put_request(
+            self, endpoint, params=None, data=None, headers=None, cookies=None):
+        """Helper function for PUT requests
+
+        :param endpoint: The endpoint
+        :param params: The URL paramaters
+        :param data: The data (either as a dict or dumped JSON string) to
+                     include with the PUT
+        :param headers: request headers
+        :param cookies: request cookies
+        :return: The :class:``requests.Response`` object for this request
+        """
+        if data and not is_str_type(data):
+            data = json.dumps(data)
+        if headers is None and self.config.get('version') == API_VERSION_2:
+            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        return requests.put(
+            self.url_for(endpoint),
+            params=params,
+            data=data,
+            headers=headers,
+            cookies=cookies,
+            timeout=self.timeout)
+
 
 @contextlib.contextmanager
 def ignored(*exceptions):
