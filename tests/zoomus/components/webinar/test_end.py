@@ -8,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UpdateTestCase))
+    suite.addTest(unittest.makeSuite(EndV1TestCase))
     return suite
 
 
-class EndTestCase(unittest.TestCase):
+class EndV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
@@ -69,7 +69,6 @@ class EndV2TestCase(unittest.TestCase):
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
             self.component.end()
-
 
 
 if __name__ == '__main__':

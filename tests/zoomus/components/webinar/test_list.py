@@ -11,11 +11,11 @@ from zoomus import (
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ListTestCase))
+    suite.addTest(unittest.makeSuite(ListV1TestCase))
     return suite
 
 
-class ListTestCase(unittest.TestCase):
+class ListV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
@@ -84,7 +84,6 @@ class ListV2TestCase(unittest.TestCase):
     def test_requires_user_id(self):
         with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):
             self.component.list()
-
 
 
 if __name__ == '__main__':

@@ -11,11 +11,11 @@ from zoomus import (
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(GetAccountReportTestCase))
+    suite.addTest(unittest.makeSuite(GetAccountReportV1TestCase))
     return suite
 
 
-class GetAccountReportTestCase(unittest.TestCase):
+class GetAccountReportV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.report.ReportComponent(

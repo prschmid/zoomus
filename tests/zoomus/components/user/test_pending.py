@@ -8,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UpdateTestCase))
+    suite.addTest(unittest.makeSuite(PendingV1TestCase))
     return suite
 
 
-class UpdateTestCase(unittest.TestCase):
+class PendingV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
