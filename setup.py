@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 from setuptools import setup
 import codecs
@@ -12,7 +12,7 @@ def read(file_paths, default=""):
     # intentionally *not* adding an encoding option to open
     try:
         return codecs.open(os.path.join(here, *file_paths), 'r').read()
-    except:
+    except Exception:
         return default
 
 
@@ -25,19 +25,20 @@ def find_version(file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-description = 'Python client library for Zoom.us REST API'
+description = 'Python client library for Zoom.us REST API v1 and v2'
 long_description = read('README.md', default=description)
 
 setup(
     name='zoomus',
     version=find_version(['zoomus', '__init__.py']),
-    url='http://github.com/actmd/zoomus/',
+    url='https://github.com/actmd/zoomus',
     license='Apache Software License',
-    author='Patrick R. Schmid',
-    install_requires=['requests'],
-    author_email='prschmid@act.md',
+    author='Zoomus Contributors',
+    install_requires=['requests', 'PyJWT'],
+    author_email='zoomus@googlegroups.com',
     description=description,
     long_description=long_description,
+    long_description_content_type='text/x-markdown',
     packages=['zoomus', 'zoomus.components'],
     include_package_data=True,
     platforms='any',

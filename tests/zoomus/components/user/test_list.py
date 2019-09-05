@@ -1,6 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import unittest
 
 from mock import patch
@@ -11,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ListTestCase))
+    suite.addTest(unittest.makeSuite(ListV1TestCase))
     return suite
 
 
-class ListTestCase(unittest.TestCase):
+class ListV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
@@ -36,6 +33,27 @@ class ListTestCase(unittest.TestCase):
                 "/user/list",
                 params={}
             )
+
+
+class ListV2TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.component = components.user.UserComponentV2(
+            base_uri="http://foo.com",
+            config={
+                'api_key': 'KEY',
+                'api_secret': 'SECRET'
+            }
+        )
+
+    @patch.object(components.base.BaseComponent, 'get_request', return_value=True)
+    def test_can_list(self, mock_get_request):
+        self.component.list()
+
+        mock_get_request.assert_called_with(
+            "/users",
+            params={}
+        )
 
 
 if __name__ == '__main__':
