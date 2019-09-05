@@ -34,7 +34,7 @@ class ZoomClient(util.ApiClient):
 
     """Base URL for Zoom API"""
 
-    def __init__(self, api_key, api_secret, data_type='json', timeout=15, version=API_VERSION_1):
+    def __init__(self, api_key, api_secret, data_type='json', timeout=15, version=API_VERSION_2):
         """Create a new Zoom client
 
         :param api_key: The Zooom.us API key

@@ -14,18 +14,20 @@ Installation
 ### The easy way
 
 ```sh
-pip install zoomus2
+pip install zoomus
 ```
 
-Compatability
+Compatibility
 -------------
 
-Zoomus has been tested for Python 2.6, 3.2, 3.3, 3.4, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
+`zoomus` has been tested for Python 2.7, 3.4, 3.5, 3.6, 3.7, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
 
 Example Usage
 -------------
 
-### Create the client v1
+### Create the client v2 (default)
+
+As Zoom's default is now the V2 API, the client will default to the V2 version of the API.
 
 ```python
 from zoomus import ZoomClient
@@ -37,12 +39,14 @@ for user in json.loads(client.user.list())['users']:
     print client.meeting.list('host_id': user_id)
 ```
 
-### Create the client v2
+### Create the client v1
+
+Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows.
 
 ```python
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET', version=2)
+client = ZoomClient('API_KEY', 'API_SECRET', version=1)
 
 for user in json.loads(client.user.list())['users']:
     user_id = user['id']
@@ -107,21 +111,22 @@ nosetests
 
 ### Running the tests across multiple python versions in parallel
 
-If you don't trust our Travis CI badge above, you can run all of the tests across multiple python versions by using [pyenv](https://github.com/yyuu/pyenv) and [detox](https://pypi.python.org/pypi/detox). A good writeup for what you need to do to set this up can be found [here](http://blog.pinaxproject.com/2015/12/08/how-test-against-multiple-python-versions-parallel/).
+If you don't trust our [Travis CI](https://travis-ci.org/actmd/zoomus) badge above, you can run all of the tests across multiple python versions by using [pyenv](https://github.com/yyuu/pyenv) and [detox](https://pypi.python.org/pypi/detox). A good writeup for what you need to do to set this up can be found [here](http://blog.pinaxproject.com/2015/12/08/how-test-against-multiple-python-versions-parallel/).
 
-Note: If you are using OS X and installed pyenv with brew, make sure to follow [these instructions](https://github.com/yyuu/pyenv#homebrew-on-mac-os-x) as well.
+Note: If you are using OS X and installed `pyenv` with brew, make sure to follow [these instructions](https://github.com/yyuu/pyenv#homebrew-on-mac-os-x) as well.
 
 You'll want to make sure that you have all of the different python versions are installed so that they can be tested:
 
 ```sh
 # Install the versions
 pyenv install 2.7.10
-pyenv install 3.3.6
 pyenv install 3.4.3
 pyenv install 3.5.0
+pyenv install 3.6.0
+pyenv install 3.7.0
 
 # Set all these to be global versions
-pyenv global system 2.7.10 3.3.6 3.4.3 3.5.0
+pyenv global system 2.7.10 3.4.3 3.5.0 3.6.0 3.7.0
 
 # Make sure that they are all there (they should all have a * next to them)
 pyenv versions
@@ -142,8 +147,6 @@ py27-1.7: commands succeeded
 py27-1.8: commands succeeded
 py27-1.9: commands succeeded
 py27-master: commands succeeded
-py33-1.7: commands succeeded
-py33-1.8: commands succeeded
 py34-1.7: commands succeeded
 py34-1.8: commands succeeded
 py34-1.9: commands succeeded
@@ -151,12 +154,13 @@ py34-master: commands succeeded
 py35-1.8: commands succeeded
 py35-1.9: commands succeeded
 py35-master: commands succeeded
+...
 congratulations :)
 ```
 
-If you run in to an issue with running detox, make sure that you have the latest version of pip as there are [some issues](https://github.com/yyuu/pyenv/issues/531) with pyenv and older versions of pip.
+If you run in to an issue with running detox, make sure that you have the latest version of `pip` as there are [some issues](https://github.com/yyuu/pyenv/issues/531) with `pyenv` and older versions of `pip`.
 
 Contributing
 ------------
 
-If you would like to contribute to this project, you will need to use [git flow](https://github.com/nvie/gitflow). This way, any and all changes happen on the development branch and not on the master branch. As such, after you have git-flow-ified your zoomus git repo, create a pull request for your branch, and we'll take it from there.
+If you would like to contribute to this project, you will need to use [git flow](https://github.com/nvie/gitflow). This way, any and all changes happen on the development branch and not on the master branch. As such, after you have git-flow-ified your `zoomus` git repo, create a pull request for your branch, and we'll take it from there.
