@@ -1,6 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import datetime
 import unittest
 
@@ -14,11 +11,11 @@ from zoomus import (
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(CreateTestCase))
+    suite.addTest(unittest.makeSuite(CreateV1TestCase))
     return suite
 
 
-class CreateTestCase(unittest.TestCase):
+class CreateV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.meeting.MeetingComponent(
@@ -45,42 +42,77 @@ class CreateTestCase(unittest.TestCase):
             )
 
     def test_requires_host_id(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'host_id' must be set"):
             self.component.create()
-            self.assertEqual(
-                context.exception.message, "'host_id' must be set")
 
     def test_requires_topic(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'topic' must be set"):
             self.component.create(host_id='ID')
-            self.assertEqual(
-                context.exception.message, "'topic' must be set")
 
     def test_requires_type(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'type' must be set"):
             self.component.create(host_id='ID', topic='TOPIC')
-            self.assertEqual(
-                context.exception.message, "'type' must be set")
 
-    def test_does_convert_startime_to_str_if_datetime(self):
+    @patch.object(components.base.BaseComponent, 'post_request', return_value=True)
+    def test_does_convert_startime_to_str_if_datetime(self, mock_post_request):
+        start_time = datetime.datetime.utcnow()
+        self.component.create(
+            host_id='ID', topic='TOPIC', type='TYPE',
+            start_time=start_time)
 
-        with patch.object(components.base.BaseComponent, 'post_request',
-                          return_value=True) as mock_post_request:
+        mock_post_request.assert_called_with(
+            "/meeting/create",
+            params={
+                'host_id': 'ID',
+                'topic': 'TOPIC',
+                'type': 'TYPE',
+                'start_time': util.date_to_str(start_time)
+            }
+        )
 
-            start_time = datetime.datetime.utcnow()
-            self.component.create(
-                host_id='ID', topic='TOPIC', type='TYPE',
-                start_time=start_time)
 
-            mock_post_request.assert_called_with(
-                "/meeting/create",
-                params={
-                    'host_id': 'ID',
-                    'topic': 'TOPIC',
-                    'type': 'TYPE',
-                    'start_time': util.date_to_str(start_time)
-                }
-            )
+class CreateV2TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.component = components.meeting.MeetingComponentV2(
+            base_uri="http://foo.com",
+            config={
+                'api_key': 'KEY',
+                'api_secret': 'SECRET'
+            }
+        )
+
+    @patch.object(components.base.BaseComponent, 'post_request', return_value=True)
+    def test_can_create(self, mock_post_request):
+        self.component.create(user_id='ID', topic='TOPIC', type='TYPE')
+
+        mock_post_request.assert_called_with(
+            "/users/ID/meetings",
+            params={
+                'user_id': 'ID',
+                'topic': 'TOPIC',
+                'type': 'TYPE'
+            }
+        )
+
+    def test_requires_user_id(self):
+        with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):
+            self.component.create()
+
+    @patch.object(components.base.BaseComponent, 'post_request', return_value=True)
+    def test_does_convert_startime_to_str_if_datetime(self, mock_post_request):
+        start_time = datetime.datetime.utcnow()
+        self.component.create(
+            user_id='ID',
+            start_time=start_time)
+
+        mock_post_request.assert_called_with(
+            "/users/ID/meetings",
+            params={
+                'user_id': 'ID',
+                'start_time': util.date_to_str(start_time)
+            }
+        )
 
 
 if __name__ == '__main__':

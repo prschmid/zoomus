@@ -1,11 +1,10 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import unittest
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
-from zoomus import (
-    components,
-    ZoomClient)
+from zoomus import API_VERSION_2, components, ZoomClient, util
 
 
 def suite():
@@ -24,9 +23,15 @@ class ZoomClientTestCase(unittest.TestCase):
             {
                 'api_key': 'KEY',
                 'api_secret': 'SECRET',
-                'data_type': 'json'
+                'data_type': 'json',
+                'token': util.generate_jwt('KEY', 'SECRET'),
+                'version': API_VERSION_2,
             }
         )
+
+    def test_invalid_api_version_raises_error(self):
+        with self.assertRaisesRegexp(RuntimeError, "API version not supported: 42"):
+            ZoomClient('KEY', 'SECRET', version=42)
 
     def test_init_sets_config_with_timeout(self):
         client = ZoomClient('KEY', 'SECRET', timeout=500)
@@ -46,24 +51,28 @@ class ZoomClientTestCase(unittest.TestCase):
         )
         self.assertIsInstance(
             client.components['meeting'],
-            components.meeting.MeetingComponent
+            components.meeting.MeetingComponentV2
         )
         self.assertIsInstance(
             client.components['report'],
-            components.report.ReportComponent
+            components.report.ReportComponentV2
         )
         self.assertIsInstance(
             client.components['user'],
-            components.user.UserComponent
+            components.user.UserComponentV2
         )
         self.assertIsInstance(
             client.components['webinar'],
-            components.webinar.WebinarComponent
+            components.webinar.WebinarComponentV2
         )
         self.assertIsInstance(
             client.components['recording'],
-            components.recording.RecordingComponent
+            components.recording.RecordingComponentV2
         )
+
+    def test_api_version_defaults_to_2(self):
+        client = ZoomClient('KEY', 'SECRET')
+        self.assertEqual(client.config['version'], API_VERSION_2)
 
     def test_can_get_api_key(self):
         client = ZoomClient('KEY', 'SECRET')
@@ -87,35 +96,35 @@ class ZoomClientTestCase(unittest.TestCase):
         client = ZoomClient('KEY', 'SECRET')
         self.assertIsInstance(
             client.meeting,
-            components.meeting.MeetingComponent
+            components.meeting.MeetingComponentV2
         )
 
     def test_can_get_report_component(self):
         client = ZoomClient('KEY', 'SECRET')
         self.assertIsInstance(
             client.report,
-            components.report.ReportComponent
+            components.report.ReportComponentV2
         )
 
     def test_can_get_user_component(self):
         client = ZoomClient('KEY', 'SECRET')
         self.assertIsInstance(
             client.user,
-            components.user.UserComponent
+            components.user.UserComponentV2
         )
 
     def test_can_get_webinar_component(self):
         client = ZoomClient('KEY', 'SECRET')
         self.assertIsInstance(
             client.webinar,
-            components.webinar.WebinarComponent
+            components.webinar.WebinarComponentV2
         )
 
     def test_can_get_recording_component(self):
         client = ZoomClient('KEY', 'SECRET')
         self.assertIsInstance(
             client.recording,
-            components.recording.RecordingComponent
+            components.recording.RecordingComponentV2
         )
 
     def test_can_use_client_with_context(self):
@@ -124,6 +133,13 @@ class ZoomClientTestCase(unittest.TestCase):
                 client,
                 ZoomClient
             )
+
+    @mock.patch('zoomus.client.util.generate_jwt')
+    def test_refresh_token_replaces_config_token_with_new_jwt(self, mock_jwt):
+        client = ZoomClient('KEY', 'SECRET')
+        client.refresh_token()
+        mock_jwt.assert_called_with('KEY', 'SECRET')
+        self.assertEqual(client.config['token'], (mock_jwt.return_value, ))
 
 
 if __name__ == '__main__':

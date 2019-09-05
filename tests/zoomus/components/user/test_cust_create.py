@@ -1,6 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import unittest
 
 from mock import patch
@@ -11,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UpdateTestCase))
+    suite.addTest(unittest.makeSuite(CustCreateV1TestCase))
     return suite
 
 
-class UpdateTestCase(unittest.TestCase):
+class CustCreateV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
@@ -42,13 +39,13 @@ class UpdateTestCase(unittest.TestCase):
 
     def test_requires_type(self):
         with self.assertRaises(ValueError) as context:
-            self.component.get_by_email()
+            self.component.cust_create()
             self.assertEqual(
                 context.exception.message, "'type' must be set")
 
     def test_requires_email(self):
         with self.assertRaises(ValueError) as context:
-            self.component.get_by_email()
+            self.component.cust_create()
             self.assertEqual(
                 context.exception.message, "'email' must be set")
 

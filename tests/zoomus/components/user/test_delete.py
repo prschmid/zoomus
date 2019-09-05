@@ -1,7 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
-
 import unittest
 
 from mock import patch
@@ -12,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(DeleteTestCase))
+    suite.addTest(unittest.makeSuite(DeleteV1TestCase))
     return suite
 
 
-class DeleteTestCase(unittest.TestCase):
+class DeleteV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
@@ -45,6 +41,32 @@ class DeleteTestCase(unittest.TestCase):
             self.component.delete()
             self.assertEqual(
                 context.exception.message, "'id' must be set")
+
+
+class DeleteV2TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.component = components.user.UserComponentV2(
+            base_uri="http://foo.com",
+            config={
+                'api_key': 'KEY',
+                'api_secret': 'SECRET'
+            }
+        )
+
+    @patch.object(components.base.BaseComponent, 'delete_request', return_value=True)
+    def test_can_delete(self, mock_delete_request):
+        self.component.delete(id='ID')
+        mock_delete_request.assert_called_with(
+            "/users/ID",
+            params={
+                'id': 'ID'
+            }
+        )
+
+    def test_requires_id(self):
+        with self.assertRaisesRegexp(ValueError, "'id' must be set"):
+            self.component.delete()
 
 
 if __name__ == '__main__':

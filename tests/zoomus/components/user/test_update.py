@@ -1,6 +1,3 @@
-__author__ = "Patrick R. Schmid"
-__email__ = "prschmid@act.md"
-
 import unittest
 
 from mock import patch
@@ -11,11 +8,11 @@ from zoomus import components
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UpdateTestCase))
+    suite.addTest(unittest.makeSuite(UpdateV1TestCase))
     return suite
 
 
-class UpdateTestCase(unittest.TestCase):
+class UpdateV1TestCase(unittest.TestCase):
 
     def setUp(self):
         self.component = components.user.UserComponent(
@@ -44,6 +41,32 @@ class UpdateTestCase(unittest.TestCase):
             self.component.update()
             self.assertEqual(
                 context.exception.message, "'id' must be set")
+
+
+class UpdateV2TestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.component = components.user.UserComponentV2(
+            base_uri="http://foo.com",
+            config={
+                'api_key': 'KEY',
+                'api_secret': 'SECRET'
+            }
+        )
+
+    @patch.object(components.base.BaseComponent, 'patch_request', return_value=True)
+    def test_can_update(self, mock_patch_request):
+        self.component.update(id='ID')
+        mock_patch_request.assert_called_with(
+            "/users/ID",
+            params={
+                'id': 'ID'
+            }
+        )
+
+    def test_requires_id(self):
+        with self.assertRaisesRegexp(ValueError, "'id' must be set"):
+            self.component.update()
 
 
 if __name__ == '__main__':

@@ -1,19 +1,57 @@
-.DS_Store
-*.pyc
-.idea
-.tox
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Packages
-*.egg
-*.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
+# C extensions
+*.so
+
+# mypy
+.mypy_cache
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
 .installed.cfg
-lib
-lib64
+*.egg
+.pip_cache/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
+html-reports/
+reports/
+
+# virtualenv
+.venv/
+venv/
+ENV/
+*venv*
+
+# Editors, etc
+*.DS_Store*
+.idea
+.vscode
+*.swp
+.project
+.pydevproject
+.settings/
