@@ -11,7 +11,8 @@ here = os.path.abspath(os.path.dirname(__file__))
 def read(file_paths, default=""):
     # intentionally *not* adding an encoding option to open
     try:
-        return codecs.open(os.path.join(here, *file_paths), 'r').read()
+        with codecs.open(os.path.join(here, *file_paths), 'r') as fh:
+            return fh.read()
     except Exception:
         return default
 
