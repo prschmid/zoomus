@@ -1,5 +1,5 @@
-zoomus
-==========
+# zoomus
+
 [![Build Status](https://travis-ci.org/actmd/zoomus.svg?branch=master)](https://travis-ci.org/actmd/zoomus)
 
 [https://github.com/actmd/zoomus](https://github.com/actmd/zoomus)
@@ -8,8 +8,7 @@ Python wrapper around the [Zoom.us](http://zoom.us) REST API v1 and v2.
 
 This work is heavily inspired by the Ruby GEM of the same name, [Zoomus](https://github.com/mllocs/zoomus)
 
-Installation
-------------
+## Installation
 
 ### The easy way
 
@@ -17,13 +16,11 @@ Installation
 pip install zoomus
 ```
 
-Compatibility
--------------
+## Compatibility
 
 `zoomus` has been tested for Python 2.7, 3.4, 3.5, 3.6, 3.7, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
 
-Example Usage
--------------
+## Example Usage
 
 ### Create the client v2 (default)
 
@@ -71,9 +68,7 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
     ...
 ```
 
-
-Available methods
------------------
+## Available methods
 
 * client.user.create(...)
 * client.user.cust_create(...)
@@ -102,8 +97,7 @@ Available methods
 * client.webinar.register(...)
 
 
-Running the Tests
------------------
+## Running the Tests
 
 ### Simple
 
@@ -170,7 +164,6 @@ congratulations :)
 
 If you run in to an issue with running detox, make sure that you have the latest version of `pip` as there are [some issues](https://github.com/yyuu/pyenv/issues/531) with `pyenv` and older versions of `pip`.
 
-Contributing
-------------
+## Contributing
 
 If you would like to contribute to this project, you will need to use [git flow](https://github.com/nvie/gitflow). This way, any and all changes happen on the development branch and not on the master branch. As such, after you have git-flow-ified your `zoomus` git repo, create a pull request for your branch, and we'll take it from there.
