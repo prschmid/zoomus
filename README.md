@@ -112,58 +112,6 @@ Then run the tests via nose
 nosetests
 ```
 
-### Running the tests across multiple python versions in parallel
-
-If you don't trust our [Travis CI](https://travis-ci.org/actmd/zoomus) badge above, you can run all of the tests across multiple python versions by using [pyenv](https://github.com/yyuu/pyenv), and [tox](https://pypi.python.org/pypi/tox).
-
-Note: If you are using OS X and installed `pyenv` with brew, make sure to follow [these instructions](https://github.com/pyenv/pyenv#homebrew-on-macos) as well.
-
-You'll want to make sure that you have all of the different python versions are installed so that they can be tested:
-
-```sh
-# Install the versions
-pyenv install 2.7.10
-pyenv install 3.4.3
-pyenv install 3.5.0
-pyenv install 3.6.0
-pyenv install 3.7.0
-
-# Set all these to be global versions
-pyenv global system 2.7.10 3.4.3 3.5.0 3.6.0 3.7.0
-
-# Make sure that they are all there (they should all have a * next to them)
-pyenv versions
-```
-
-Once your Python interpreters are installed, you need set up a virtualenv and install tox.
-
-```sh
-python -m venv .venv
-source .venv/bin/activate
-pip install tox
-```
-
-Now that everything is installed and set up, you just need one command to run all of the tests against all of our defined Python versions:
-
-```sh
-tox
-```
-
-Assuming all goes well, you should see a result akin to
-
-```sh
-  py27: commands succeeded
-  py34: commands succeeded
-  py35: commands succeeded
-  py36: commands succeeded
-  py37: commands succeeded
-  pypy: commands succeeded
-  pypy3: commands succeeded
-  congratulations :)
-```
-
-If you run in to an issue with running detox, make sure that you have the latest version of `pip` as there are [some issues](https://github.com/yyuu/pyenv/issues/531) with `pyenv` and older versions of `pip`.
-
 ## Contributing
 
-If you would like to contribute to this project, you will need to use [git flow](https://github.com/nvie/gitflow). This way, any and all changes happen on the development branch and not on the master branch. As such, after you have git-flow-ified your `zoomus` git repo, create a pull request for your branch, and we'll take it from there.
+Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) for the contribution guidelines for this project.
