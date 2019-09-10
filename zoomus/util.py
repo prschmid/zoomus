@@ -76,16 +76,15 @@ class ApiClient(object):
         :param headers: request headers
         :return: The :class:``requests.Response`` object for this request
         """
-        if headers is None and self.config.get('version') == API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.get(
-            self.url_for(endpoint),
-            params=params,
-            headers=headers,
-            timeout=self.timeout)
+            self.url_for(endpoint), params=params, headers=headers, timeout=self.timeout
+        )
 
     def post_request(
-            self, endpoint, params=None, data=None, headers=None, cookies=None):
+        self, endpoint, params=None, data=None, headers=None, cookies=None
+    ):
         """Helper function for POST requests
 
         :param endpoint: The endpoint
@@ -98,18 +97,20 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.post(
             self.url_for(endpoint),
             params=params,
             data=data,
             headers=headers,
             cookies=cookies,
-            timeout=self.timeout)
+            timeout=self.timeout,
+        )
 
     def patch_request(
-            self, endpoint, params=None, data=None, headers=None, cookies=None):
+        self, endpoint, params=None, data=None, headers=None, cookies=None
+    ):
         """Helper function for PATCH requests
 
         :param endpoint: The endpoint
@@ -122,18 +123,20 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.patch(
             self.url_for(endpoint),
             params=params,
             data=data,
             headers=headers,
             cookies=cookies,
-            timeout=self.timeout)
+            timeout=self.timeout,
+        )
 
     def delete_request(
-            self, endpoint, params=None, data=None, headers=None, cookies=None):
+        self, endpoint, params=None, data=None, headers=None, cookies=None
+    ):
         """Helper function for DELETE requests
 
         :param endpoint: The endpoint
@@ -146,18 +149,18 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.delete(
             self.url_for(endpoint),
             params=params,
             data=data,
             headers=headers,
             cookies=cookies,
-            timeout=self.timeout)
+            timeout=self.timeout,
+        )
 
-    def put_request(
-            self, endpoint, params=None, data=None, headers=None, cookies=None):
+    def put_request(self, endpoint, params=None, data=None, headers=None, cookies=None):
         """Helper function for PUT requests
 
         :param endpoint: The endpoint
@@ -170,15 +173,16 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get('version') == API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.put(
             self.url_for(endpoint),
             params=params,
             data=data,
             headers=headers,
             cookies=cookies,
-            timeout=self.timeout)
+            timeout=self.timeout,
+        )
 
 
 @contextlib.contextmanager
@@ -242,15 +246,9 @@ def date_to_str(d):
 
 
 def generate_jwt(key, secret):
-    header = {
-        "alg": "HS256",
-        "typ": "JWT"
-    }
+    header = {"alg": "HS256", "typ": "JWT"}
 
-    payload = {
-        "iss": key,
-        "exp": int(time.time() + 3600)
-    }
+    payload = {"iss": key, "exp": int(time.time() + 3600)}
 
-    token = jwt.encode(payload, secret, algorithm='HS256', headers=header)
-    return token.decode('utf-8')
+    token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
+    return token.decode("utf-8")

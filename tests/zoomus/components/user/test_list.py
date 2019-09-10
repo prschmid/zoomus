@@ -16,48 +16,33 @@ def suite():
 
 
 class ListV1TestCase(unittest.TestCase):
-
     def setUp(self):
         self.component = components.user.UserComponent(
-            base_uri="http://foo.com",
-            config={
-                'api_key': 'KEY',
-                'api_secret': 'SECRET'
-            }
+            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
     def test_can_list(self):
-        with patch.object(components.base.BaseComponent, 'post_request',
-                          return_value=True) as mock_post_request:
+        with patch.object(
+            components.base.BaseComponent, "post_request", return_value=True
+        ) as mock_post_request:
 
             self.component.list()
 
-            mock_post_request.assert_called_with(
-                "/user/list",
-                params={}
-            )
+            mock_post_request.assert_called_with("/user/list", params={})
 
 
 class ListV2TestCase(unittest.TestCase):
-
     def setUp(self):
         self.component = components.user.UserComponentV2(
-            base_uri="http://foo.com",
-            config={
-                'api_key': 'KEY',
-                'api_secret': 'SECRET'
-            }
+            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
-    @patch.object(components.base.BaseComponent, 'get_request', return_value=True)
+    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
     def test_can_list(self, mock_get_request):
         self.component.list()
 
-        mock_get_request.assert_called_with(
-            "/users",
-            params={}
-        )
+        mock_get_request.assert_called_with("/users", params={})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
