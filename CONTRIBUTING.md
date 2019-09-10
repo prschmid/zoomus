@@ -30,6 +30,16 @@ around pull request reviews, this project has adopted the
 be run against any new code written for this project. The advantage is, you
 no longer have to think about how your code is styled; it's all handled for you!
 
+To make this easier on you, you can [set up most editors][black-editors] to
+auto-run `black` for you. You can also use `pre-commit` to automagically run
+`black` for you before every commit! For this, you just need to run the following
+once:
+
+```sh
+$ pipenv run pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+
 ## Running the Tests
 
 Tests should be run using [tox](https://pypi.python.org/pypi/tox), so that we
@@ -76,3 +86,5 @@ to look at using [pyenv](https://github.com/pyenv/pyenv).
 **Note:** If you are using OS X and installed `pyenv` with brew, make sure to
 follow [these instructions](https://github.com/pyenv/pyenv#homebrew-on-macos)
 as well.
+
+[black-editors]: https://github.com/psf/black#editor-integration
