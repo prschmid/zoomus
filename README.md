@@ -1,6 +1,11 @@
-zoomus
-==========
-[![Build Status](https://travis-ci.org/actmd/zoomus.svg?branch=master)](https://travis-ci.org/actmd/zoomus)
+# zoomus
+
+[![Build Status](https://img.shields.io/travis/actmd/zoomus)](https://travis-ci.org/actmd/zoomus)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/zoomus)](https://pypi.org/project/zoomus/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/zoomus)](https://pypi.org/project/zoomus/)
+[![PyPI Version](https://img.shields.io/pypi/v/zoomus)](https://pypi.org/project/zoomus/)
+[![PyPI License](https://img.shields.io/pypi/l/zoomus)](https://pypi.org/project/zoomus/)
+[![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
 
 [https://github.com/actmd/zoomus](https://github.com/actmd/zoomus)
 
@@ -8,8 +13,7 @@ Python wrapper around the [Zoom.us](http://zoom.us) REST API v1 and v2.
 
 This work is heavily inspired by the Ruby GEM of the same name, [Zoomus](https://github.com/mllocs/zoomus)
 
-Installation
-------------
+## Installation
 
 ### The easy way
 
@@ -17,13 +21,11 @@ Installation
 pip install zoomus
 ```
 
-Compatibility
--------------
+## Compatibility
 
 `zoomus` has been tested for Python 2.7, 3.4, 3.5, 3.6, 3.7, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
 
-Example Usage
--------------
+## Example Usage
 
 ### Create the client v2 (default)
 
@@ -71,9 +73,7 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
     ...
 ```
 
-
-Available methods
------------------
+## Available methods
 
 * client.user.create(...)
 * client.user.cust_create(...)
@@ -101,9 +101,7 @@ Available methods
 * client.webinar.end(...)
 * client.webinar.register(...)
 
-
-Running the Tests
------------------
+## Running the Tests
 
 ### Simple
 
@@ -119,58 +117,6 @@ Then run the tests via nose
 nosetests
 ```
 
-### Running the tests across multiple python versions in parallel
+## Contributing
 
-If you don't trust our [Travis CI](https://travis-ci.org/actmd/zoomus) badge above, you can run all of the tests across multiple python versions by using [pyenv](https://github.com/yyuu/pyenv) and [detox](https://pypi.python.org/pypi/detox). A good writeup for what one needs to do to set this up can be found [here](http://blog.pinaxproject.com/2015/12/08/how-test-against-multiple-python-versions-parallel/).
-
-Note: If you are using OS X and installed `pyenv` with brew, make sure to follow [these instructions](https://github.com/yyuu/pyenv#homebrew-on-mac-os-x) as well.
-
-You'll want to make sure that you have all of the different python versions are installed so that they can be tested:
-
-```sh
-# Install the versions
-pyenv install 2.7.10
-pyenv install 3.4.3
-pyenv install 3.5.0
-pyenv install 3.6.0
-pyenv install 3.7.0
-
-# Set all these to be global versions
-pyenv global system 2.7.10 3.4.3 3.5.0 3.6.0 3.7.0
-
-# Make sure that they are all there (they should all have a * next to them)
-pyenv versions
-```
-
-Once you get everything installed, you can run the tests across the different versions as follows.
-
-```sh
-detox
-```
-
-Note this assumes that you have detox installed globally.
-
-Assuming all goes well, you should see a result akin to
-
-```sh
-py27-1.7: commands succeeded
-py27-1.8: commands succeeded
-py27-1.9: commands succeeded
-py27-master: commands succeeded
-py34-1.7: commands succeeded
-py34-1.8: commands succeeded
-py34-1.9: commands succeeded
-py34-master: commands succeeded
-py35-1.8: commands succeeded
-py35-1.9: commands succeeded
-py35-master: commands succeeded
-...
-congratulations :)
-```
-
-If you run in to an issue with running detox, make sure that you have the latest version of `pip` as there are [some issues](https://github.com/yyuu/pyenv/issues/531) with `pyenv` and older versions of `pip`.
-
-Contributing
-------------
-
-If you would like to contribute to this project, you will need to use [git flow](https://github.com/nvie/gitflow). This way, any and all changes happen on the development branch and not on the master branch. As such, after you have git-flow-ified your `zoomus` git repo, create a pull request for your branch, and we'll take it from there.
+Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) for the contribution guidelines for this project.

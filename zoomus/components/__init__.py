@@ -2,9 +2,4 @@
 
 from __future__ import absolute_import
 
-from . import (
-    meeting,
-    recording,
-    report,
-    user,
-    webinar)
+from . import meeting, recording, report, user, webinar
