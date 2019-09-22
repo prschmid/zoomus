@@ -26,7 +26,11 @@ class BaseComponentTestCase(unittest.TestCase):
         )
         component.post_request("foo")
         mock_post_request.assert_called_with(
-            "foo", params=component.config, data=None, headers=None, cookies=None
+            "foo",
+            params={"api_key": "KEY", "api_secret": "SECRET"},
+            data=None,
+            headers=None,
+            cookies=None,
         )
 
     def test_post_request_includes_config_details_in_data_when_there_is_data(
@@ -38,11 +42,12 @@ class BaseComponentTestCase(unittest.TestCase):
         )
         component.post_request("foo", params={"foo": "bar"})
 
-        params = {"foo": "bar"}
-        params.update(component.config)
-
         mock_post_request.assert_called_with(
-            "foo", params=params, data=None, headers=None, cookies=None
+            "foo",
+            params={"foo": "bar", "api_key": "KEY", "api_secret": "SECRET"},
+            data=None,
+            headers=None,
+            cookies=None,
         )
 
     def test_v2_post_request_passes_jwt_token(self, mock_post_request):
