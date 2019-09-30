@@ -1,0 +1,21 @@
+[build-system]
+requires = [
+    "setuptools >= 40.6.2",
+    "wheel >= 0.30.0",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+target-version = ['py27', 'py35', 'py36', 'py37']
+exclude = '''
+/(
+    \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | build
+    | dist
+)/
+'''

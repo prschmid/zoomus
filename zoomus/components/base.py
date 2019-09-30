@@ -18,10 +18,12 @@ class BaseComponent(util.ApiClient):
                            attributes to the ApiClient object.
         """
         super(BaseComponent, self).__init__(
-            base_uri=base_uri, timeout=timeout, config=config, **kwargs)
+            base_uri=base_uri, timeout=timeout, config=config, **kwargs
+        )
 
     def post_request(
-            self, endpoint, params=None, data=None, headers=None, cookies=None):
+        self, endpoint, params=None, data=None, headers=None, cookies=None
+    ):
         """Helper function for POST requests
 
         Since the Zoom.us API only uses POST requests and each post request
@@ -37,10 +39,10 @@ class BaseComponent(util.ApiClient):
         :return: The :class:``requests.Response`` object for this request
         """
         params = params or {}
-        if self.config['version'] == util.API_VERSION_1:
+        if self.config["version"] == util.API_VERSION_1:
             params.update(self.config)
-        if headers is None and self.config.get('version') == util.API_VERSION_2:
-            headers = {'Authorization': 'Bearer {}'.format(self.config.get('token'))}
+        if headers is None and self.config.get("version") == util.API_VERSION_2:
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return super(BaseComponent, self).post_request(
-            endpoint, params=params, data=data, headers=headers,
-            cookies=cookies)
+            endpoint, params=params, data=data, headers=headers, cookies=cookies
+        )
