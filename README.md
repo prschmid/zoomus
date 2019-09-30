@@ -23,7 +23,9 @@ pip install zoomus
 
 ## Compatibility
 
-`zoomus` has been tested for Python 2.7, 3.4, 3.5, 3.6, 3.7, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
+`zoomus` has been tested for Python 2.7, 3.5, 3.6, 3.7, and pypy using [Travis CI](https://travis-ci.org/actmd/zoomus)
+
+Note, as this library heavily depends on the [requests](https://pypi.org/project/requests/) library, official compatibility is limited to the official compatibility of `requests`.
 
 ## Example Usage
 

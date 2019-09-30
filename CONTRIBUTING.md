@@ -54,7 +54,6 @@ Assuming all goes well, you should see a result akin to
 
 ```sh
   py27: commands succeeded
-  py34: commands succeeded
   py35: commands succeeded
   py36: commands succeeded
   py37: commands succeeded
@@ -73,7 +72,6 @@ being merged.
 These versions are currently:
 
 * 2.7
-* 3.4
 * 3.5
 * 3.6
 * 3.7
