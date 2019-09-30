@@ -54,7 +54,7 @@ class MeetingComponentV2(base.BaseComponent):
             kwargs['start_time'] = util.date_to_str(kwargs['start_time'])
         return self.post_request(
             "/users/{}/meetings".format(kwargs.get('user_id')),
-            params=kwargs)
+            params=kwargs, data=kwargs.get('data'))
 
     def get(self, **kwargs):
         util.require_keys(kwargs, 'id')
