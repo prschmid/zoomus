@@ -1,11 +1,11 @@
 import unittest
 
+from zoomus import components, ZoomClient, util
+
 try:
     from unittest import mock
 except ImportError:
-    import mock
-
-from zoomus import API_VERSION_2, components, ZoomClient, util
+    import mock  # type: ignore
 
 
 def suite():
@@ -25,7 +25,7 @@ class ZoomClientTestCase(unittest.TestCase):
                 "api_secret": "SECRET",
                 "data_type": "json",
                 "token": util.generate_jwt("KEY", "SECRET"),
-                "version": API_VERSION_2,
+                "version": util.API_VERSION_2,
             },
         )
 
@@ -68,7 +68,7 @@ class ZoomClientTestCase(unittest.TestCase):
 
     def test_api_version_defaults_to_2(self):
         client = ZoomClient("KEY", "SECRET")
-        self.assertEqual(client.config["version"], API_VERSION_2)
+        self.assertEqual(client.config["version"], util.API_VERSION_2)
 
     def test_can_get_api_key(self):
         client = ZoomClient("KEY", "SECRET")
