@@ -1,12 +1,8 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
+import responses
 
 
 def suite():
@@ -19,16 +15,21 @@ def suite():
 class CreateV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_create(self, mock_post_request):
+    @responses.activate
+    def test_can_create(self):
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/create?host_id=ID&topic=TOPIC&api_key=KEY&api_secret=SECRET",
+        )
         self.component.create(host_id="ID", topic="TOPIC")
-
-        mock_post_request.assert_called_with(
-            "/webinar/create", params={"host_id": "ID", "topic": "TOPIC"}
-        )
 
     def test_requires_host_id(self):
         with self.assertRaisesRegexp(ValueError, "'host_id' must be set"):
@@ -38,34 +39,32 @@ class CreateV1TestCase(unittest.TestCase):
         with self.assertRaisesRegexp(ValueError, "'topic' must be set"):
             self.component.create(host_id="ID")
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_does_convert_startime_to_str_if_datetime(self, mock_post_request):
-        start_time = datetime.datetime.utcnow()
-        self.component.create(host_id="ID", topic="TOPIC", start_time=start_time)
-
-        mock_post_request.assert_called_with(
-            "/webinar/create",
-            params={
-                "host_id": "ID",
-                "topic": "TOPIC",
-                "start_time": util.date_to_str(start_time),
-            },
+    @responses.activate
+    def test_does_convert_startime_to_str_if_datetime(self):
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/create?host_id=ID&topic=TOPIC&start_time=1969-01-01T01%3A01%3A00Z"
+            "&api_key=KEY&api_secret=SECRET",
         )
+        start_time = datetime.datetime(1969, 1, 1, 1, 1)
+        self.component.create(host_id="ID", topic="TOPIC", start_time=start_time)
 
 
 class CreateV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_create(self, mock_post_request):
-        self.component.create(user_id="ID")
-
-        mock_post_request.assert_called_with(
-            "/users/ID/webinars", data={"user_id": "ID"}
-        )
+    @responses.activate
+    def test_can_create(self):
+        responses.add(responses.POST, "http://foo.com/users/42/webinars?user_id=42")
+        self.component.create(user_id="42")
 
     def test_requires_user_id(self):
         with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):

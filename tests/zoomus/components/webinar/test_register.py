@@ -1,12 +1,8 @@
-from datetime import datetime
+import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import components
+from zoomus import components, util
+import responses
 
 
 def suite():
@@ -20,23 +16,23 @@ def suite():
 class RegisterV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_register(self, mock_post_request):
+    @responses.activate
+    def test_can_register(self):
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/register?id=ID&email=foo@bar.com&first_name=Foo&last_name=Bar"
+            "&api_key=KEY&api_secret=SECRET",
+        )
         self.component.register(
             id="ID", email="foo@bar.com", first_name="Foo", last_name="Bar"
-        )
-
-        mock_post_request.assert_called_with(
-            "/webinar/register",
-            params={
-                "id": "ID",
-                "email": "foo@bar.com",
-                "first_name": "Foo",
-                "last_name": "Bar",
-            },
         )
 
     def test_requires_id(self):
@@ -55,47 +51,42 @@ class RegisterV1TestCase(unittest.TestCase):
         with self.assertRaisesRegexp(ValueError, "'last_name' must be set"):
             self.component.register(id="ID", email="foo@bar.com", first_name="foo")
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_start_time_gets_transformed(self, mock_post_request):
+    @responses.activate
+    def test_start_time_gets_transformed(self):
+        start_time = datetime.datetime(1969, 1, 1, 1, 1)
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/register?id=ID&email=foo@bar.com&first_name=foo&last_name=bar"
+            "&start_time=1969-01-01T01%3A01%3A00Z&api_key=KEY&api_secret=SECRET",
+        )
         self.component.register(
             id="ID",
             email="foo@bar.com",
             first_name="foo",
             last_name="bar",
-            start_time=datetime(1969, 1, 1),
-        )
-        mock_post_request.assert_called_with(
-            "/webinar/register",
-            params={
-                "id": "ID",
-                "email": "foo@bar.com",
-                "first_name": "foo",
-                "last_name": "bar",
-                "start_time": "1969-01-01T00:00:00Z",
-            },
+            start_time=start_time,
         )
 
 
 class RegisterV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
-        )
-
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_register(self, mock_post_request):
-        self.component.register(
-            id="ID", email="foo@bar.com", first_name="Foo", last_name="Bar"
-        )
-
-        mock_post_request.assert_called_with(
-            "/webinars/ID/registrants",
-            data={
-                "id": "ID",
-                "email": "foo@bar.com",
-                "first_name": "Foo",
-                "last_name": "Bar",
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
             },
+        )
+
+    @responses.activate
+    def test_can_register(self):
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinars/42/registrants?id=42&email=foo@bar.com&first_name=Foo&last_name=Bar",
+        )
+        self.component.register(
+            id="42", email="foo@bar.com", first_name="Foo", last_name="Bar"
         )
 
     def test_requires_id(self):
