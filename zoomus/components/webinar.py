@@ -94,3 +94,15 @@ class WebinarComponentV2(base.BaseComponent):
         return self.post_request(
             "/webinars/{}/registrants".format(kwargs.get("id")), params=kwargs
         )
+
+    def get_registrants(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/webinars/{}/registrants".format(kwargs.get("id")), params=kwargs
+        )
+
+    def get_absentees(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/past_webinars/{}/absentees".format(kwargs.get("id")), params=kwargs
+        )
