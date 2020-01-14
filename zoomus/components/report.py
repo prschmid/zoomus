@@ -45,7 +45,7 @@ class ReportComponentV2(base.BaseComponent):
         del kwargs["end_time"]
         return self.get_request("/report/users", params=kwargs)
     
-     def get_daily_report(self, **kwargs):
+    def get_daily_report(self, **kwargs):
         util.require_keys(kwargs, ["start_time", "end_time"])
         kwargs["from"] = util.date_to_str(kwargs["start_time"])
         del kwargs["start_time"]
