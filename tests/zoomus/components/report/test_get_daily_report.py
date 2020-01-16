@@ -22,7 +22,7 @@ class GetAccountReportV1TestCase(unittest.TestCase):
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
-    def test_can_get_account_report(self):
+    def test_can_get_daily_report(self):
         with patch.object(
             components.base.BaseComponent, "post_request", return_value=True
         ) as mock_post_request:
@@ -76,7 +76,7 @@ class GetAccountReportV2TestCase(unittest.TestCase):
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_get_account_report(self, mock_get_request):
+    def test_can_get_daily_report(self, mock_get_request):
         start_time = datetime.datetime.utcnow()
         end_time = datetime.datetime.utcnow()
         self.component.get_daily_report(start_time=start_time, end_time=end_time)
