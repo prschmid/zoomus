@@ -5,24 +5,27 @@ try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
+import sys
 
+sys.path.insert(0, '../zoomus')        #path to my scripts
+print (sys.path)
 from zoomus import components, util
 
 
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(GetAccountReportV1TestCase))
+    suite.addTest(unittest.makeSuite(GetDailyReportV1TestCase))
     return suite
 
 
-class GetAccountReportV1TestCase(unittest.TestCase):
+class GetDailyReportV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.report.ReportComponent(
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
-    def test_can_get_daily_report(self):
+    def test_can_get_Daily_report(self):
         with patch.object(
             components.base.BaseComponent, "post_request", return_value=True
         ) as mock_post_request:
@@ -69,14 +72,14 @@ class GetAccountReportV1TestCase(unittest.TestCase):
             )
 
 
-class GetAccountReportV2TestCase(unittest.TestCase):
+class GetDailyReportV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.report.ReportComponentV2(
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_get_daily_report(self, mock_get_request):
+    def test_can_get_Daily_report(self, mock_get_request):
         start_time = datetime.datetime.utcnow()
         end_time = datetime.datetime.utcnow()
         self.component.get_daily_report(start_time=start_time, end_time=end_time)
@@ -91,11 +94,11 @@ class GetAccountReportV2TestCase(unittest.TestCase):
 
     def test_requires_start_time(self):
         with self.assertRaisesRegexp(ValueError, "'start_time' must be set"):
-            self.component.get_account_report()
+            self.component.get_daily_report()
 
     def test_requires_end_time(self):
         with self.assertRaisesRegexp(ValueError, "'end_time' must be set"):
-            self.component.get_account_report(start_time=datetime.datetime.utcnow())
+            self.component.get_daily_report(start_time=datetime.datetime.utcnow())
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
     def test_does_convert_start_time_to_str_if_datetime(self, mock_get_request):
