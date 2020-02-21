@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 from zoomus import util
 from zoomus.components import base
-import datetime
 
 class ReportComponent(base.BaseComponent):
     """Component dealing with all report related matters"""
