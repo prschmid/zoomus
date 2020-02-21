@@ -7,9 +7,15 @@ except ImportError:
     from mock import patch
 import sys
 
+<<<<<<< HEAD
 sys.path.insert(0, "../zoomus")  # path to my scripts
 #print(sys.path)
 from zoomus import components
+=======
+sys.path.insert(0, '../zoomus')        #path to my scripts
+print (sys.path)
+from zoomus import components, util
+>>>>>>> 4aef04809830693bafbe3f528f6db395828e72af
 
 
 def suite():
