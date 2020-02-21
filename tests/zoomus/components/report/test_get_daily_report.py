@@ -5,7 +5,7 @@ try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
-import sys
+from zoomus import components
 
 def suite():
     """Define all the tests of the module."""
