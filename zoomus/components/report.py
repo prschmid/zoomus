@@ -5,7 +5,6 @@ from __future__ import absolute_import
 from zoomus import util
 from zoomus.components import base
 
-
 class ReportComponent(base.BaseComponent):
     """Component dealing with all report related matters"""
 
@@ -24,6 +23,10 @@ class ReportComponent(base.BaseComponent):
         kwargs["to"] = util.date_to_str(kwargs["end_time"])
         del kwargs["end_time"]
         return self.post_request("/report/getuserreport", params=kwargs)
+
+    def get_daily_report(self, **kwargs):
+        util.require_keys(kwargs, ["month", "year"], kwargs)
+        return self.post_request("/report/getdailyreport", params=kwargs)
 
 
 class ReportComponentV2(base.BaseComponent):
@@ -44,3 +47,7 @@ class ReportComponentV2(base.BaseComponent):
         kwargs["to"] = util.date_to_str(kwargs["end_time"])
         del kwargs["end_time"]
         return self.get_request("/report/users", params=kwargs)
+
+    def get_daily_report(self, **kwargs):
+        util.require_keys(kwargs, ["month", "year"])
+        return self.get_request("/report/daily", params=kwargs)
