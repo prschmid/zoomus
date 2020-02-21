@@ -7,6 +7,7 @@ except ImportError:
     from mock import patch
 from zoomus import components
 
+
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
