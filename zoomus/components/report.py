@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 from zoomus import util
 from zoomus.components import base
-
+import datetime
 
 class ReportComponent(base.BaseComponent):
     """Component dealing with all report related matters"""
@@ -26,13 +26,8 @@ class ReportComponent(base.BaseComponent):
         return self.post_request("/report/getuserreport", params=kwargs)
 
     def get_daily_report(self, **kwargs):
-        util.require_keys(kwargs, ["start_time", "end_time"], kwargs)
-        kwargs["from"] = util.date_to_str(kwargs["start_time"])
-        del kwargs["start_time"]
-        kwargs["to"] = util.date_to_str(kwargs["end_time"])
-        del kwargs["end_time"]
+        util.require_keys(kwargs, ["month", "year"], kwargs)
         return self.post_request("/report/getdailyreport", params=kwargs)
-
 
 
 class ReportComponentV2(base.BaseComponent):
@@ -55,9 +50,5 @@ class ReportComponentV2(base.BaseComponent):
         return self.get_request("/report/users", params=kwargs)
 
     def get_daily_report(self, **kwargs):
-        util.require_keys(kwargs, ["start_time", "end_time"])
-        kwargs["from"] = util.date_to_str(kwargs["start_time"])
-        del kwargs["start_time"]
-        kwargs["to"] = util.date_to_str(kwargs["end_time"])
-        del kwargs["end_time"]
+        util.require_keys(kwargs, ["month", "year"])
         return self.get_request("/report/daily", params=kwargs)
