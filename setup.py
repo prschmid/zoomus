@@ -31,7 +31,7 @@ long_description = read("README.md", default=description)
 setup(
     name="zoomus",
     version=find_version(["zoomus", "__init__.py"]),
-    url="https://github.com/actmd/zoomus",
+    url="https://github.groupondev.com/nolofsson/zoomus/",
     license="Apache Software License",
     author="Zoomus Contributors",
     install_requires=["requests", "PyJWT"],

@@ -7,9 +7,15 @@ except ImportError:
     from mock import patch
 import sys
 
+<<<<<<< HEAD
+sys.path.insert(0, "../zoomus")  # path to my scripts
+#print(sys.path)
+from zoomus import components
+=======
 sys.path.insert(0, '../zoomus')        #path to my scripts
 print (sys.path)
 from zoomus import components, util
+>>>>>>> 4aef04809830693bafbe3f528f6db395828e72af
 
 
 def suite():
@@ -30,27 +36,26 @@ class GetDailyReportV1TestCase(unittest.TestCase):
             components.base.BaseComponent, "post_request", return_value=True
         ) as mock_post_request:
 
-            start_time = datetime.datetime.utcnow()
-            end_time = datetime.datetime.utcnow()
-            self.component.get_daily_report(start_time=start_time, end_time=end_time)
+            month = datetime.datetime.now().strftime("%m")
+            year = datetime.datetime.now().strftime("%Y")
+
+            self.component.get_daily_report(month=month, year=year)
 
             mock_post_request.assert_called_with(
-                "/report/getdailyreport",
-                params={
-                    "from": util.date_to_str(start_time),
-                    "to": util.date_to_str(end_time),
-                },
+                "/report/getdailyreport", params={"month": month, "year": year},
             )
 
-    def test_requires_start_time(self):
+    def test_requires_month(self):
         with self.assertRaises(ValueError) as context:
             self.component.get_daily_report()
-            self.assertEqual(context.exception.message, "'start_time' must be set")
+            self.assertEqual(context.exception.message, "'month' must be set")
 
-    def test_requires_end_time(self):
+    def test_requires_year(self):
         with self.assertRaises(ValueError) as context:
-            self.component.get_daily_report(start_time=datetime.datetime.utcnow())
-            self.assertEqual(context.exception.message, "'end_time' must be set")
+            self.component.get_daily_report(
+                month=datetime.datetime.now().strftime("%m")
+            )
+            self.assertEqual(context.exception.message, "'year' must be set")
 
     def test_does_convert_start_time_to_str_if_datetime(self):
 
@@ -58,17 +63,13 @@ class GetDailyReportV1TestCase(unittest.TestCase):
             components.base.BaseComponent, "post_request", return_value=True
         ) as mock_post_request:
 
-            start_time = datetime.datetime.utcnow()
-            end_time = datetime.datetime.utcnow()
+            month = datetime.datetime.now().strftime("%m")
+            year = datetime.datetime.now().strftime("%Y")
 
-            self.component.get_daily_report(start_time=start_time, end_time=end_time)
+            self.component.get_daily_report(month=month, year=year)
 
             mock_post_request.assert_called_with(
-                "/report/getdailyreport",
-                params={
-                    "from": util.date_to_str(start_time),
-                    "to": util.date_to_str(end_time),
-                },
+                "/report/getdailyreport", params={"month": month, "year": year},
             )
 
 
@@ -80,39 +81,36 @@ class GetDailyReportV2TestCase(unittest.TestCase):
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
     def test_can_get_Daily_report(self, mock_get_request):
-        start_time = datetime.datetime.utcnow()
-        end_time = datetime.datetime.utcnow()
-        self.component.get_daily_report(start_time=start_time, end_time=end_time)
+
+        month = datetime.datetime.now().strftime("%m")
+        year = datetime.datetime.now().strftime("%Y")
+
+        self.component.get_daily_report(month=month, year=year)
 
         mock_get_request.assert_called_with(
-            "/report/daily",
-            params={
-                "from": util.date_to_str(start_time),
-                "to": util.date_to_str(end_time),
-            },
+            "/report/daily", params={"month": month, "year": year},
         )
 
-    def test_requires_start_time(self):
-        with self.assertRaisesRegexp(ValueError, "'start_time' must be set"):
+    def test_requires_month(self):
+        with self.assertRaisesRegex(ValueError, "'month' must be set"):
             self.component.get_daily_report()
 
-    def test_requires_end_time(self):
-        with self.assertRaisesRegexp(ValueError, "'end_time' must be set"):
-            self.component.get_daily_report(start_time=datetime.datetime.utcnow())
+    def test_requires_year(self):
+        with self.assertRaisesRegex(ValueError, "'year' must be set"):
+            self.component.get_daily_report(
+                month=datetime.datetime.now().strftime("%Y")
+            )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
     def test_does_convert_start_time_to_str_if_datetime(self, mock_get_request):
-        start_time = datetime.datetime.utcnow()
-        end_time = datetime.datetime.utcnow()
 
-        self.component.get_daily_report(start_time=start_time, end_time=end_time)
+        month = datetime.datetime.now().strftime("%m")
+        year = datetime.datetime.now().strftime("%Y")
+
+        self.component.get_daily_report(month=month, year=year)
 
         mock_get_request.assert_called_with(
-            "/report/daily",
-            params={
-                "from": util.date_to_str(start_time),
-                "to": util.date_to_str(end_time),
-            },
+            "/report/daily", params={"month": month, "year": year},
         )
 
 
