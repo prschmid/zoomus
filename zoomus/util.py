@@ -7,7 +7,7 @@ import json
 import requests
 import time
 import jwt
-
+from urllib.parse import quote
 
 API_VERSION_1 = 1
 API_VERSION_2 = 2
@@ -252,3 +252,17 @@ def generate_jwt(key, secret):
 
     token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
     return token.decode("utf-8")
+
+
+def encode_uuid(val):
+    """Encode UUID as described by ZOOM API documentation
+
+    > Note: Please double encode your UUID when using this API if the UUID
+    > begins with a '/'or contains ‘//’ in it.
+
+    :param val: The UUID to encode
+    :returns: The encoded UUID
+    """
+    if val[0] == "/" or "//" in val:
+        val = quote(quote(val))
+    return val

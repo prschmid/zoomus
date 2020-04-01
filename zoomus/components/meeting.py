@@ -72,3 +72,23 @@ class MeetingComponentV2(base.BaseComponent):
         return self.delete_request(
             "/meetings/{}".format(kwargs.get("id")), params=kwargs
         )
+
+    def past_list(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/past_meetings/{}/instances".format(kwargs.get("id")), params=kwargs
+        )
+
+    def past_get(self, **kwargs):
+        util.require_keys(kwargs, "uuid")
+        kwargs.update("uuid", util.encode_uuid(kwargs.get("uuid")))
+        return self.get_request(
+            "/past_meetings/{}".format(kwargs.get("uuid")), params=kwargs
+        )
+
+    def past_get_participants(self, **kwargs):
+        util.require_keys(kwargs, "uuid")
+        kwargs.update("uuid", util.encode_uuid(kwargs.get("uuid")))
+        return self.get_request(
+            "/past_meetings/{}/participants".format(kwargs.get("uuid")), params=kwargs
+        )
