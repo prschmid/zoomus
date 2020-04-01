@@ -264,5 +264,5 @@ def encode_uuid(val):
     :returns: The encoded UUID
     """
     if val[0] == "/" or "//" in val:
-        val = quote(quote(val))
+        val = quote(quote(val, safe=""), safe="")
     return val

@@ -81,14 +81,14 @@ class MeetingComponentV2(base.BaseComponent):
 
     def past_get(self, **kwargs):
         util.require_keys(kwargs, "uuid")
-        kwargs.update("uuid", util.encode_uuid(kwargs.get("uuid")))
+        kwargs["uuid"] = util.encode_uuid(kwargs.get("uuid"))
         return self.get_request(
             "/past_meetings/{}".format(kwargs.get("uuid")), params=kwargs
         )
 
     def past_get_participants(self, **kwargs):
         util.require_keys(kwargs, "uuid")
-        kwargs.update("uuid", util.encode_uuid(kwargs.get("uuid")))
+        kwargs["uuid"] = util.encode_uuid(kwargs.get("uuid"))
         return self.get_request(
             "/past_meetings/{}/participants".format(kwargs.get("uuid")), params=kwargs
         )
