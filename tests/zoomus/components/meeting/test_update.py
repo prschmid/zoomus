@@ -63,7 +63,7 @@ class UpdateV2TestCase(unittest.TestCase):
         self.component.update(id="42", foo="bar")
 
         mock_post_request.assert_called_with(
-            "/meetings/42", params={"id": "42", "foo": "bar"}
+            "/meetings/42", data={"id": "42", "foo": "bar"}
         )
 
     def test_requires_id(self):
