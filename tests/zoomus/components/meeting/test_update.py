@@ -75,7 +75,7 @@ class UpdateV2TestCase(unittest.TestCase):
     def test_start_time_gets_transformed(self, mock_patch_request):
         self.component.update(id="42", start_time=datetime(1969, 1, 1))
         mock_patch_request.assert_called_with(
-            "/meetings/42", params={"id": "42", "start_time": "1969-01-01T00:00:00Z"}
+            "/meetings/42", data={"id": "42", "start_time": "1969-01-01T00:00:00Z"}
         )
 
 
