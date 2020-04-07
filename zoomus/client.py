@@ -25,6 +25,8 @@ COMPONENT_CLASSES = {
         "report": components.report.ReportComponentV2,
         "webinar": components.webinar.WebinarComponentV2,
         "recording": components.recording.RecordingComponentV2,
+        "live_stream": components.live_stream.LiveStreamComponentV2,
+        "live_stream_status": components.live_stream_status.LiveStreamStatusComponentV2,
     },
 }
 
@@ -124,3 +126,14 @@ class ZoomClient(util.ApiClient):
     def recording(self):
         """Get the recording component"""
         return self.components.get("recording")
+
+    @property
+    def live_stream(self):
+        """Get the live stream component"""
+        return self.components.get("live_stream")
+
+    @property
+    def live_stream_status(self):
+
+        """Get the live stream status component"""
+        return self.components.get("live_stream_status")
