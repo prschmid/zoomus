@@ -6,10 +6,11 @@ from zoomus.components import base
 
 class LiveStreamStatusComponentV2(base.BaseComponent):
     """
-    Use this API to update the status of a meeting’s live stream.
-    Prerequisites:
-     - Meeting host must have a Pro license.
-     - Scopes: meeting:write:admin meeting:write
+    Use this API to update the status of a meeting's live stream.
+    Expects:
+    - meeting_id: int
+    - action (start|stop)
+    - settings: dict
     """
 
     def update(self, **kwargs):

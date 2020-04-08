@@ -6,10 +6,12 @@ from zoomus.components import base
 
 class LiveStreamComponentV2(base.BaseComponent):
     """
-    Use this API to update a meeting’s live stream information.
-    Prerequisites:
-    - Meeting host must have a Pro license.
-    - Scopes: meeting:write:admin meeting:write
+    Use this API to update the meeting's stream information.
+    Expects:
+    - meeting_id: int
+    - stream_url: string (URL)
+    - stream_key: string
+    - page_url: string (URL)
     """
 
     def update(self, **kwargs):
