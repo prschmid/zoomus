@@ -63,7 +63,9 @@ class MeetingComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         if kwargs.get("start_time"):
             kwargs["start_time"] = util.date_to_str(kwargs["start_time"])
-        return self.patch_request("/meetings/{}".format(kwargs.get("id")), data=kwargs)
+        id = kwargs.get("id")
+        del kwargs["id"]
+        return self.patch_request("/meetings/{}".format(id), **kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, "id")
