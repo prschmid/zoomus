@@ -17,16 +17,19 @@ class UpdateV2TestCase(unittest.TestCase):
 
     @patch.object(components.base.BaseComponent, "patch_request", return_value=True)
     def test_can_update(self, mock_post_request):
-        self.component.update(meeting_id="42", action="stop",
-                              settings={"active_speaker_name": False, "display_name": "inc"})
+        self.component.update(
+            meeting_id="42",
+            action="stop",
+            settings={"active_speaker_name": False, "display_name": "inc"},
+        )
 
         mock_post_request.assert_called_with(
             "/meetings/42/livestream/status",
-            data={"meeting_id": "42", "action": "stop",
-                  "settings": {
-                      "active_speaker_name": False,
-                      "display_name": "inc"
-                  }}
+            data={
+                "meeting_id": "42",
+                "action": "stop",
+                "settings": {"active_speaker_name": False, "display_name": "inc"},
+            },
         )
 
     @patch.object(components.base.BaseComponent, "patch_request", return_value=True)
@@ -34,20 +37,17 @@ class UpdateV2TestCase(unittest.TestCase):
         data = {
             "meeting_id": "42",
             "action": "stop",
-            "settings": {
-                "active_speaker_name": False,
-                "display_name": "inc"
-            }
+            "settings": {"active_speaker_name": False, "display_name": "inc"},
         }
         self.component.update(**data)
 
         mock_post_request.assert_called_with(
             "/meetings/42/livestream/status",
-            data={"meeting_id": "42", "action": "stop",
-                  "settings": {
-                      "active_speaker_name": False,
-                      "display_name": "inc"
-                  }}
+            data={
+                "meeting_id": "42",
+                "action": "stop",
+                "settings": {"active_speaker_name": False, "display_name": "inc"},
+            },
         )
 
     def test_requires_id(self):
