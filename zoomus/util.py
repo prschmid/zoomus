@@ -2,6 +2,8 @@
 
 from __future__ import absolute_import, unicode_literals
 
+from urllib.parse import quote
+
 import contextlib
 import json
 import requests
@@ -258,3 +260,17 @@ def generate_jwt(key, secret):
 
     token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
     return token.decode("utf-8")
+
+
+def encode_uuid(val):
+    """Encode UUID as described by ZOOM API documentation
+
+    > Note: Please double encode your UUID when using this API if the UUID
+    > begins with a '/'or contains ‘//’ in it.
+
+    :param val: The UUID to encode
+    :returns: The encoded UUID
+    """
+    if val[0] == "/" or "//" in val:
+        val = quote(quote(val, safe=""), safe="")
+    return val

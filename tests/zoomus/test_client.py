@@ -47,11 +47,15 @@ class ZoomClientTestCase(unittest.TestCase):
     def test_init_creates_all_components(self):
         client = ZoomClient("KEY", "SECRET")
         self.assertEqual(
-            set(["meeting", "report", "user", "webinar", "recording"]),
+            set(["meeting", "past_meeting", "report", "user", "webinar", "recording"]),
             set(client.components.keys()),
         )
         self.assertIsInstance(
             client.components["meeting"], components.meeting.MeetingComponentV2
+        )
+        self.assertIsInstance(
+            client.components["past_meeting"],
+            components.past_meeting.PastMeetingComponentV2,
         )
         self.assertIsInstance(
             client.components["report"], components.report.ReportComponentV2

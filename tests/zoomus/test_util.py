@@ -17,6 +17,7 @@ def suite():
     suite.addTest(unittest.makeSuite(RequireKeysTestCase))
     suite.addTest(unittest.makeSuite(DateToStrTestCase))
     suite.addTest(unittest.makeSuite(IsStrTypeTestCase))
+    suite.addTest(unittest.makeSuite(EncodeUuidTestCase))
     return suite
 
 
@@ -540,6 +541,22 @@ class IsStrTypeTestCase(unittest.TestCase):
     @unittest.skipIf(version_info[0] >= 3, "No applicable to Python 3+")
     def test_numeric_unicode_is_str_type(self):
         self.assertTrue(util.is_str_type(unicode("5")))
+
+
+class EncodeUuidTestCase(unittest.TestCase):
+    def test_encode_without_slash(self):
+        uuid = "i6fJBQh0QzWCgrKretYGjg=="
+        self.assertEqual(util.encode_uuid(uuid), "i6fJBQh0QzWCgrKretYGjg==")
+
+    def test_encode_with_leading_slash(self):
+        uuid = "/6fJBQh0QzWCgrKretYGjg=="
+        self.assertEqual(util.encode_uuid(uuid), "%252F6fJBQh0QzWCgrKretYGjg%253D%253D")
+
+    def test_encode_with_double_slash(self):
+        uuid = "i6fJBQh0Qz//grKretYGjg=="
+        self.assertEqual(
+            util.encode_uuid(uuid), "i6fJBQh0Qz%252F%252FgrKretYGjg%253D%253D"
+        )
 
 
 if __name__ == "__main__":
