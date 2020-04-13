@@ -64,14 +64,12 @@ class WebinarComponentV2(base.BaseComponent):
     def create(self, **kwargs):
         util.require_keys(kwargs, "user_id")
         return self.post_request(
-            "/users/{}/webinars".format(kwargs.get("user_id")), params=kwargs
+            "/users/{}/webinars".format(kwargs.get("user_id")), data=kwargs
         )
 
     def update(self, **kwargs):
         util.require_keys(kwargs, "id")
-        return self.patch_request(
-            "/webinars/{}".format(kwargs.get("id")), params=kwargs
-        )
+        return self.patch_request("/webinars/{}".format(kwargs.get("id")), data=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, "id")
@@ -82,7 +80,7 @@ class WebinarComponentV2(base.BaseComponent):
     def end(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.put_request(
-            "/webinars/{}/status".format(kwargs.get("id")), params={"status": "end"}
+            "/webinars/{}/status".format(kwargs.get("id")), data={"status": "end"}
         )
 
     def get(self, **kwargs):
@@ -92,5 +90,17 @@ class WebinarComponentV2(base.BaseComponent):
     def register(self, **kwargs):
         util.require_keys(kwargs, ["id", "email", "first_name", "last_name"])
         return self.post_request(
+            "/webinars/{}/registrants".format(kwargs.get("id")), data=kwargs
+        )
+
+    def get_registrants(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
             "/webinars/{}/registrants".format(kwargs.get("id")), params=kwargs
+        )
+
+    def get_absentees(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/past_webinars/{}/absentees".format(kwargs.get("id")), params=kwargs
         )

@@ -53,12 +53,9 @@ tox
 Assuming all goes well, you should see a result akin to
 
 ```sh
-  py27: commands succeeded
-  py35: commands succeeded
   py36: commands succeeded
   py37: commands succeeded
-  pypy: commands succeeded
-  pypy3: commands succeeded
+  py38: commands succeeded
   congratulations :)
 ```
 
@@ -71,12 +68,9 @@ being merged.
 
 These versions are currently:
 
-* 2.7
-* 3.5
 * 3.6
 * 3.7
-* pypy2
-* pypy3
+* 3.8
 
 For an easy way to install and manage all of the Python versions, you may want
 to look at using [pyenv](https://github.com/pyenv/pyenv).

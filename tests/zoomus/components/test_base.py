@@ -60,7 +60,7 @@ class BaseComponentTestCase(unittest.TestCase):
             "foo",
             params={},
             data=None,
-            headers={"Authorization": "Bearer 42"},
+            headers={"Authorization": "Bearer 42", "Content-Type": "application/json"},
             cookies=None,
         )
 

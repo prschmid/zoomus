@@ -13,6 +13,7 @@ def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(RegisterV1TestCase))
+    suite.addTest(unittest.makeSuite(RegisterV2TestCase))
     return suite
 
 
@@ -89,7 +90,7 @@ class RegisterV2TestCase(unittest.TestCase):
 
         mock_post_request.assert_called_with(
             "/webinars/ID/registrants",
-            params={
+            data={
                 "id": "ID",
                 "email": "foo@bar.com",
                 "first_name": "Foo",
