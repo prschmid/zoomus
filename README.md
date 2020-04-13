@@ -1,13 +1,13 @@
 # zoomus
 
-[![Build Status](https://img.shields.io/travis/actmd/zoomus)](https://travis-ci.org/actmd/zoomus)
+[![Build Status](https://img.shields.io/travis/prschmid/zoomus)](https://travis-ci.org/prschmid/zoomus)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/zoomus)](https://pypi.org/project/zoomus/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/zoomus)](https://pypi.org/project/zoomus/)
 [![PyPI Version](https://img.shields.io/pypi/v/zoomus)](https://pypi.org/project/zoomus/)
 [![PyPI License](https://img.shields.io/pypi/l/zoomus)](https://pypi.org/project/zoomus/)
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black/)
 
-[https://github.com/actmd/zoomus](https://github.com/actmd/zoomus)
+[https://github.com/prschmid/zoomus](https://github.com/prschmid/zoomus)
 
 Python wrapper around the [Zoom.us](http://zoom.us) REST API v1 and v2.
 
@@ -23,7 +23,7 @@ pip install zoomus
 
 ## Compatibility
 
-`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.org/actmd/zoomus)
+`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.org/prschmid/zoomus)
 
 Note, as this library heavily depends on the [requests](https://pypi.org/project/requests/) library, official compatibility is limited to the official compatibility of `requests`.
 
