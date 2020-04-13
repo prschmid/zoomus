@@ -76,7 +76,7 @@ class CreateV2TestCase(unittest.TestCase):
 
         mock_post_request.assert_called_with(
             "/users/ID/meetings",
-            params={"user_id": "ID", "topic": "TOPIC", "type": "TYPE"},
+            data={"user_id": "ID", "topic": "TOPIC", "type": "TYPE"},
         )
 
     def test_requires_user_id(self):
@@ -90,7 +90,7 @@ class CreateV2TestCase(unittest.TestCase):
 
         mock_post_request.assert_called_with(
             "/users/ID/meetings",
-            params={"user_id": "ID", "start_time": util.date_to_str(start_time)},
+            data={"user_id": "ID", "start_time": util.date_to_str(start_time)},
         )
 
 

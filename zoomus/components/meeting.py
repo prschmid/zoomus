@@ -52,7 +52,7 @@ class MeetingComponentV2(base.BaseComponent):
         if kwargs.get("start_time"):
             kwargs["start_time"] = util.date_to_str(kwargs["start_time"])
         return self.post_request(
-            "/users/{}/meetings".format(kwargs.get("user_id")), params=kwargs
+            "/users/{}/meetings".format(kwargs.get("user_id")), data=kwargs
         )
 
     def get(self, **kwargs):
@@ -63,9 +63,7 @@ class MeetingComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         if kwargs.get("start_time"):
             kwargs["start_time"] = util.date_to_str(kwargs["start_time"])
-        return self.patch_request(
-            "/meetings/{}".format(kwargs.get("id")), params=kwargs
-        )
+        return self.patch_request("/meetings/{}".format(kwargs.get("id")), data=kwargs)
 
     def delete(self, **kwargs):
         util.require_keys(kwargs, "id")

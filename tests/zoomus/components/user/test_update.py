@@ -45,7 +45,7 @@ class UpdateV2TestCase(unittest.TestCase):
     @patch.object(components.base.BaseComponent, "patch_request", return_value=True)
     def test_can_update(self, mock_patch_request):
         self.component.update(id="ID")
-        mock_patch_request.assert_called_with("/users/ID", params={"id": "ID"})
+        mock_patch_request.assert_called_with("/users/ID", data={"id": "ID"})
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):

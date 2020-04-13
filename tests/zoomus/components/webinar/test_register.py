@@ -89,7 +89,7 @@ class RegisterV2TestCase(unittest.TestCase):
 
         mock_post_request.assert_called_with(
             "/webinars/ID/registrants",
-            params={
+            data={
                 "id": "ID",
                 "email": "foo@bar.com",
                 "first_name": "Foo",
