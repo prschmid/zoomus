@@ -131,12 +131,15 @@ class ZoomClientTestCase(unittest.TestCase):
 
     def test_can_get_live_stream_component(self):
         client = ZoomClient("KEY", "SECRET")
-        self.assertIsInstance(client.live_stream, components.webinar.WebinarComponentV2)
+        self.assertIsInstance(
+            client.live_stream, components.live_stream.LiveStreamComponentV2
+        )
 
     def test_can_get_live_stream_status_component(self):
         client = ZoomClient("KEY", "SECRET")
         self.assertIsInstance(
-            client.live_stream_status, components.webinar.WebinarComponentV2
+            client.live_stream_status,
+            components.live_stream_status.LiveStreamStatusComponentV2,
         )
 
     def test_can_use_client_with_context(self):
