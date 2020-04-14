@@ -13,6 +13,7 @@ def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(UpdateV1TestCase))
+    suite.addTest(unittest.makeSuite(UpdateV2TestCase))
     return suite
 
 
@@ -63,7 +64,7 @@ class UpdateV2TestCase(unittest.TestCase):
         self.component.update(id="42", foo="bar")
 
         mock_post_request.assert_called_with(
-            "/meetings/42", params={"id": "42", "foo": "bar"}
+            "/meetings/42", data={"id": "42", "foo": "bar"}
         )
 
     def test_requires_id(self):
@@ -75,7 +76,7 @@ class UpdateV2TestCase(unittest.TestCase):
     def test_start_time_gets_transformed(self, mock_patch_request):
         self.component.update(id="42", start_time=datetime(1969, 1, 1))
         mock_patch_request.assert_called_with(
-            "/meetings/42", params={"id": "42", "start_time": "1969-01-01T00:00:00Z"}
+            "/meetings/42", data={"id": "42", "start_time": "1969-01-01T00:00:00Z"}
         )
 
 

@@ -22,6 +22,7 @@ COMPONENT_CLASSES = {
     API_VERSION_2: {
         "user": components.user.UserComponentV2,
         "meeting": components.meeting.MeetingComponentV2,
+        "past_meeting": components.past_meeting.PastMeetingComponentV2,
         "report": components.report.ReportComponentV2,
         "webinar": components.webinar.WebinarComponentV2,
         "recording": components.recording.RecordingComponentV2,

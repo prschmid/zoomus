@@ -40,7 +40,7 @@ class CreateV2TestCase(unittest.TestCase):
     @patch.object(components.base.BaseComponent, "post_request", return_value=True)
     def test_can_create(self, mock_post_request):
         self.component.create(foo="bar")
-        mock_post_request.assert_called_with("/users", params={"foo": "bar"})
+        mock_post_request.assert_called_with("/users", data={"foo": "bar"})
 
 
 if __name__ == "__main__":

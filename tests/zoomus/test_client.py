@@ -64,6 +64,10 @@ class ZoomClientTestCase(unittest.TestCase):
             client.components["meeting"], components.meeting.MeetingComponentV2
         )
         self.assertIsInstance(
+            client.components["past_meeting"],
+            components.past_meeting.PastMeetingComponentV2,
+        )
+        self.assertIsInstance(
             client.components["report"], components.report.ReportComponentV2
         )
         self.assertIsInstance(

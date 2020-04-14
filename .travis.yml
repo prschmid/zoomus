@@ -1,13 +1,8 @@
 language: python
 dist: xenial
 python:
-  - "2.7"
-  - "3.5"
   - "3.6"
   - "3.7"
-  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
-  # maintainers to fix their pypy-dev package.
-  - "pypy2.7-6.0"
-  - "pypy3.5-6.0"
+  - "3.8"
 install: pip install tox-travis
 script: tox

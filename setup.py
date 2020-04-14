@@ -31,7 +31,7 @@ long_description = read("README.md", default=description)
 setup(
     name="zoomus",
     version=find_version(["zoomus", "__init__.py"]),
-    url="https://github.com/actmd/zoomus",
+    url="https://github.com/prschmid/zoomus",
     license="Apache Software License",
     author="Zoomus Contributors",
     install_requires=["requests", "PyJWT"],
@@ -45,12 +45,10 @@ setup(
     zip_safe=False,
     classifiers=[
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Development Status :: 5 - Production/Stable",
         "Natural Language :: English",
         "Environment :: Web Environment",
