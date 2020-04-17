@@ -51,6 +51,7 @@ class GetV2TestCase(unittest.TestCase):
             },
         )
 
+    @responses.activate
     def test_can_get(self):
         responses.add(responses.GET, "http://foo.com/meetings/ID")
         self.component.get(id="ID")
