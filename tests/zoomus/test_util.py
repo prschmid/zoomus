@@ -7,7 +7,7 @@ try:
 except ImportError:
     from mock import patch
 
-from zoomus import API_VERSION_1, util
+from zoomus import API_VERSION_1, API_VERSION_2, util
 
 
 def suite():
@@ -30,6 +30,10 @@ class ApiClientTestCase(unittest.TestCase):
     def test_init_sets_config_with_timeout(self):
         client = util.ApiClient(base_uri="http://www.foo.com", timeout=500)
         self.assertEqual(client.timeout, 500)
+
+    def test_init_sets_config_with_timeout_none(self):
+        client = util.ApiClient(base_uri="http://www.foo.com", timeout=None)
+        self.assertEqual(client.timeout, None)
 
     def test_cannot_init_with_non_int_timeout(self):
         with self.assertRaises(ValueError) as context:
@@ -60,6 +64,11 @@ class ApiClientTestCase(unittest.TestCase):
         client = util.ApiClient(base_uri="http://www.foo.com")
         client.timeout = 500
         self.assertEqual(client.timeout, 500)
+
+    def test_can_set_timeout(self):
+        client = util.ApiClient(base_uri="http://www.foo.com")
+        client.timeout = None
+        self.assertEqual(client.timeout, None)
 
     def test_cannot_set_timeout_to_non_int(self):
         client = util.ApiClient(base_uri="http://www.foo.com")
@@ -132,13 +141,68 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
+    @patch("requests.get")
+    def test_can_get_request_v2(self, mocked_get):
+
+        mocked_get.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint")
+
+        mocked_get.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            headers={"Authorization": "Bearer token"},
+            timeout=client.timeout,
+        )
+
+    @patch("requests.get")
+    def test_can_get_request_with_params_v2(self, mocked_get):
+
+        mocked_get.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint", params={"foo": "bar"})
+
+        mocked_get.assert_called_with(
+            client.url_for("endpoint"),
+            params={"foo": "bar"},
+            headers={"Authorization": "Bearer token"},
+            timeout=client.timeout,
+        )
+
+    @patch("requests.get")
+    def test_can_get_request_with_headers_v2(self, mocked_get):
+
+        mocked_get.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint", headers={"foo": "bar"})
+
+        mocked_get.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            headers={"foo": "bar"},
+            timeout=client.timeout,
+        )
+
     @patch("requests.post")
-    def test_can_post_request(self, mocked_post):
+    def test_can_post_request_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint")
 
@@ -146,18 +210,22 @@ class ApiClientTestCase(unittest.TestCase):
             client.url_for("endpoint"),
             params=None,
             data=None,
-            headers=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
             cookies=None,
             timeout=client.timeout,
         )
 
     @patch("requests.post")
-    def test_can_post_request_with_params(self, mocked_post):
+    def test_can_post_request_with_params_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint", params={"foo": "bar"})
 
@@ -165,18 +233,22 @@ class ApiClientTestCase(unittest.TestCase):
             client.url_for("endpoint"),
             params={"foo": "bar"},
             data=None,
-            headers=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
             cookies=None,
             timeout=client.timeout,
         )
 
     @patch("requests.post")
-    def test_can_post_request_with_dict_data(self, mocked_post):
+    def test_can_post_request_with_dict_data_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint", data={"foo": "bar"})
 
@@ -184,18 +256,22 @@ class ApiClientTestCase(unittest.TestCase):
             client.url_for("endpoint"),
             params=None,
             data=json.dumps({"foo": "bar"}),
-            headers=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
             cookies=None,
             timeout=client.timeout,
         )
 
     @patch("requests.post")
-    def test_can_post_request_with_json_data(self, mocked_post):
+    def test_can_post_request_with_json_data_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint", data=json.dumps({"foo": "bar"}))
 
@@ -203,18 +279,22 @@ class ApiClientTestCase(unittest.TestCase):
             client.url_for("endpoint"),
             params=None,
             data=json.dumps({"foo": "bar"}),
-            headers=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
             cookies=None,
             timeout=client.timeout,
         )
 
     @patch("requests.post")
-    def test_can_post_request_with_headers(self, mocked_post):
+    def test_can_post_request_with_headers_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint", headers={"foo": "bar"})
 
@@ -228,12 +308,13 @@ class ApiClientTestCase(unittest.TestCase):
         )
 
     @patch("requests.post")
-    def test_can_post_request_with_cookies(self, mocked_post):
+    def test_can_post_request_with_cookies_v2(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
         )
         client.post_request("endpoint", cookies={"foo": "bar"})
 
@@ -241,7 +322,10 @@ class ApiClientTestCase(unittest.TestCase):
             client.url_for("endpoint"),
             params=None,
             data=None,
-            headers=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
             cookies={"foo": "bar"},
             timeout=client.timeout,
         )
@@ -360,6 +444,141 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
+    @patch("requests.patch")
+    def test_can_patch_request_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint")
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.patch")
+    def test_can_patch_request_with_params_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", params={"foo": "bar"})
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params={"foo": "bar"},
+            data=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.patch")
+    def test_can_patch_request_with_dict_data_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", data={"foo": "bar"})
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.patch")
+    def test_can_patch_request_with_json_data_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", data=json.dumps({"foo": "bar"}))
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.patch")
+    def test_can_patch_request_with_headers_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", headers={"foo": "bar"})
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"foo": "bar"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.patch")
+    def test_can_patch_request_with_cookies_v2(self, mocked_patch):
+
+        mocked_patch.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", cookies={"foo": "bar"})
+
+        mocked_patch.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={
+                "Authorization": "Bearer token",
+                "Content-Type": "application/json",
+            },
+            cookies={"foo": "bar"},
+            timeout=client.timeout,
+        )
+
     @patch("requests.delete")
     def test_can_delete_request(self, mocked_delete):
 
@@ -470,6 +689,360 @@ class ApiClientTestCase(unittest.TestCase):
             params=None,
             data=None,
             headers=None,
+            cookies={"foo": "bar"},
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint")
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_with_params_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", params={"foo": "bar"})
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params={"foo": "bar"},
+            data=None,
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_with_dict_data_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", data={"foo": "bar"})
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_with_json_data_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", data=json.dumps({"foo": "bar"}))
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_with_headers_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", headers={"foo": "bar"})
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"foo": "bar"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.delete")
+    def test_can_delete_request_with_cookies_v2(self, mocked_delete):
+
+        mocked_delete.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", cookies={"foo": "bar"})
+
+        mocked_delete.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"Authorization": "Bearer token"},
+            cookies={"foo": "bar"},
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint")
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers=None,
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_params(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint", params={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params={"foo": "bar"},
+            data=None,
+            headers=None,
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_dict_data(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint", data={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers=None,
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_json_data(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint", data=json.dumps({"foo": "bar"}))
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers=None,
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_headers(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint", headers={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"foo": "bar"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_cookies(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+        )
+        client.put_request("endpoint", cookies={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers=None,
+            cookies={"foo": "bar"},
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint")
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_params_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint", params={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params={"foo": "bar"},
+            data=None,
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_dict_data_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint", data={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_json_data_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint", data=json.dumps({"foo": "bar"}))
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=json.dumps({"foo": "bar"}),
+            headers={"Authorization": "Bearer token"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_headers_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint", headers={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"foo": "bar"},
+            cookies=None,
+            timeout=client.timeout,
+        )
+
+    @patch("requests.put")
+    def test_can_put_request_with_cookies_v2(self, mocked_put):
+
+        mocked_put.side_effect = lambda *args, **kwargs: True
+
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": API_VERSION_2, "token": "token"},
+        )
+        client.put_request("endpoint", cookies={"foo": "bar"})
+
+        mocked_put.assert_called_with(
+            client.url_for("endpoint"),
+            params=None,
+            data=None,
+            headers={"Authorization": "Bearer token"},
             cookies={"foo": "bar"},
             timeout=client.timeout,
         )
