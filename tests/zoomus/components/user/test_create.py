@@ -41,8 +41,9 @@ class CreateV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_create(self):
-        responses.add(responses.POST, "http://foo.com/users?foo=bar")
-        self.component.create(foo="bar")
+        responses.add(responses.POST, "http://foo.com/users")
+        response = self.component.create(foo="bar")
+        self.assertEqual(response.request.body, '{"foo": "bar"}')
 
 
 if __name__ == "__main__":
