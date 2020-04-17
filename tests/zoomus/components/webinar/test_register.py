@@ -82,11 +82,14 @@ class RegisterV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_register(self):
         responses.add(
-            responses.POST,
-            "http://foo.com/webinars/42/registrants?id=42&email=foo@bar.com&first_name=Foo&last_name=Bar",
+            responses.POST, "http://foo.com/webinars/42/registrants",
         )
-        self.component.register(
+        response = self.component.register(
             id="42", email="foo@bar.com", first_name="Foo", last_name="Bar"
+        )
+        self.assertEqual(
+            response.request.body,
+            '{"id": "42", "email": "foo@bar.com", "first_name": "Foo", "last_name": "Bar"}',
         )
 
     def test_requires_id(self):

@@ -52,8 +52,9 @@ class EndV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_end(self):
-        responses.add(responses.PUT, "http://foo.com/webinars/42/status?status=end")
-        self.component.end(id="42")
+        responses.add(responses.PUT, "http://foo.com/webinars/42/status")
+        response = self.component.end(id="42")
+        self.assertEqual(response.request.body, '{"status": "end"}')
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):

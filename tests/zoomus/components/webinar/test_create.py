@@ -63,8 +63,9 @@ class CreateV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_create(self):
-        responses.add(responses.POST, "http://foo.com/users/42/webinars?user_id=42")
-        self.component.create(user_id="42")
+        responses.add(responses.POST, "http://foo.com/users/42/webinars")
+        response = self.component.create(user_id="42")
+        self.assertEqual(response.request.body, '{"user_id": "42"}')
 
     def test_requires_user_id(self):
         with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):

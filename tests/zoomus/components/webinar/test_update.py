@@ -63,8 +63,9 @@ class UpdateV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_update(self):
-        responses.add(responses.PATCH, "http://foo.com/webinars/42?id=42")
-        self.component.update(id="42")
+        responses.add(responses.PATCH, "http://foo.com/webinars/42")
+        response = self.component.update(id="42")
+        self.assertEqual(response.request.body, '{"id": "42"}')
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
