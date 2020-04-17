@@ -1,11 +1,6 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
 import responses
 
