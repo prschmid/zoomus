@@ -24,10 +24,7 @@ class GetV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_get(self):
-        responses.add(
-            responses.GET,
-            "http://foo.com/past_meetings/ID?meeting_id=ID"
-        )
+        responses.add(responses.GET, "http://foo.com/past_meetings/ID?meeting_id=ID")
         self.component.get(meeting_id="ID")
 
     def test_requires_id(self):

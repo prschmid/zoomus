@@ -26,8 +26,7 @@ class ListV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_list(self):
         responses.add(
-            responses.GET,
-            "http://foo.com/past_meetings/ID/instances?meeting_id=ID"
+            responses.GET, "http://foo.com/past_meetings/ID/instances?meeting_id=ID"
         )
         self.component.list(meeting_id="ID")
 
