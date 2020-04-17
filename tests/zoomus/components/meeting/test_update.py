@@ -64,8 +64,9 @@ class UpdateV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_update(self):
-        responses.add(responses.PATCH, "http://foo.com/meetings/42?id=42&foo=bar")
-        self.component.update(id="42", foo="bar")
+        responses.add(responses.PATCH, "http://foo.com/meetings/42")
+        response = self.component.update(id="42", foo="bar")
+        self.assertEqual(response.request.body, '{"id": "42", "foo": "bar"}')
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
@@ -74,10 +75,12 @@ class UpdateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_start_time_gets_transformed(self):
         responses.add(
-            responses.PATCH,
-            "http://foo.com/meetings/42?id=42&start_time=2020-01-01T01%3A01%3A00Z",
+            responses.PATCH, "http://foo.com/meetings/42",
         )
-        self.component.update(id="42", start_time=datetime(2020, 1, 1, 1, 1))
+        response = self.component.update(id="42", start_time=datetime(2020, 1, 1, 1, 1))
+        self.assertEqual(
+            response.request.body, '{"id": "42", "start_time": "2020-01-01T01:01:00Z"}'
+        )
 
 
 if __name__ == "__main__":

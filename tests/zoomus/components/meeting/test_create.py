@@ -70,10 +70,12 @@ class CreateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_create(self):
         responses.add(
-            responses.POST,
-            "http://foo.com/users/ID/meetings?user_id=ID&topic=TOPIC&type=TYPE",
+            responses.POST, "http://foo.com/users/ID/meetings",
         )
-        self.component.create(user_id="ID", topic="TOPIC", type="TYPE")
+        response = self.component.create(user_id="ID", topic="TOPIC", type="TYPE")
+        self.assertEqual(
+            response.request.body, '{"user_id": "ID", "topic": "TOPIC", "type": "TYPE"}'
+        )
 
     def test_requires_user_id(self):
         with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):
@@ -82,11 +84,14 @@ class CreateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_does_convert_startime_to_str_if_datetime(self):
         responses.add(
-            responses.POST,
-            "http://foo.com/users/ID/meetings?user_id=ID&start_time=2020-01-01T01%3A01%3A00Z",
+            responses.POST, "http://foo.com/users/ID/meetings",
         )
         start_time = datetime.datetime(2020, 1, 1, 1, 1)
-        self.component.create(user_id="ID", start_time=start_time)
+        response = self.component.create(user_id="ID", start_time=start_time)
+        self.assertEqual(
+            response.request.body,
+            '{"user_id": "ID", "start_time": "2020-01-01T01:01:00Z"}',
+        )
 
 
 if __name__ == "__main__":
