@@ -64,7 +64,7 @@ class CreateV2TestCase(unittest.TestCase):
         self.component.create(user_id="ID")
 
         mock_post_request.assert_called_with(
-            "/users/ID/webinars", params={"user_id": "ID"}
+            "/users/ID/webinars", data={"user_id": "ID"}
         )
 
     def test_requires_user_id(self):

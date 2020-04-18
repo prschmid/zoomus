@@ -49,7 +49,7 @@ class EndV2TestCase(unittest.TestCase):
         self.component.end(id="ID")
 
         mock_put_request.assert_called_with(
-            "/webinars/ID/status", params={"status": "end"}
+            "/webinars/ID/status", data={"status": "end"}
         )
 
     def test_requires_id(self):
