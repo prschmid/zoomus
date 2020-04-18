@@ -1,4 +1,3 @@
-import datetime
 import unittest
 
 try:
@@ -6,33 +5,32 @@ try:
 except ImportError:
     from mock import patch
 
-from zoomus import components, util
+from zoomus import components
 
 
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ListV2TestCase))
+    suite.addTest(unittest.makeSuite(GetMetricV2TestCase))
     return suite
 
 
-class ListV2TestCase(unittest.TestCase):
+class GetMetricV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.past_meeting.PastMeetingComponentV2(
+        self.component = components.metric.MetricComponentV2(
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list(self, mock_get_request):
-        self.component.list(meeting_id="ID")
-
+    def test_can_get_meeting(self, mock_get_request):
+        self.component.get_meeting(meeting_id="ID")
         mock_get_request.assert_called_with(
-            "/past_meetings/ID/instances", params={"meeting_id": "ID"}
+            "/metrics/meetings/ID", params={"meeting_id": "ID"}
         )
 
-    def test_requires_meeting_id(self):
+    def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
-            self.component.list()
+            self.component.get_meeting()
 
 
 if __name__ == "__main__":

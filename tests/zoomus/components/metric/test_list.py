@@ -18,21 +18,19 @@ def suite():
 
 class ListV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.past_meeting.PastMeetingComponentV2(
+        self.component = components.metric.MetricComponentV2(
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
     def test_can_list(self, mock_get_request):
-        self.component.list(meeting_id="ID")
+        self.component.list_meetings()
 
-        mock_get_request.assert_called_with(
-            "/past_meetings/ID/instances", params={"meeting_id": "ID"}
-        )
+        mock_get_request.assert_called_with("/metrics/meetings", params={})
 
-    def test_requires_meeting_id(self):
+    def test_list_participants_requires_meeting_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
-            self.component.list()
+            self.component.list_participants()
 
 
 if __name__ == "__main__":
