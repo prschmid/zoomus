@@ -55,3 +55,6 @@ ENV/
 .project
 .pydevproject
 .settings/
+.python-version
+Pipfile
+Pipfile.lock

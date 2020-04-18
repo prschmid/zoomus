@@ -28,9 +28,29 @@ class ListV2TestCase(unittest.TestCase):
 
         mock_get_request.assert_called_with("/metrics/meetings", params={})
 
+    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
+    def test_can_list_participants(self, mock_get_request):
+        self.component.list_participants(meeting_id="ID")
+
+        mock_get_request.assert_called_with(
+            "/metrics/meetings/ID/participants", params={"meeting_id": "ID"}
+        )
+
+    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
+    def test_can_list_participants_qos(self, mock_get_request):
+        self.component.list_participants_qos(meeting_id="ID")
+
+        mock_get_request.assert_called_with(
+            "/metrics/meetings/ID/participants/qos", params={"meeting_id": "ID"}
+        )
+
     def test_list_participants_requires_meeting_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
             self.component.list_participants()
+
+    def test_list_participants_qos_requires_meeting_id(self):
+        with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
+            self.component.list_participants_qos()
 
 
 if __name__ == "__main__":

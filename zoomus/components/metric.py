@@ -35,7 +35,7 @@ class MetricComponentV2(base.BaseComponent):
             params=kwargs,
         )
 
-    def list_participant_qos(self, **kwargs):
+    def list_participants_qos(self, **kwargs):
         util.require_keys(kwargs, "meeting_id")
         kwargs["meeting_id"] = util.encode_uuid(kwargs.get("meeting_id"))
         return self.get_request(
