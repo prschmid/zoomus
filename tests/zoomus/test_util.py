@@ -81,7 +81,7 @@ class ApiClientTestCase(unittest.TestCase):
         client = util.ApiClient(base_uri="http://www.foo.com")
         self.assertEqual(client.url_for("bar/"), "http://www.foo.com/bar")
 
-    @patch("requests.get")
+    @patch.object(util.requests.Session, "get")
     def test_can_get_request(self, mocked_get):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
@@ -98,7 +98,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.get")
+    @patch.object(util.requests.Session, "get")
     def test_can_get_request_with_params(self, mocked_get):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
@@ -115,7 +115,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.get")
+    @patch.object(util.requests.Session, "get")
     def test_can_get_request_with_headers(self, mocked_get):
 
         mocked_get.side_effect = lambda *args, **kwargs: True
@@ -132,7 +132,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -151,7 +151,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request_with_params(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -170,7 +170,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request_with_dict_data(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -189,7 +189,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request_with_json_data(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -208,7 +208,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request_with_headers(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -227,7 +227,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.post")
+    @patch.object(util.requests.Session, "post")
     def test_can_post_request_with_cookies(self, mocked_post):
 
         mocked_post.side_effect = lambda *args, **kwargs: True
@@ -246,7 +246,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -265,7 +265,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request_with_params(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -284,7 +284,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request_with_dict_data(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -303,7 +303,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request_with_json_data(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -322,7 +322,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request_with_headers(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -341,7 +341,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.patch")
+    @patch.object(util.requests.Session, "patch")
     def test_can_patch_request_with_cookies(self, mocked_patch):
 
         mocked_patch.side_effect = lambda *args, **kwargs: True
@@ -360,7 +360,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
@@ -379,7 +379,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request_with_params(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
@@ -398,7 +398,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request_with_dict_data(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
@@ -417,7 +417,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request_with_json_data(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
@@ -436,7 +436,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request_with_headers(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True
@@ -455,7 +455,7 @@ class ApiClientTestCase(unittest.TestCase):
             timeout=client.timeout,
         )
 
-    @patch("requests.delete")
+    @patch.object(util.requests.Session, "delete")
     def test_can_delete_request_with_cookies(self, mocked_delete):
 
         mocked_delete.side_effect = lambda *args, **kwargs: True

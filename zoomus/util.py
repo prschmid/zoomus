@@ -30,6 +30,7 @@ class ApiClient(object):
         self.timeout = timeout
         for k, v in kwargs.items():
             setattr(self, k, v)
+        self.session = requests.Session()
 
     @property
     def timeout(self):
@@ -80,7 +81,7 @@ class ApiClient(object):
         """
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
-        return requests.get(
+        return self.session.get(
             self.url_for(endpoint), params=params, headers=headers, timeout=self.timeout
         )
 
@@ -104,7 +105,7 @@ class ApiClient(object):
                 "Authorization": "Bearer {}".format(self.config.get("token")),
                 "Content-Type": "application/json",
             }
-        return requests.post(
+        return self.session.post(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -133,7 +134,7 @@ class ApiClient(object):
                 "Authorization": "Bearer {}".format(self.config.get("token")),
                 "Content-Type": "application/json",
             }
-        return requests.patch(
+        return self.session.patch(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -159,7 +160,7 @@ class ApiClient(object):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
-        return requests.delete(
+        return self.session.delete(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -183,7 +184,7 @@ class ApiClient(object):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
-        return requests.put(
+        return self.session.put(
             self.url_for(endpoint),
             params=params,
             data=data,
