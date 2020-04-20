@@ -50,6 +50,7 @@ class ZoomClientTestCase(unittest.TestCase):
             set(
                 [
                     "meeting",
+                    "past_meeting",
                     "report",
                     "user",
                     "webinar",
