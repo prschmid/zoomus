@@ -50,6 +50,10 @@ class UserComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         return self.patch_request("/users/{}".format(kwargs.get("id")), data=kwargs)
 
+    def update_email(self, **kwargs):
+        util.require_keys(kwargs, ["id", "email"])
+        return self.put_request("/users/{}/email".format(kwargs.get("id")), data=kwargs)
+
     def delete(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.delete_request("/users/{}".format(kwargs.get("id")), params=kwargs)
