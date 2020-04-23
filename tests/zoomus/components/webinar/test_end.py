@@ -1,11 +1,7 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import components
+from zoomus import components, util
+import responses
 
 
 def suite():
@@ -18,16 +14,21 @@ def suite():
 class EndV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_end(self, mock_post_request):
+    @responses.activate
+    def test_can_end(self):
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/end?id=ID&host_id=ID&api_key=KEY&api_secret=SECRET",
+        )
         self.component.end(id="ID", host_id="ID")
-
-        mock_post_request.assert_called_with(
-            "/webinar/end", params={"id": "ID", "host_id": "ID"}
-        )
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
@@ -41,16 +42,19 @@ class EndV1TestCase(unittest.TestCase):
 class EndV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "put_request", return_value=True)
-    def test_can_end(self, mock_put_request):
-        self.component.end(id="ID")
-
-        mock_put_request.assert_called_with(
-            "/webinars/ID/status", data={"status": "end"}
-        )
+    @responses.activate
+    def test_can_end(self):
+        responses.add(responses.PUT, "http://foo.com/webinars/42/status")
+        response = self.component.end(id="42")
+        self.assertEqual(response.request.body, '{"status": "end"}')
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
