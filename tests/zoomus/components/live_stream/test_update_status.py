@@ -6,7 +6,7 @@ import responses
 
 class UpdateV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.live_stream_status.LiveStreamStatusComponentV2(
+        self.component = components.live_stream.LiveStreamComponentV2(
             base_uri="http://foo.com",
             config={
                 "api_key": "KEY",
@@ -18,7 +18,7 @@ class UpdateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_update(self):
         responses.add(responses.PATCH, "http://foo.com/meetings/42/livestream/status")
-        response = self.component.update(
+        response = self.component.update_status(
             meeting_id="42",
             action="stop",
             settings={"active_speaker_name": False, "display_name": "inc"},
@@ -38,7 +38,7 @@ class UpdateV2TestCase(unittest.TestCase):
             "settings": {"active_speaker_name": False, "display_name": "inc"},
         }
 
-        response = self.component.update(**data)
+        response = self.component.update_status(**data)
         self.assertEqual(
             response.request.body,
             '{"meeting_id": "42", "action": "stop", "settings": {"active_speaker_name": false, "display_name": "inc"}}',
@@ -46,7 +46,7 @@ class UpdateV2TestCase(unittest.TestCase):
 
     def test_requires_meeting_id(self):
         with self.assertRaises(ValueError) as context:
-            self.component.update()
+            self.component.update_status()
             self.assertEqual(context.exception.message, "'meeting_id' must be set")
 
 
