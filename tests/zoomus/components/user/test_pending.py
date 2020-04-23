@@ -1,11 +1,7 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import components
+from zoomus import components, util
+import responses
 
 
 def suite():
@@ -18,17 +14,20 @@ def suite():
 class PendingV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
+    @responses.activate
     def test_can_end(self):
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            self.component.pending()
-
-            mock_post_request.assert_called_with("/user/pending", params={})
+        responses.add(
+            responses.POST, "http://foo.com/user/pending?api_key=KEY&api_secret=SECRET"
+        )
+        self.component.pending()
 
 
 if __name__ == "__main__":
