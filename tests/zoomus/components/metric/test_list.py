@@ -1,12 +1,8 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
+import responses
 
 
 def suite():
@@ -22,27 +18,26 @@ class ListV2TestCase(unittest.TestCase):
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list(self, mock_get_request):
+    @responses.activate
+    def test_can_list(self):
+        responses.add(responses.GET, "http://foo.com/metrics/meetings")
         self.component.list_meetings()
 
-        mock_get_request.assert_called_with("/metrics/meetings", params={})
-
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list_participants(self, mock_get_request):
+    @responses.activate
+    def test_can_list_participants(self):
+        responses.add(
+            responses.GET,
+            "http://foo.com/metrics/meetings/ID/participants?meeting_id=ID",
+        )
         self.component.list_participants(meeting_id="ID")
 
-        mock_get_request.assert_called_with(
-            "/metrics/meetings/ID/participants", params={"meeting_id": "ID"}
+    @responses.activate
+    def test_can_list_participants_qos(self):
+        responses.add(
+            responses.GET,
+            "http://foo.com/metrics/meetings/ID/participants/qos?meeting_id=ID",
         )
-
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list_participants_qos(self, mock_get_request):
         self.component.list_participants_qos(meeting_id="ID")
-
-        mock_get_request.assert_called_with(
-            "/metrics/meetings/ID/participants/qos", params={"meeting_id": "ID"}
-        )
 
     def test_list_participants_requires_meeting_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):

@@ -1,11 +1,7 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components
+import responses
 
 
 def suite():
@@ -21,20 +17,18 @@ class GetMetricV2TestCase(unittest.TestCase):
             base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_get_meeting(self, mock_get_request):
+    @responses.activate
+    def test_can_get_meeting(self):
+        responses.add(responses.GET, "http://foo.com/metrics/meetings/ID?meeting_id=ID")
         self.component.get_meeting(meeting_id="ID")
-        mock_get_request.assert_called_with(
-            "/metrics/meetings/ID", params={"meeting_id": "ID"}
-        )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_get_participant_qos(self, mock_get_request):
-        self.component.get_participant_qos(meeting_id="ID", participant_id="PID")
-        mock_get_request.assert_called_with(
-            "/metrics/meetings/ID/participants/PID/qos",
-            params={"meeting_id": "ID", "participant_id": "PID"},
+    @responses.activate
+    def test_can_get_participant_qos(self):
+        responses.add(
+            responses.GET,
+            "http://foo.com/metrics/meetings/ID/participants/PID/qos?meeting_id=ID&participant_id=PID",
         )
+        self.component.get_participant_qos(meeting_id="ID", participant_id="PID")
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
