@@ -1,12 +1,8 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
+import responses
 
 
 def suite():
@@ -19,45 +15,37 @@ def suite():
 class UpcomingV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.webinar.WebinarComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
+    @responses.activate
     def test_can_upcoming(self):
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            self.component.upcoming(host_id="ID")
-
-            mock_post_request.assert_called_with(
-                "/webinar/list/registration", params={"host_id": "ID"}
-            )
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/list/registration?host_id=ID&api_key=KEY&api_secret=SECRET",
+        )
+        self.component.upcoming(host_id="ID")
 
     def test_requires_host_id(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'host_id' must be set"):
             self.component.upcoming()
-            self.assertEqual(context.exception.message, "'host_id' must be set")
 
+    @responses.activate
     def test_does_convert_startime_to_str_if_datetime(self):
-
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            start_time = datetime.datetime.utcnow()
-            self.component.upcoming(
-                host_id="ID", topic="TOPIC", type="TYPE", start_time=start_time
-            )
-
-            mock_post_request.assert_called_with(
-                "/webinar/list/registration",
-                params={
-                    "host_id": "ID",
-                    "topic": "TOPIC",
-                    "type": "TYPE",
-                    "start_time": util.date_to_str(start_time),
-                },
-            )
+        start_time = datetime.datetime(1969, 1, 1, 1, 1)
+        responses.add(
+            responses.POST,
+            "http://foo.com/webinar/list/registration?host_id=ID&topic=TOPIC&type=TYPE"
+            "&start_time=1969-01-01T01%3A01%3A00Z&api_key=KEY&api_secret=SECRET",
+        )
+        self.component.upcoming(
+            host_id="ID", topic="TOPIC", type="TYPE", start_time=start_time
+        )
 
 
 if __name__ == "__main__":

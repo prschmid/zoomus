@@ -1,11 +1,7 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import components
+from zoomus import components, util
+import responses
 
 
 def suite():
@@ -18,30 +14,37 @@ def suite():
 class ListV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
+    @responses.activate
     def test_can_list(self):
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            self.component.list()
-
-            mock_post_request.assert_called_with("/user/list", params={})
+        responses.add(
+            responses.POST, "http://foo.com/user/list?api_key=KEY&api_secret=SECRET"
+        )
+        self.component.list()
 
 
 class ListV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list(self, mock_get_request):
+    @responses.activate
+    def test_can_list(self):
+        responses.add(responses.GET, "http://foo.com/users")
         self.component.list()
-
-        mock_get_request.assert_called_with("/users", params={})
 
 
 if __name__ == "__main__":
