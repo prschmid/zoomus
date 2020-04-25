@@ -1,12 +1,8 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
+import responses
 
 
 def suite():
@@ -19,16 +15,20 @@ def suite():
 class ParticipantsV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.past_meeting.PastMeetingComponentV2(
-            base_uri="http://example.com",
-            config={"api_key": "KEY", "api_secret": "SECRET"},
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list(self, mock_get_request):
+    @responses.activate
+    def test_can_list(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/past_meetings/ID/participants",
+        )
         self.component.get_participants(meeting_id="ID")
-
-        mock_get_request.assert_called_with(
-            "/past_meetings/ID/participants", params={"meeting_id": "ID"}
+        expected_headers = {"Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
     def test_requires_user_id(self):
