@@ -1,11 +1,7 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components
+import responses
 
 
 def suite():
@@ -18,15 +14,18 @@ def suite():
 class CallingPlansV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.phone.PhoneComponentV2(
-            base_uri="http://example.com",
-            config={"api_key": "KEY", "api_secret": "SECRET"},
+            base_uri="http://example.com", config={"token": "token"},
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_numbers(self, mock_get_request):
-        self.component.calling_plans()
+    @responses.activate
+    def test_numbers(self):
+        responses.add(
+            responses.GET,
+            "http://example.com/phone/calling_plans",
+            headers={"Authorization": "Bearer token"},
+        )
 
-        mock_get_request.assert_called_with("/phone/calling_plans", params={})
+        self.component.calling_plans()
 
 
 if __name__ == "__main__":
