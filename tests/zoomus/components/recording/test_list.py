@@ -1,12 +1,8 @@
 import datetime
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
 from zoomus import components, util
+import responses
 
 
 def suite():
@@ -20,81 +16,71 @@ def suite():
 class ListV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.recording.RecordingComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
+    @responses.activate
     def test_can_list(self):
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            self.component.list(host_id="ID")
-
-            mock_post_request.assert_called_with(
-                "/recording/list", params={"host_id": "ID"}
-            )
+        responses.add(
+            responses.POST,
+            "http://foo.com/recording/list?host_id=ID&api_key=KEY&api_secret=SECRET",
+        )
+        self.component.list(host_id="ID")
 
     def test_requires_host_id(self):
-        with self.assertRaises(ValueError) as context:
+        with self.assertRaisesRegexp(ValueError, "'host_id' must be set"):
             self.component.list()
-            self.assertEqual(context.exception.message, "'host_id' must be set")
 
+    @responses.activate
     def test_does_convert_startime_to_str_if_datetime(self):
-
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            start_time = datetime.datetime.utcnow() - datetime.timedelta(days=10)
-            end_time = datetime.datetime.utcnow()
-            self.component.list(
-                host_id="ID", start=start_time, end=end_time, meeting_number="111"
-            )
-
-            mock_post_request.assert_called_with(
-                "/recording/list",
-                params={
-                    "host_id": "ID",
-                    "from": util.date_to_str(start_time),
-                    "to": util.date_to_str(end_time),
-                    "meeting_number": "111",
-                },
-            )
+        start_time = datetime.datetime(1969, 1, 1, 1, 1)
+        end_time = datetime.datetime(2020, 1, 1, 1, 1)
+        responses.add(
+            responses.POST,
+            "http://foo.com/recording/list?host_id=42&meeting_number=111&api_key=KEY&api_secret=SECRET"
+            "&from=1969-01-01T01%3A01%3A00Z&to=2020-01-01T01%3A01%3A00Z",
+        )
+        self.component.list(
+            host_id="42", start=start_time, end=end_time, meeting_number="111"
+        )
 
 
 class ListV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.recording.RecordingComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_can_list(self, mock_get_request):
-        self.component.list(user_id="ID")
-        mock_get_request.assert_called_with(
-            "/users/ID/recordings", params={"user_id": "ID"}
-        )
+    @responses.activate
+    def test_can_list(self):
+        responses.add(responses.GET, "http://foo.com/users/42/recordings?user_id=42")
+        self.component.list(user_id="42")
 
     def test_requires_user_id(self):
         with self.assertRaisesRegexp(ValueError, "'user_id' must be set"):
             self.component.list()
 
-    @patch.object(components.base.BaseComponent, "get_request", return_value=True)
-    def test_does_convert_startime_to_str_if_datetime(self, mock_get_request):
-        start_time = datetime.datetime.utcnow() - datetime.timedelta(days=10)
-        end_time = datetime.datetime.utcnow()
-        self.component.list(
-            user_id="ID", start=start_time, end=end_time, meeting_number="111"
+    @responses.activate
+    def test_does_convert_startime_to_str_if_datetime(self):
+        responses.add(
+            responses.GET,
+            "http://foo.com/users/42/recordings?user_id=42&meeting_number=111"
+            "&from=1969-01-01T01%3A01%3A00Z&to=2020-01-01T01%3A01%3A00Z",
         )
-
-        mock_get_request.assert_called_with(
-            "/users/ID/recordings",
-            params={
-                "user_id": "ID",
-                "from": util.date_to_str(start_time),
-                "to": util.date_to_str(end_time),
-                "meeting_number": "111",
-            },
+        start_time = datetime.datetime(1969, 1, 1, 1, 1)
+        end_time = datetime.datetime(2020, 1, 1, 1, 1)
+        self.component.list(
+            user_id="42", start=start_time, end=end_time, meeting_number="111"
         )
 
 
