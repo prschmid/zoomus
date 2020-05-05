@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: zoomus
+Version: 1.1.3
+Summary: Python client library for Zoom.us REST API v1 and v2
+Home-page: https://github.com/prschmid/zoomus
+Author: Zoomus Contributors
+Author-email: zoomus@googlegroups.com
+License: Apache Software License
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Natural Language :: English
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet
+Classifier: Topic :: Office/Business
+Classifier: Topic :: Software Development :: Libraries
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: PyJWT
+
+Python client library for Zoom.us REST API v1 and v2
+
+
