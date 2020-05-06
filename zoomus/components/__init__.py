@@ -2,5 +2,4 @@
 
 from __future__ import absolute_import
 
-
-from . import meeting, past_meeting, recording, report, user, webinar, live_stream
+from . import live_stream, meeting, metric, past_meeting, phone, recording, report, user, webinar
