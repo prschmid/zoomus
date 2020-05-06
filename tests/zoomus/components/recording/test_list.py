@@ -9,6 +9,7 @@ def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ListV1TestCase))
+    suite.addTest(unittest.makeSuite(ListV2TestCase))
     return suite
 
 
