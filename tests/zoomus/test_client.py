@@ -56,7 +56,7 @@ class ZoomClientTestCase(unittest.TestCase):
                     "recording",
                     "report",
                     "user",
-                    "webinar"
+                    "webinar",
                 ]
             ),
             set(client.components.keys()),
