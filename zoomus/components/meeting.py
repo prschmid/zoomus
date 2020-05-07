@@ -77,7 +77,7 @@ class MeetingComponentV2(base.BaseComponent):
             "/meetings/{}/registrants".format(kwargs.get("id")), data=kwargs
         )
     
-    def list_registrant(self, **kwargs):
+    def list_registrants(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.get_request("/meetings/{}/registrants".format(kwargs.get("id")), params=kwargs)
         
