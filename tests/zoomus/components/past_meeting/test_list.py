@@ -25,7 +25,7 @@ class ListV2TestCase(unittest.TestCase):
         )
         self.component.list(meeting_id="ID")
 
-    def test_requires_user_id(self):
+    def test_requires_meeting_id(self):
         with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
             self.component.list()
 
