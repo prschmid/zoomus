@@ -30,7 +30,7 @@ class ApiClient(object):
         self.timeout = timeout
         for k, v in kwargs.items():
             setattr(self, k, v)
-        self.session = requests.Session()
+        self.session = requests
 
     @property
     def timeout(self):
@@ -58,6 +58,14 @@ class ApiClient(object):
         if value and value.endswith("/"):
             value = value[:-1]
         self._base_uri = value
+
+    def __enter__(self):
+        self.session = requests.Session()
+        return self
+
+    def __exit__(self, *args):
+        self.session.close()
+        self.session = None
 
     def url_for(self, endpoint):
         """Get the URL for the given endpoint

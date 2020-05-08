@@ -78,6 +78,20 @@ class ApiClientTestCase(unittest.TestCase):
         self.assertEqual(client.url_for("bar/"), "http://www.foo.com/bar")
 
     @responses.activate
+    def test_can_multiple_request_with_session(self):
+        responses.add(responses.GET, "http://www.foo.com/endpoint")
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.get_request("endpoint")
+            client.post_request("endpoint")
+            client.patch_request("endpoint")
+            client.delete_request("endpoint")
+
+    @responses.activate
     def test_can_get_request(self):
         responses.add(responses.GET, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -86,12 +100,28 @@ class ApiClientTestCase(unittest.TestCase):
         client.get_request("endpoint")
 
     @responses.activate
+    def test_can_get_request_with_session(self):
+        responses.add(responses.GET, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.get_request("endpoint")
+
+    @responses.activate
     def test_can_get_request_with_params(self):
         responses.add(responses.GET, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
             base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.get_request("endpoint", params={"foo": "bar"})
+
+    @responses.activate
+    def test_can_get_request_with_params_and_session(self):
+        responses.add(responses.GET, "http://www.foo.com/endpoint?foo=bar")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.get_request("endpoint", params={"foo": "bar"})
 
     @responses.activate
     def test_can_get_request_with_headers(self):
@@ -104,6 +134,16 @@ class ApiClientTestCase(unittest.TestCase):
         client.get_request("endpoint", headers={"foo": "bar"})
 
     @responses.activate
+    def test_can_get_request_with_headers_and_session(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/endpoint", headers={"foo": "bar"}
+        )
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.get_request("endpoint", headers={"foo": "bar"})
+
+    @responses.activate
     def test_can_post_request(self):
         responses.add(responses.POST, "http://www.foo.com/endpoint")
 
@@ -113,12 +153,29 @@ class ApiClientTestCase(unittest.TestCase):
         client.post_request("endpoint")
 
     @responses.activate
+    def test_can_post_request(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint")
+
+    @responses.activate
     def test_can_post_request_with_params(self):
         responses.add(responses.POST, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
             base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", params={"foo": "bar"})
+
+    @responses.activate
+    def test_can_post_request_with_params_and_session(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint?foo=bar")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint", params={"foo": "bar"})
 
     @responses.activate
     def test_can_post_request_with_dict_data(self):
@@ -130,6 +187,15 @@ class ApiClientTestCase(unittest.TestCase):
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
+    def test_can_post_request_with_dict_data_and_session(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint", data={"foo": "bar"})
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
     def test_can_post_request_with_json_data(self):
         responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -137,6 +203,15 @@ class ApiClientTestCase(unittest.TestCase):
         )
         client.post_request("endpoint", data=json.dumps({"foo": "bar"}))
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
+    def test_can_post_request_with_json_data_and_session(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint", data=json.dumps({"foo": "bar"}))
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
     def test_can_post_request_with_headers(self):
@@ -152,6 +227,19 @@ class ApiClientTestCase(unittest.TestCase):
         )
 
     @responses.activate
+    def test_can_post_request_with_headers_and_session(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint", headers={"foo": "bar"})
+            expected_headers = {"foo": "bar"}
+            actual_headers = responses.calls[0].request.headers
+            self.assertTrue(
+                set(expected_headers.items()).issubset(set(actual_headers.items()))
+            )
+
+    @responses.activate
     def test_can_post_request_with_cookies(self):
         responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -165,6 +253,19 @@ class ApiClientTestCase(unittest.TestCase):
         )
 
     @responses.activate
+    def test_can_post_request_with_cookies_and_session(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.post_request("endpoint", cookies={"foo": "bar"})
+            expected_headers = {"Cookie": "foo=bar"}
+            actual_headers = responses.calls[0].request.headers
+            self.assertTrue(
+                set(expected_headers.items()).issubset(set(actual_headers.items()))
+            )
+
+    @responses.activate
     def test_can_patch_request(self):
         responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -173,12 +274,28 @@ class ApiClientTestCase(unittest.TestCase):
         client.patch_request("endpoint")
 
     @responses.activate
+    def test_can_patch_request_with_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint")
+
+    @responses.activate
     def test_can_patch_request_with_params(self):
         responses.add(responses.PATCH, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
             base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", params={"foo": "bar"})
+
+    @responses.activate
+    def test_can_patch_request_with_params_and_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint?foo=bar")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint", params={"foo": "bar"})
 
     @responses.activate
     def test_can_patch_request_with_dict_data(self):
@@ -190,6 +307,15 @@ class ApiClientTestCase(unittest.TestCase):
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
+    def test_can_patch_request_with_dict_data_and_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint", data={"foo": "bar"})
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
     def test_can_patch_request_with_json_data(self):
         responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -197,6 +323,15 @@ class ApiClientTestCase(unittest.TestCase):
         )
         client.patch_request("endpoint", data=json.dumps({"foo": "bar"}))
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
+    def test_can_patch_request_with_json_data_and_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint", data=json.dumps({"foo": "bar"}))
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
     def test_can_patch_request_with_headers(self):
@@ -212,6 +347,19 @@ class ApiClientTestCase(unittest.TestCase):
         )
 
     @responses.activate
+    def test_can_patch_request_with_headers_and_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint", headers={"foo": "bar"})
+            expected_headers = {"foo": "bar"}
+            actual_headers = responses.calls[0].request.headers
+            self.assertTrue(
+                set(expected_headers.items()).issubset(set(actual_headers.items()))
+            )
+
+    @responses.activate
     def test_can_patch_request_with_cookies(self):
         responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -225,6 +373,19 @@ class ApiClientTestCase(unittest.TestCase):
         )
 
     @responses.activate
+    def test_can_patch_request_with_cookies_and_session(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.patch_request("endpoint", cookies={"foo": "bar"})
+            expected_headers = {"Cookie": "foo=bar"}
+            actual_headers = responses.calls[0].request.headers
+            self.assertTrue(
+                set(expected_headers.items()).issubset(set(actual_headers.items()))
+            )
+
+    @responses.activate
     def test_can_delete_request(self):
         responses.add(responses.DELETE, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -233,12 +394,28 @@ class ApiClientTestCase(unittest.TestCase):
         client.delete_request("endpoint")
 
     @responses.activate
+    def test_can_delete_request_with_session(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint")
+
+    @responses.activate
     def test_can_delete_request_with_params(self):
         responses.add(responses.DELETE, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
             base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", params={"foo": "bar"})
+
+    @responses.activate
+    def test_can_delete_request_with_params_and_session(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint?foo=bar")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint", params={"foo": "bar"})
 
     @responses.activate
     def test_can_delete_request_with_dict_data(self):
@@ -250,6 +427,15 @@ class ApiClientTestCase(unittest.TestCase):
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
+    def test_can_delete_request_with_dict_data_and_session(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint", data={"foo": "bar"})
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
     def test_can_delete_request_with_json_data(self):
         responses.add(responses.DELETE, "http://www.foo.com/endpoint")
         client = util.ApiClient(
@@ -257,6 +443,15 @@ class ApiClientTestCase(unittest.TestCase):
         )
         client.delete_request("endpoint", data=json.dumps({"foo": "bar"}))
         self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+
+    @responses.activate
+    def test_can_delete_request_with_json_data_and_session(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint", data=json.dumps({"foo": "bar"}))
+            self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
     @responses.activate
     def test_can_delete_request_with_headers(self):
@@ -267,6 +462,16 @@ class ApiClientTestCase(unittest.TestCase):
             base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", headers={"foo": "bar"})
+
+    @responses.activate
+    def test_can_delete_request_with_headers_and_session(self):
+        responses.add(
+            responses.DELETE, "http://www.foo.com/endpoint", headers={"foo": "bar"}
+        )
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint", headers={"foo": "bar"})
 
     @responses.activate
     def test_can_delete_request_with_cookies(self):
@@ -280,6 +485,19 @@ class ApiClientTestCase(unittest.TestCase):
         self.assertTrue(
             set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
+
+    @responses.activate
+    def test_can_delete_request_with_cookies_and_session(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        with util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        ) as client:
+            client.delete_request("endpoint", cookies={"foo": "bar"})
+            expected_headers = {"Cookie": "foo=bar"}
+            actual_headers = responses.calls[0].request.headers
+            self.assertTrue(
+                set(expected_headers.items()).issubset(set(actual_headers.items()))
+            )
 
 
 class RequireKeysTestCase(unittest.TestCase):
