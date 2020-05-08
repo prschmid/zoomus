@@ -30,7 +30,7 @@ class ApiClient(object):
         self.timeout = timeout
         for k, v in kwargs.items():
             setattr(self, k, v)
-        self.session = requests
+        self._session = None
 
     @property
     def timeout(self):
@@ -58,6 +58,21 @@ class ApiClient(object):
         if value and value.endswith("/"):
             value = value[:-1]
         self._base_uri = value
+
+    @property
+    def session(self):
+        """Provide a session if one is in use; otherwise, provide the requests module directly."""
+        if self._session is not None:
+            return self._session
+        return requests
+
+    @session.setter
+    def session(self, val):
+        self._session = val
+
+    @session.deleter
+    def session(self):
+        self._session = None
 
     def __enter__(self):
         self.session = requests.Session()
