@@ -85,3 +85,7 @@ class MeetingComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         return self.get_request("/meetings/{}/registrants/status".format(kwargs.get("id")), params=kwargs)
 
+    def list_meeting_participants(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request("/metrics/meetings/{}/participants".format(kwargs.get("id")), params=kwargs)
+
