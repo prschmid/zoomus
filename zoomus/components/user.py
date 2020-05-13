@@ -43,7 +43,7 @@ class UserComponent(base.BaseComponent):
 
 
 class UserComponentV2(base.BaseComponent):
-    def me(self, **kwargs):
+    def me(self):
         return self.get_request("/users/me")
 
     def list(self, **kwargs):
