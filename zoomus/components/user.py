@@ -9,6 +9,9 @@ from zoomus.components import base
 class UserComponent(base.BaseComponent):
     """Component dealing with all user related matters"""
 
+    def me(self):
+        return self.get_request("/user/me")
+
     def list(self, **kwargs):
         return self.post_request("/user/list", params=kwargs)
 
@@ -40,6 +43,9 @@ class UserComponent(base.BaseComponent):
 
 
 class UserComponentV2(base.BaseComponent):
+    def me(self):
+        return self.get_request("/users/me")
+    
     def list(self, **kwargs):
         return self.get_request("/users", params=kwargs)
 
