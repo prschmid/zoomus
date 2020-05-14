@@ -1,46 +1,50 @@
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import components
+from zoomus import components, util
+import responses
 
 
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(CreateV1TestCase))
+    suite.addTest(unittest.makeSuite(CreateV2TestCase))
     return suite
 
 
 class CreateV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_1,
+            },
         )
 
+    @responses.activate
     def test_can_create(self):
-        with patch.object(
-            components.base.BaseComponent, "post_request", return_value=True
-        ) as mock_post_request:
-
-            self.component.create()
-
-            mock_post_request.assert_called_with("/user/create", params={})
+        responses.add(responses.POST, "http://foo.com/user/create")
+        self.component.create()
 
 
 class CreateV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
         )
 
-    @patch.object(components.base.BaseComponent, "post_request", return_value=True)
-    def test_can_create(self, mock_post_request):
-        self.component.create(foo="bar")
-        mock_post_request.assert_called_with("/users", data={"foo": "bar"})
+    @responses.activate
+    def test_can_create(self):
+        responses.add(responses.POST, "http://foo.com/users")
+        response = self.component.create(foo="bar")
+        self.assertEqual(response.request.body, '{"foo": "bar"}')
 
 
 if __name__ == "__main__":
