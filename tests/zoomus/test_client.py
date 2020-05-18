@@ -49,15 +49,15 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertEqual(
             set(
                 [
-                    "meeting",
                     "live_stream",
+                    "meeting",
                     "metric",
                     "past_meeting",
                     "phone",
                     "recording",
                     "report",
                     "user",
-                    "webinar"
+                    "webinar",
                 ]
             ),
             set(client.components.keys()),
