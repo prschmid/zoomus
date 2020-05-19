@@ -38,12 +38,16 @@ class ZoomClient(util.ApiClient):
     """Base URL for Zoom API"""
 
     def __init__(
-        self, api_key, api_secret, data_type="json", timeout=15, version=API_VERSION_2
+        self, key, secret_or_url, gravitee=False, data_type="json", timeout=15, version=API_VERSION_2
     ):
         """Create a new Zoom client
 
-        :param api_key: The Zooom.us API key
-        :param api_secret: The Zoom.us API secret
+        Supports gravitee while being API compatible with old usage.
+        api_key and api_secret.
+
+        :param key: The API key, either for Zoom.us or for Gravitee
+        :param secret_or_url: Either the Zoom.us API secret or the Gravitee URL
+        :param gravitee: Are we to use Gravitee?
         :param data_type: The expected return data type. Either 'json' or 'xml'
         :param timeout: The time out to use for API requests
         """
@@ -53,16 +57,25 @@ class ZoomClient(util.ApiClient):
         except KeyError:
             raise RuntimeError("API version not supported: %s" % version)
 
+        if gravitee:
+            BASE_URI=secret_or_url
+
         super(ZoomClient, self).__init__(base_uri=BASE_URI, timeout=timeout)
 
-        # Setup the config details
-        self.config = {
-            "api_key": api_key,
-            "api_secret": api_secret,
-            "data_type": data_type,
-            "version": version,
-            "token": util.generate_jwt(api_key, api_secret),
-        }
+        if gravitee:
+            self.config = {
+                "gravitee_key": key,
+                "data_type": data_type,
+                "version": version,
+            }
+        else:
+            self.config = {
+                "api_key": key,
+                "api_secret": secret_or_url,
+                "data_type": data_type,
+                "version": version,
+                "token": util.generate_jwt(api_key, secret_or_url),
+            }
 
         # Instantiate the components
         for key in self.components.keys():
