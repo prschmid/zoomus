@@ -38,7 +38,13 @@ class ZoomClient(util.ApiClient):
     """Base URL for Zoom API"""
 
     def __init__(
-        self, key, secret_or_url, gravitee=False, data_type="json", timeout=15, version=API_VERSION_2
+        self,
+        key,
+        secret_or_url,
+        gravitee=False,
+        data_type="json",
+        timeout=15,
+        version=API_VERSION_2,
     ):
         """Create a new Zoom client
 
@@ -58,7 +64,7 @@ class ZoomClient(util.ApiClient):
             raise RuntimeError("API version not supported: %s" % version)
 
         if gravitee:
-            BASE_URI=secret_or_url
+            BASE_URI = secret_or_url
 
         super(ZoomClient, self).__init__(base_uri=BASE_URI, timeout=timeout)
 
@@ -74,7 +80,7 @@ class ZoomClient(util.ApiClient):
                 "api_secret": secret_or_url,
                 "data_type": data_type,
                 "version": version,
-                "token": util.generate_jwt(api_key, secret_or_url),
+                "token": util.generate_jwt(key, secret_or_url),
             }
 
         # Instantiate the components
