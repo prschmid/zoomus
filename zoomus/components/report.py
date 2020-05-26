@@ -52,3 +52,10 @@ class ReportComponentV2(base.BaseComponent):
     def get_daily_report(self, **kwargs):
         util.require_keys(kwargs, ["month", "year"])
         return self.get_request("/report/daily", params=kwargs)
+
+    def get_meeting_participant_report(self, **kwargs):
+        util.require_keys(kwargs, ["meeting_id"])
+        return self.get_request(
+            "/report/meetings/{}/participants".format(kwargs.get("meeting_id")),
+            params=kwargs,
+        )
