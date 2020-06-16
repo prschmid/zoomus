@@ -91,6 +91,9 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.meeting.delete(...)
 * client.meeting.list(...)
 * client.meeting.update(...)
+* client.meeting.add_registrant(...)
+* client.meeting.list_registrants(...)
+* client.meeting.update_registrant_status(...)
 
 * client.report.get_account_report(...)
 * client.report.get_user_report(...)
