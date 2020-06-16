@@ -30,7 +30,7 @@ class AddRegistrantV2TestCase(unittest.TestCase):
         )
         response = self.component.add_registrant(id="ID", email="EMAIL", last_name="LAST_NAME", first_name="FIRST_NAME")
         self.assertEqual(
-            response.request.body, '{"id": "ID", "email": "TOPIC", "last_name": "LAST_NAME", "first_name": "FIRST_NAME"}'
+            response.request.body, '{"id": "ID", "email": "EMAIL", "last_name": "LAST_NAME", "first_name": "FIRST_NAME"}'
         )
 
     def test_requires_meeting_id(self):

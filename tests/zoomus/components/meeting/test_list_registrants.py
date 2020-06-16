@@ -24,7 +24,7 @@ class ListRegistrantsV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_list_registrants(self):
-        responses.add(responses.GET, "http://foo.com/meetings/ID")
+        responses.add(responses.GET, "http://foo.com/meetings/ID/registrants")
         self.component.list_registrants(id="ID")
 
     def test_requires_id(self):
