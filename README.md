@@ -103,6 +103,12 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.webinar.end(...)
 * client.webinar.register(...)
 
+* client.phone.call_logs(...)
+* client.phone.calling_plans(...)
+* client.phone.numbers_get(...)
+* client.phone.numbers_list(...)
+* client.phone.users(...)
+
 ## Running the Tests
 
 ### Simple
