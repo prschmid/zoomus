@@ -156,3 +156,12 @@ class ZoomClient(util.ApiClient):
     def phone(self):
         """Get the phone component"""
         return self.components.get("phone")
+
+class ZoomGraviteeClient(ZoomClient):
+    """Zoom.us REST API Python Client over Gravitee"""
+
+    def __init__(
+        self, gravitee_api_key, url, data_type="json", timeout=15, version=API_VERSION_2
+    ):
+
+        super(ZoomGraviteeClient, self).__init__(gravitee_api_key, url, gravitee=True, data_type=data_type, timeout=timeout, version=version)

@@ -10,10 +10,8 @@ import requests
 import time
 import jwt
 
-
 API_VERSION_1 = 1
 API_VERSION_2 = 2
-
 
 class ApiClient(object):
     """Simple wrapper for REST API requests"""
@@ -79,7 +77,7 @@ class ApiClient(object):
         :return: The :class:``requests.Response`` object for this request
         """
         if self.config.get("gravitee_key"):
-            headers = {"X-Gravitee-Api-Key": self.config.get("gravitee_key")}
+            headers = {'X-Gravitee-Api-Key': self.config.get("gravitee_key")}
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.get(
@@ -102,7 +100,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if self.config.get("gravitee_key"):
-            headers = {"X-Gravitee-Api-Key": self.config.get("gravitee_key")}
+            headers = {
+                'X-Gravitee-Api-Key': self.config.get("gravitee_key"),
+                "Content-Type": "application/json",
+                }
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {
                 "Authorization": "Bearer {}".format(self.config.get("token")),
@@ -133,7 +134,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if self.config.get("gravitee_key"):
-            headers = {"X-Gravitee-Api-Key": self.config.get("gravitee_key")}
+            headers = {
+                'X-Gravitee-Api-Key': self.config.get("gravitee_key"),
+                "Content-Type": "application/json",
+            }
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {
                 "Authorization": "Bearer {}".format(self.config.get("token")),
@@ -164,7 +168,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if self.config.get("gravitee_key"):
-            headers = {"X-Gravitee-Api-Key": self.config.get("gravitee_key")}
+            headers = {
+                'X-Gravitee-Api-Key': self.config.get("gravitee_key"),
+                "Content-Type": "application/json",
+            }
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.delete(
@@ -190,7 +197,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if self.config.get("gravitee_key"):
-            headers = {"X-Gravitee-Api-Key": self.config.get("gravitee_key")}
+            headers = {
+                'X-Gravitee-Api-Key': self.config.get("gravitee_key"),
+                "Content-Type": "application/json",
+            }
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
         return requests.put(

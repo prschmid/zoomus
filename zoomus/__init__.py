@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from zoomus.client import ZoomClient
+from zoomus.client import ZoomClient, ZoomGraviteeClient
 from zoomus.util import API_VERSION_1, API_VERSION_2
 
 

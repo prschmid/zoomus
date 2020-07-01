@@ -42,6 +42,8 @@ class BaseComponent(util.ApiClient):
         if self.config["version"] == util.API_VERSION_1:
             params.update(self.config)
             del params["version"]
+        if self.config.get("gravitee_key"):
+            headers = {'X-Gravitee-Api-Key': self.config.get("gravitee_key")}
         if headers is None and self.config.get("version") == util.API_VERSION_2:
             headers = {
                 "Authorization": "Bearer {}".format(self.config.get("token")),
