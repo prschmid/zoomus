@@ -24,7 +24,6 @@ class PastMeetingComponentV2(base.BaseComponent):
 
     def get_participants(self, **kwargs):
         util.require_keys(kwargs, "meeting_id")
-        kwargs["meeting_id"] = util.encode_uuid(kwargs.get("meeting_id"))
         return self.get_request(
             "/past_meetings/{}/participants".format(kwargs.get("meeting_id")),
             params=kwargs,
