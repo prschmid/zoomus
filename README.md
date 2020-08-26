@@ -109,6 +109,14 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.phone.numbers_list(...)
 * client.phone.users(...)
 
+* client.group.list(...)
+* client.group.create(...)
+* client.group.get(...)
+* client.group.delete(...)
+* client.group.list_members(...)
+* client.group.add_members(...)
+* client.group.delete_member(...)
+
 ## Running the Tests
 
 ### Simple
