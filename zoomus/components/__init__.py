@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 
 from . import (
+    group,
     meeting,
     metric,
     past_meeting,
@@ -11,5 +12,4 @@ from . import (
     report,
     user,
     webinar,
-    group,
 )
