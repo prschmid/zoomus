@@ -11,7 +11,7 @@ class GroupComponentV2(base.BaseComponent):
         return self.get_request("/groups", params=kwargs)
 
     def create(self, **kwargs):
-        util.requests(kwargs, "name")
+        util.require_keys(kwargs, "name")
         return self.post_request("/groups", data=kwargs)
 
     def get(self, **kwargs):
