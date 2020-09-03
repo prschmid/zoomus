@@ -50,6 +50,37 @@ class UserComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         return self.patch_request("/users/{}".format(kwargs.get("id")), data=kwargs)
 
+    def check_email(self, **kwargs):
+        """
+        Verify if a user’s email is registered with Zoom.
+        Expects:
+            - email: string (Email address)
+        Example:
+            /users/email?email=foo@baar.test
+        """
+        util.require_keys(kwargs, "email")
+        return self.get_request("/users/email", params=kwargs)
+
+    def update_email(self, **kwargs):
+        """
+        Change a user’s  on a Zoom account that has managed domain set up.
+        If the Zoom Account in which the user belongs, has multiple , the email to be updated must match one of the managed domains.
+
+        Official docs: https://marketplace.zoom.us/docs/api-reference/zoom-api/users/useremailupdate
+
+        Expects:
+            - id: string (User ID)
+            - email: string (New email address)
+
+        Example:
+            /users/42/email
+
+            json:
+                {"email": "foo@bar.new"}
+        """
+        util.require_keys(kwargs, "id")
+        return self.put_request("/users/{}/email".format(kwargs.get("id")), data=kwargs)
+
     def delete(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.delete_request("/users/{}".format(kwargs.get("id")), params=kwargs)
