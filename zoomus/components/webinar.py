@@ -104,3 +104,21 @@ class WebinarComponentV2(base.BaseComponent):
         return self.get_request(
             "/past_webinars/{}/absentees".format(kwargs.get("id")), params=kwargs
         )
+
+    def add_panelists(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.post_request(
+            "/webinars/{}/panelists".format(kwargs.get("id")), data=kwargs
+        )
+
+    def list_panelists(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/webinars/{}/panelists".format(kwargs.get("id")), params=kwargs
+        )
+
+    def remove_panelists(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.delete_request(
+            "/webinars/{}/panelists".format(kwargs.get("id")), params=kwargs
+        )
