@@ -104,6 +104,9 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.webinar.get(...)
 * client.webinar.end(...)
 * client.webinar.register(...)
+* client.webinar.add_panelists(...)
+* client.webinar.list_panelists(...)
+* client.webinar.remove_panelists(...)
 
 * client.phone.call_logs(...)
 * client.phone.calling_plans(...)
