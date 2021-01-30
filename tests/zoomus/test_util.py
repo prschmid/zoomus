@@ -2,12 +2,8 @@ import datetime
 import json
 import unittest
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-
-from zoomus import API_VERSION_1, util
+from zoomus import util
+import responses
 
 
 def suite():
@@ -30,6 +26,10 @@ class ApiClientTestCase(unittest.TestCase):
     def test_init_sets_config_with_timeout(self):
         client = util.ApiClient(base_uri="http://www.foo.com", timeout=500)
         self.assertEqual(client.timeout, 500)
+
+    def test_init_sets_config_with_timeout_none(self):
+        client = util.ApiClient(base_uri="http://www.foo.com", timeout=None)
+        self.assertEqual(client.timeout, None)
 
     def test_cannot_init_with_non_int_timeout(self):
         with self.assertRaises(ValueError) as context:
@@ -61,6 +61,11 @@ class ApiClientTestCase(unittest.TestCase):
         client.timeout = 500
         self.assertEqual(client.timeout, 500)
 
+    def test_can_set_timeout(self):
+        client = util.ApiClient(base_uri="http://www.foo.com")
+        client.timeout = None
+        self.assertEqual(client.timeout, None)
+
     def test_cannot_set_timeout_to_non_int(self):
         client = util.ApiClient(base_uri="http://www.foo.com")
         with self.assertRaises(ValueError) as context:
@@ -81,397 +86,562 @@ class ApiClientTestCase(unittest.TestCase):
         client = util.ApiClient(base_uri="http://www.foo.com")
         self.assertEqual(client.url_for("bar/"), "http://www.foo.com/bar")
 
-    @patch("requests.get")
-    def test_can_get_request(self, mocked_get):
-
-        mocked_get.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_get_request(self):
+        responses.add(responses.GET, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.get_request("endpoint")
 
-        mocked_get.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            headers=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_get_request_v2(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint")
+        expected_headers = {"Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.get")
-    def test_can_get_request_with_params(self, mocked_get):
-
-        mocked_get.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_get_request_with_params(self):
+        responses.add(responses.GET, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.get_request("endpoint", params={"foo": "bar"})
 
-        mocked_get.assert_called_with(
-            client.url_for("endpoint"),
-            params={"foo": "bar"},
-            headers=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_get_request_with_params_v2(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/endpoint?foo=bar",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint", params={"foo": "bar"})
+        expected_headers = {"Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.get")
-    def test_can_get_request_with_headers(self, mocked_get):
-
-        mocked_get.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_get_request_with_headers(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/endpoint", headers={"foo": "bar"}
+        )
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.get_request("endpoint", headers={"foo": "bar"})
 
-        mocked_get.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            headers={"foo": "bar"},
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_get_request_with_headers_v2(self):
+        responses.add(
+            responses.GET, "http://www.foo.com/endpoint", headers={"foo": "bar"}
         )
 
-    @patch("requests.post")
-    def test_can_post_request(self, mocked_post):
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.get_request("endpoint", headers={"foo": "bar"})
 
-        mocked_post.side_effect = lambda *args, **kwargs: True
+    @responses.activate
+    def test_can_post_request(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
 
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint")
 
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_post_request_v2(self):
+        responses.add(
+            responses.POST, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint")
+        expected_headers = {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.post")
-    def test_can_post_request_with_params(self, mocked_post):
-
-        mocked_post.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_params(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", params={"foo": "bar"})
 
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params={"foo": "bar"},
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_post_request_with_params_v2(self):
+        responses.add(
+            responses.POST, "http://www.foo.com/endpoint?foo=bar",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint", params={"foo": "bar"})
+        expected_headers = {"Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.post")
-    def test_can_post_request_with_dict_data(self, mocked_post):
-
-        mocked_post.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_dict_data(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_post_request_with_dict_data_v2(self):
+        responses.add(
+            responses.POST, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.post")
-    def test_can_post_request_with_json_data(self, mocked_post):
-
-        mocked_post.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_json_data(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_post_request_with_json_data_v2(self):
+        responses.add(
+            responses.POST, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+            "Content-Type": "application/json",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.post")
-    def test_can_post_request_with_headers(self, mocked_post):
-
-        mocked_post.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_headers(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", headers={"foo": "bar"})
-
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers={"foo": "bar"},
-            cookies=None,
-            timeout=client.timeout,
+        expected_headers = {"foo": "bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.post")
-    def test_can_post_request_with_cookies(self, mocked_post):
-
-        mocked_post.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_headers_v2(self):
+        responses.add(
+            responses.POST, "http://www.foo.com/endpoint",
+        )
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint", headers={"foo": "bar"})
+        expected_headers = {"foo": "bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
+
+    @responses.activate
+    def test_can_post_request_with_cookies(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.post_request("endpoint", cookies={"foo": "bar"})
-
-        mocked_post.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies={"foo": "bar"},
-            timeout=client.timeout,
+        expected_headers = {"Cookie": "foo=bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_post_request_with_cookies_v2(self):
+        responses.add(responses.POST, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.post_request("endpoint", cookies={"foo": "bar"})
+        expected_headers = {"Cookie": "foo=bar", "Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
+
+    @responses.activate
+    def test_can_patch_request(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint")
 
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_patch_request_v2(self):
+        responses.add(
+            responses.PATCH, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint")
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request_with_params(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_params(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint?foo=bar")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", params={"foo": "bar"})
 
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params={"foo": "bar"},
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_patch_request_with_params_v2(self):
+        responses.add(
+            responses.PATCH, "http://www.foo.com/endpoint?foo=bar",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", params={"foo": "bar"})
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request_with_dict_data(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_dict_data(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_patch_request_with_dict_data_v2(self):
+        responses.add(
+            responses.PATCH, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request_with_json_data(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_json_data(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_patch_request_with_json_data_v2(self):
+        responses.add(
+            responses.PATCH, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request_with_headers(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_headers(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", headers={"foo": "bar"})
-
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers={"foo": "bar"},
-            cookies=None,
-            timeout=client.timeout,
+        expected_headers = {"foo": "bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.patch")
-    def test_can_patch_request_with_cookies(self, mocked_patch):
-
-        mocked_patch.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_headers_v2(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", headers={"foo": "bar"})
+        expected_headers = {"foo": "bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
+
+    @responses.activate
+    def test_can_patch_request_with_cookies(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.patch_request("endpoint", cookies={"foo": "bar"})
-
-        mocked_patch.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies={"foo": "bar"},
-            timeout=client.timeout,
+        expected_headers = {"Cookie": "foo=bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.delete")
-    def test_can_delete_request(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_patch_request_with_cookies_v2(self):
+        responses.add(responses.PATCH, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.patch_request("endpoint", cookies={"foo": "bar"})
+        expected_headers = {"Cookie": "foo=bar", "Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
+
+    @responses.activate
+    def test_can_delete_request(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint")
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_v2(self):
+        responses.add(
+            responses.DELETE, "http://www.foo.com/endpoint",
         )
-
-    @patch("requests.delete")
-    def test_can_delete_request_with_params(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
         )
+        client.delete_request("endpoint")
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
+
+    @responses.activate
+    def test_can_delete_request_with_params(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint?foo=bar")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
+        )
+
         client.delete_request("endpoint", params={"foo": "bar"})
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params={"foo": "bar"},
-            data=None,
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_with_params_v2(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint?foo=bar")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", params={"foo": "bar"})
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.delete")
-    def test_can_delete_request_with_dict_data(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_delete_request_with_dict_data(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_with_dict_data_v2(self):
+        responses.add(
+            responses.DELETE, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", data={"foo": "bar"})
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.delete")
-    def test_can_delete_request_with_json_data(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_delete_request_with_json_data(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=json.dumps({"foo": "bar"}),
-            headers=None,
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_with_json_data_v2(self):
+        responses.add(
+            responses.DELETE, "http://www.foo.com/endpoint",
+        )
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", data=json.dumps({"foo": "bar"}))
+        self.assertEqual(responses.calls[0].request.body, '{"foo": "bar"}')
+        expected_headers = {
+            "Authorization": "Bearer token",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.delete")
-    def test_can_delete_request_with_headers(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_delete_request_with_headers(self):
+        responses.add(
+            responses.DELETE, "http://www.foo.com/endpoint", headers={"foo": "bar"}
+        )
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", headers={"foo": "bar"})
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers={"foo": "bar"},
-            cookies=None,
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_with_headers_v2(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", headers={"foo": "bar"})
+        expected_headers = {
+            "foo": "bar",
+        }
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    @patch("requests.delete")
-    def test_can_delete_request_with_cookies(self, mocked_delete):
-
-        mocked_delete.side_effect = lambda *args, **kwargs: True
-
+    @responses.activate
+    def test_can_delete_request_with_cookies(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
         client = util.ApiClient(
-            base_uri="http://www.foo.com", config={"version": API_VERSION_1}
+            base_uri="http://www.foo.com", config={"version": util.API_VERSION_1}
         )
         client.delete_request("endpoint", cookies={"foo": "bar"})
+        expected_headers = {"Cookie": "foo=bar"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
+        )
 
-        mocked_delete.assert_called_with(
-            client.url_for("endpoint"),
-            params=None,
-            data=None,
-            headers=None,
-            cookies={"foo": "bar"},
-            timeout=client.timeout,
+    @responses.activate
+    def test_can_delete_request_with_cookies_v2(self):
+        responses.add(responses.DELETE, "http://www.foo.com/endpoint")
+        client = util.ApiClient(
+            base_uri="http://www.foo.com",
+            config={"version": util.API_VERSION_2, "token": "token"},
+        )
+        client.delete_request("endpoint", cookies={"foo": "bar"})
+        expected_headers = {"Cookie": "foo=bar", "Authorization": "Bearer token"}
+        actual_headers = responses.calls[0].request.headers
+        self.assertTrue(
+            set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
 
