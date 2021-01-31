@@ -41,6 +41,15 @@ class ReportComponentV2(base.BaseComponent):
             "/report/users/{}/meetings".format(kwargs.get("user_id")), params=kwargs
         )
 
+    def get_meeting_detail_report(self, **kwargs):
+        """
+        /report/meetings/{meetingId}/participants
+        """
+        util.require_keys(kwargs, ["meeting_id"])
+        return self.get_request(
+            "/report/meetings/{}/participants".format(kwargs.get("meeting_id")), params=kwargs
+        )
+
     def get_account_report(self, **kwargs):
         util.require_keys(kwargs, ["start_time", "end_time"])
         kwargs["from"] = util.date_to_str(kwargs["start_time"])

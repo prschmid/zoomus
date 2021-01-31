@@ -179,18 +179,19 @@ class ApiClient(object):
         :param cookies: request cookies
         :return: The :class:``requests.Response`` object for this request
         """
-        if data and not is_str_type(data):
-            data = json.dumps(data)
+        # if data and not is_str_type(data):
+            # data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
-        return requests.put(
+        resp = requests.put(
             self.url_for(endpoint),
             params=params,
-            data=data,
+            json=data,
             headers=headers,
             cookies=cookies,
             timeout=self.timeout,
         )
+        return resp
 
 
 @contextlib.contextmanager
