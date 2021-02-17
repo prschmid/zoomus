@@ -56,6 +56,10 @@ class UserComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         return self.patch_request("/users/{}".format(kwargs.get("id")), data=kwargs)
 
+    def update_status(self, **kwargs):
+        util.require_keys(kwargs, ["id", "action"])
+        return self.put_request("/users/{}/status".format(kwargs.pop("id")), data=kwargs)
+
     def check_email(self, **kwargs):
         """
         Verify if a user’s email is registered with Zoom.
