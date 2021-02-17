@@ -8,7 +8,10 @@ from zoomus.components import base
 
 class MetricComponentV2(base.BaseComponent):
     def list_meetings(self, **kwargs):
-        return self.get_request("/metrics/meetings", params=kwargs,)
+        return self.get_request(
+            "/metrics/meetings",
+            params=kwargs,
+        )
 
     def get_meeting(self, **kwargs):
         util.require_keys(kwargs, "meeting_id")

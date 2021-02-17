@@ -80,6 +80,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.create(...)
 * client.user.cust_create(...)
 * client.user.update(...)*
+* client.user.check_email(...)
+* client.user.update_email(...)
 * client.user.list(...)
 * client.user.pending(...)
 * client.user.get(...)
