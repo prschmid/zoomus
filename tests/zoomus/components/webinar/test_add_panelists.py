@@ -28,9 +28,11 @@ class AddPanelistsV2TestCase(unittest.TestCase):
         responses.add(
             responses.POST, "http://foo.com/webinar/ID/panelists",
         )
-        response = self.component.add_panelists(panelists=[{"name": "Mary", "email": "maryjkdfdsgfshdgf@jdfdkjdglfk.jkfgdj"}])
+        response = self.component.add_panelists(
+            panelists=[{"name": "Mary", "email": "test@test.com"}]
+        )
         self.assertEqual(
-            response.request.body, '{panelists: [{"name": "Mary", "email": "maryjkdfdsgfshdgf@jdfdkjdglfk.jkfgdj"}]}'
+            response.request.body, '{panelists: [{"name": "Mary", "email": "test@test.com"}]}'
         )
 
     def test_requires_panelists(self):
