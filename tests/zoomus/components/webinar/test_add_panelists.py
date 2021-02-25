@@ -33,7 +33,8 @@ class AddPanelistsV2TestCase(unittest.TestCase):
             panelists=[{"name": "Mary", "email": "test@test.com"}]
         )
         self.assertEqual(
-            response.request.body, '{"id": "ID", "panelists": [{"name": "Mary", "email": "test@test.com"}]}'
+            response.request.body,
+            '{"id": "ID", "panelists": [{"name": "Mary", "email": "test@test.com"}]}'
         )
 
     def test_requires_id(self):
