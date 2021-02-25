@@ -1,7 +1,7 @@
 from datetime import datetime
 import unittest
 
-from zoomus import components
+from zoomus import components, util
 import responses
 
 
@@ -23,21 +23,22 @@ class AddPanelistsV2TestCase(unittest.TestCase):
             },
         )
 
-   @responses.activate
+    @responses.activate
     def test_can_add_panelists(self):
         responses.add(
-            responses.POST, "http://foo.com/webinar/ID/panelists",
+            responses.POST, "http://foo.com/webinars/ID/panelists",
         )
         response = self.component.add_panelists(
+            id="ID",
             panelists=[{"name": "Mary", "email": "test@test.com"}]
         )
         self.assertEqual(
-            response.request.body, '{panelists: [{"name": "Mary", "email": "test@test.com"}]}'
+            response.request.body, '{"id": "ID", "panelists": [{"name": "Mary", "email": "test@test.com"}]}'
         )
 
-    def test_requires_panelists(self):
-        with self.assertRaisesRegexp(ValueError, "'panelists' must be set"):
-            self.component.add_panelists()    
+    def test_requires_id(self):
+        with self.assertRaisesRegexp(ValueError, "'id' must be set"):
+            self.component.add_panelists()
 
 
 if __name__ == "__main__":

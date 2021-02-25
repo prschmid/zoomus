@@ -12,7 +12,7 @@ def suite():
 
 class DeleteV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.meeting.MeetingComponentV2(
+        self.component = components.webinar.WebinarComponentV2(
             base_uri="http://foo.com",
             config={
                 "api_key": "KEY",
@@ -23,19 +23,20 @@ class DeleteV2TestCase(unittest.TestCase):
 
     @responses.activate
     def test_can_delete_panelists(self):
-       responses.add(
-            responses.POST, "http://foo.com/webinar/ID/panelists",
+        responses.add(
+            responses.DELETE, "http://foo.com/webinars/ID/panelists",
         )
-        response = self.component.delete_panelists(
-            panelists=[{"name": "Mary", "email": "test@test.com"}]
+        response = self.component.remove_panelists(
+            id="ID"
         )
         self.assertEqual(
-            response.request.body, '{panelists: [{"name": "Mary", "email": "test@test.com"}]}'
+            response.request.body, None
         )
 
-    def test_requires_panelists(self):
-        with self.assertRaisesRegexp(ValueError, "'panelists' must be set"):
-            self.component.delete_panelists()
+    def test_requires_id(self):
+        with self.assertRaisesRegexp(ValueError, "'id' must be set"):
+            self.component.remove_panelists()
+
 
 
 if __name__ == "__main__":
