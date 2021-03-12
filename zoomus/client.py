@@ -20,6 +20,7 @@ COMPONENT_CLASSES = {
         "webinar": components.webinar.WebinarComponent,
     },
     API_VERSION_2: {
+        "contacts": components.contacts.ContactsComponentV2,
         "group": components.group.GroupComponentV2,
         "live_stream": components.live_stream.LiveStreamComponentV2,
         "meeting": components.meeting.MeetingComponentV2,
@@ -105,6 +106,11 @@ class ZoomClient(util.ApiClient):
         self.config["api_secret"] = value
         self.refresh_token()
 
+    @property
+    def contacts(self):
+        """Get the contacts component"""
+        return self.components.get("contacts")
+      
     @property
     def meeting(self):
         """Get the meeting component"""
