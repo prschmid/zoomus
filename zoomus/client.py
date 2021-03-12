@@ -28,6 +28,8 @@ COMPONENT_CLASSES = {
         "webinar": components.webinar.WebinarComponentV2,
         "recording": components.recording.RecordingComponentV2,
         "phone": components.phone.PhoneComponentV2,
+        "webinar_poll": components.poll.WebinarPollComponentV2,
+        "meeting_poll": components.poll.MeetingsPollComponentV2,
     },
 }
 
@@ -137,3 +139,13 @@ class ZoomClient(util.ApiClient):
     def phone(self):
         """Get the phone component"""
         return self.components.get("phone")
+
+    @property
+    def webinar_poll(self):
+        """Get the phone component"""
+        return self.components.get("webinar_poll")
+
+    @property
+    def meeting_poll(self):
+        """Get the phone component"""
+        return self.components.get("meeting_poll")
