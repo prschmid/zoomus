@@ -26,10 +26,16 @@ class UpdateRegistrantStatusV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_update_registrant(self):
         responses.add(
-            responses.PUT, "http://foo.com/meetings/ID/registrants/status",
+            responses.PUT,
+            "http://foo.com/meetings/ID/registrants/status",
         )
-        response = self.component.update_registrant_status(id="ID", action="approve", registrants=[{'email':"EMAIL"}])
-        self.assertEqual(responses.calls[0].request.body, '{"id": "ID", "action": "approve", "registrants": [{"email": "EMAIL"}]}')
+        response = self.component.update_registrant_status(
+            id="ID", action="approve", registrants=[{"email": "EMAIL"}]
+        )
+        self.assertEqual(
+            responses.calls[0].request.body,
+            '{"id": "ID", "action": "approve", "registrants": [{"email": "EMAIL"}]}',
+        )
 
     def test_requires_meeting_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
