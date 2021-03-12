@@ -3,6 +3,7 @@
 from __future__ import absolute_import
 
 from . import (
+    group,
     live_stream,
     meeting,
     metric,

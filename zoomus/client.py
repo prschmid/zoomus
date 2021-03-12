@@ -20,6 +20,7 @@ COMPONENT_CLASSES = {
         "webinar": components.webinar.WebinarComponent,
     },
     API_VERSION_2: {
+        "group": components.group.GroupComponentV2,
         "live_stream": components.live_stream.LiveStreamComponentV2,
         "meeting": components.meeting.MeetingComponentV2,
         "metric": components.metric.MetricComponentV2,
@@ -148,3 +149,8 @@ class ZoomClient(util.ApiClient):
     def past_meeting(self):
         """Get the past meeting component"""
         return self.components.get("past_meeting")
+
+    @property
+    def group(self):
+        """Get the group component"""
+        return self.components.get("group")
