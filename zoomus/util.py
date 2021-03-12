@@ -10,7 +10,6 @@ import requests
 import time
 import jwt
 
-
 API_VERSION_1 = 1
 API_VERSION_2 = 2
 

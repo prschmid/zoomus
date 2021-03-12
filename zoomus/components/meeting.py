@@ -70,3 +70,29 @@ class MeetingComponentV2(base.BaseComponent):
         return self.delete_request(
             "/meetings/{}".format(kwargs.get("id")), params=kwargs
         )
+
+    def add_registrant(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.post_request(
+            "/meetings/{}/registrants".format(kwargs.get("id")), data=kwargs
+        )
+
+    def list_registrants(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/meetings/{}/registrants".format(kwargs.get("id")), params=kwargs
+        )
+
+    def update_registrant_status(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        util.require_keys(kwargs, "action")
+        util.require_keys(kwargs, "registrants")
+        return self.put_request(
+            "/meetings/{}/registrants/status".format(kwargs.get("id")), data=kwargs
+        )
+
+    def list_meeting_participants(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/metrics/meetings/{}/participants".format(kwargs.get("id")), params=kwargs
+        )

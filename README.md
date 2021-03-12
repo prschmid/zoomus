@@ -93,6 +93,9 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.meeting.delete(...)
 * client.meeting.list(...)
 * client.meeting.update(...)
+* client.meeting.add_registrant(...)
+* client.meeting.list_registrants(...)
+* client.meeting.update_registrant_status(...)
 
 * client.report.get_account_report(...)
 * client.report.get_user_report(...)
@@ -104,12 +107,23 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.webinar.get(...)
 * client.webinar.end(...)
 * client.webinar.register(...)
+* client.webinar.add_panelists(...)
+* client.webinar.list_panelists(...)
+* client.webinar.remove_panelists(...)
 
 * client.phone.call_logs(...)
 * client.phone.calling_plans(...)
 * client.phone.numbers_get(...)
 * client.phone.numbers_list(...)
 * client.phone.users(...)
+
+* client.group.list(...)
+* client.group.create(...)
+* client.group.get(...)
+* client.group.delete(...)
+* client.group.list_members(...)
+* client.group.add_members(...)
+* client.group.delete_member(...)
 
 ## Running the Tests
 
