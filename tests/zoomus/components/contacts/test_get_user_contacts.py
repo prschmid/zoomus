@@ -25,7 +25,7 @@ class GetUserContactsV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_get_user_contact(self):
         responses.add(responses.GET, "http://foo.com/chat/users/me/contacts/foo")
-        self.component.get_user_contact(contact_id='foo')
+        self.component.get_user_contact(contact_id="foo")
 
     def test_requires_id(self):
         with self.assertRaisesRegex(ValueError, "'contact_id' must be set"):

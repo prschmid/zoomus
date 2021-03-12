@@ -110,7 +110,7 @@ class ZoomClient(util.ApiClient):
     def contacts(self):
         """Get the contacts component"""
         return self.components.get("contacts")
-      
+
     @property
     def meeting(self):
         """Get the meeting component"""

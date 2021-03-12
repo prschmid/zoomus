@@ -25,7 +25,7 @@ class SearchV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_search(self):
         responses.add(responses.GET, "http://foo.com/contacts")
-        self.component.search(search_key='foo')
+        self.component.search(search_key="foo")
 
     def test_requires_id(self):
         with self.assertRaisesRegex(ValueError, "'search_key' must be set"):

@@ -3,6 +3,7 @@ import unittest
 from zoomus import components, util
 import responses
 
+
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
@@ -24,19 +25,15 @@ class DeleteV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_delete_panelists(self):
         responses.add(
-            responses.DELETE, "http://foo.com/webinars/ID/panelists",
+            responses.DELETE,
+            "http://foo.com/webinars/ID/panelists",
         )
-        response = self.component.remove_panelists(
-            id="ID"
-        )
-        self.assertEqual(
-            response.request.body, None
-        )
+        response = self.component.remove_panelists(id="ID")
+        self.assertEqual(response.request.body, None)
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
             self.component.remove_panelists()
-
 
 
 if __name__ == "__main__":

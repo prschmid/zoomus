@@ -26,11 +26,15 @@ class AddRegistrantV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_add_registrant(self):
         responses.add(
-            responses.POST, "http://foo.com/meetings/ID/registrants",
+            responses.POST,
+            "http://foo.com/meetings/ID/registrants",
         )
-        response = self.component.add_registrant(id="ID", email="EMAIL", last_name="LAST_NAME", first_name="FIRST_NAME")
+        response = self.component.add_registrant(
+            id="ID", email="EMAIL", last_name="LAST_NAME", first_name="FIRST_NAME"
+        )
         self.assertEqual(
-            response.request.body, '{"id": "ID", "email": "EMAIL", "last_name": "LAST_NAME", "first_name": "FIRST_NAME"}'
+            response.request.body,
+            '{"id": "ID", "email": "EMAIL", "last_name": "LAST_NAME", "first_name": "FIRST_NAME"}',
         )
 
     def test_requires_meeting_id(self):

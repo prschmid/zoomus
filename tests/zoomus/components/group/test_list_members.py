@@ -22,7 +22,8 @@ class MembersV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_list(self):
         responses.add(
-            responses.GET, "http://www.foo.com/groups/ID/members",
+            responses.GET,
+            "http://www.foo.com/groups/ID/members",
         )
         self.component.list_members(groupid="ID")
         expected_headers = {"Authorization": "Bearer token"}
