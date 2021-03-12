@@ -49,6 +49,7 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertEqual(
             set(
                 [
+                    "live_stream",
                     "meeting",
                     "metric",
                     "past_meeting",
@@ -89,6 +90,11 @@ class ZoomClientTestCase(unittest.TestCase):
         )
         self.assertIsInstance(
             client.components["group"], components.group.GroupComponentV2
+        )
+
+        self.assertIsInstance(
+            client.components["live_stream"],
+            components.live_stream.LiveStreamComponentV2,
         )
 
     def test_api_version_defaults_to_2(self):
@@ -133,6 +139,12 @@ class ZoomClientTestCase(unittest.TestCase):
         client = ZoomClient("KEY", "SECRET")
         self.assertIsInstance(
             client.recording, components.recording.RecordingComponentV2
+        )
+
+    def test_can_get_live_stream_component(self):
+        client = ZoomClient("KEY", "SECRET")
+        self.assertIsInstance(
+            client.live_stream, components.live_stream.LiveStreamComponentV2
         )
 
     def test_can_get_phone_component(self):
