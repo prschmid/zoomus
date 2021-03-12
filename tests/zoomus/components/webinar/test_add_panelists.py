@@ -26,15 +26,15 @@ class AddPanelistsV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_add_panelists(self):
         responses.add(
-            responses.POST, "http://foo.com/webinars/ID/panelists",
+            responses.POST,
+            "http://foo.com/webinars/ID/panelists",
         )
         response = self.component.add_panelists(
-            id="ID",
-            panelists=[{"name": "Mary", "email": "test@test.com"}]
+            id="ID", panelists=[{"name": "Mary", "email": "test@test.com"}]
         )
         self.assertEqual(
             response.request.body,
-            '{"id": "ID", "panelists": [{"name": "Mary", "email": "test@test.com"}]}'
+            '{"id": "ID", "panelists": [{"name": "Mary", "email": "test@test.com"}]}',
         )
 
     def test_requires_id(self):
