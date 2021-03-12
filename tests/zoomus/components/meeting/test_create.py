@@ -70,7 +70,8 @@ class CreateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_create(self):
         responses.add(
-            responses.POST, "http://foo.com/users/ID/meetings",
+            responses.POST,
+            "http://foo.com/users/ID/meetings",
         )
         response = self.component.create(user_id="ID", topic="TOPIC", type="TYPE")
         self.assertEqual(
@@ -84,7 +85,8 @@ class CreateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_does_convert_startime_to_str_if_datetime(self):
         responses.add(
-            responses.POST, "http://foo.com/users/ID/meetings",
+            responses.POST,
+            "http://foo.com/users/ID/meetings",
         )
         start_time = datetime.datetime(2020, 1, 1, 1, 1)
         response = self.component.create(user_id="ID", start_time=start_time)

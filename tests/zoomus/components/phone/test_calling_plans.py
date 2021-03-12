@@ -14,7 +14,8 @@ def suite():
 class CallingPlansV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.phone.PhoneComponentV2(
-            base_uri="http://example.com", config={"token": "token"},
+            base_uri="http://example.com",
+            config={"token": "token"},
         )
 
     @responses.activate

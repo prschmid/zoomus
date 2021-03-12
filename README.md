@@ -80,6 +80,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.create(...)
 * client.user.cust_create(...)
 * client.user.update(...)*
+* client.user.check_email(...)
+* client.user.update_email(...)
 * client.user.list(...)
 * client.user.pending(...)
 * client.user.get(...)
@@ -108,6 +110,14 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.phone.numbers_get(...)
 * client.phone.numbers_list(...)
 * client.phone.users(...)
+
+* client.group.list(...)
+* client.group.create(...)
+* client.group.get(...)
+* client.group.delete(...)
+* client.group.list_members(...)
+* client.group.add_members(...)
+* client.group.delete_member(...)
 
 ## Running the Tests
 

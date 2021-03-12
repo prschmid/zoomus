@@ -13,22 +13,24 @@ API_BASE_URIS = {
 
 COMPONENT_CLASSES = {
     API_VERSION_1: {
-        "user": components.user.UserComponent,
         "meeting": components.meeting.MeetingComponent,
-        "report": components.report.ReportComponent,
-        "webinar": components.webinar.WebinarComponent,
         "recording": components.recording.RecordingComponent,
+        "report": components.report.ReportComponent,
+        "user": components.user.UserComponent,
+        "webinar": components.webinar.WebinarComponent,
     },
     API_VERSION_2: {
-        "user": components.user.UserComponentV2,
+        "contacts": components.contacts.ContactsComponentV2,
+        "group": components.group.GroupComponentV2,
+        "live_stream": components.live_stream.LiveStreamComponentV2,
         "meeting": components.meeting.MeetingComponentV2,
         "metric": components.metric.MetricComponentV2,
         "past_meeting": components.past_meeting.PastMeetingComponentV2,
-        "report": components.report.ReportComponentV2,
-        "webinar": components.webinar.WebinarComponentV2,
-        "recording": components.recording.RecordingComponentV2,
         "phone": components.phone.PhoneComponentV2,
-        "contacts": components.contacts.ContactsComponentV2,
+        "recording": components.recording.RecordingComponentV2,
+        "report": components.report.ReportComponentV2,
+        "user": components.user.UserComponentV2,
+        "webinar": components.webinar.WebinarComponentV2,
     },
 }
 
@@ -105,6 +107,11 @@ class ZoomClient(util.ApiClient):
         self.refresh_token()
 
     @property
+    def contacts(self):
+        """Get the contacts component"""
+        return self.components.get("contacts")
+      
+    @property
     def meeting(self):
         """Get the meeting component"""
         return self.components.get("meeting")
@@ -135,11 +142,21 @@ class ZoomClient(util.ApiClient):
         return self.components.get("recording")
 
     @property
+    def live_stream(self):
+        """Get the live stream component"""
+        return self.components.get("live_stream")
+
+    @property
     def phone(self):
         """Get the phone component"""
         return self.components.get("phone")
 
     @property
-    def contacts(self):
-        """Get the contacts component"""
-        return self.components.get("contacts")
+    def past_meeting(self):
+        """Get the past meeting component"""
+        return self.components.get("past_meeting")
+
+    @property
+    def group(self):
+        """Get the group component"""
+        return self.components.get("group")

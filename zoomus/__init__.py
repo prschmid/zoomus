@@ -7,4 +7,4 @@ from zoomus.util import API_VERSION_1, API_VERSION_2
 
 
 __all__ = ["API_VERSION_1", "API_VERSION_2", "ZoomClient"]
-__version__ = "1.1.3"
+__version__ = "1.1.5"

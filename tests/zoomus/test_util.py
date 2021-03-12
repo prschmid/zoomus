@@ -97,7 +97,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_get_request_v2(self):
         responses.add(
-            responses.GET, "http://www.foo.com/endpoint",
+            responses.GET,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -121,7 +122,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_get_request_with_params_v2(self):
         responses.add(
-            responses.GET, "http://www.foo.com/endpoint?foo=bar",
+            responses.GET,
+            "http://www.foo.com/endpoint?foo=bar",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -168,7 +170,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_post_request_v2(self):
         responses.add(
-            responses.POST, "http://www.foo.com/endpoint",
+            responses.POST,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -195,7 +198,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_post_request_with_params_v2(self):
         responses.add(
-            responses.POST, "http://www.foo.com/endpoint?foo=bar",
+            responses.POST,
+            "http://www.foo.com/endpoint?foo=bar",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -220,7 +224,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_post_request_with_dict_data_v2(self):
         responses.add(
-            responses.POST, "http://www.foo.com/endpoint",
+            responses.POST,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -249,7 +254,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_post_request_with_json_data_v2(self):
         responses.add(
-            responses.POST, "http://www.foo.com/endpoint",
+            responses.POST,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -282,7 +288,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_post_request_with_headers_v2(self):
         responses.add(
-            responses.POST, "http://www.foo.com/endpoint",
+            responses.POST,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -333,7 +340,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_patch_request_v2(self):
         responses.add(
-            responses.PATCH, "http://www.foo.com/endpoint",
+            responses.PATCH,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -359,7 +367,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_patch_request_with_params_v2(self):
         responses.add(
-            responses.PATCH, "http://www.foo.com/endpoint?foo=bar",
+            responses.PATCH,
+            "http://www.foo.com/endpoint?foo=bar",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -386,7 +395,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_patch_request_with_dict_data_v2(self):
         responses.add(
-            responses.PATCH, "http://www.foo.com/endpoint",
+            responses.PATCH,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -414,7 +424,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_patch_request_with_json_data_v2(self):
         responses.add(
-            responses.PATCH, "http://www.foo.com/endpoint",
+            responses.PATCH,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -495,7 +506,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_delete_request_v2(self):
         responses.add(
-            responses.DELETE, "http://www.foo.com/endpoint",
+            responses.DELETE,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -547,7 +559,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_delete_request_with_dict_data_v2(self):
         responses.add(
-            responses.DELETE, "http://www.foo.com/endpoint",
+            responses.DELETE,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
@@ -575,7 +588,8 @@ class ApiClientTestCase(unittest.TestCase):
     @responses.activate
     def test_can_delete_request_with_json_data_v2(self):
         responses.add(
-            responses.DELETE, "http://www.foo.com/endpoint",
+            responses.DELETE,
+            "http://www.foo.com/endpoint",
         )
         client = util.ApiClient(
             base_uri="http://www.foo.com",
