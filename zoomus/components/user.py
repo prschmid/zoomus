@@ -58,7 +58,9 @@ class UserComponentV2(base.BaseComponent):
 
     def update_status(self, **kwargs):
         util.require_keys(kwargs, ["id", "action"])
-        return self.put_request("/users/{}/status".format(kwargs.pop("id")), data=kwargs)
+        return self.put_request(
+            "/users/{}/status".format(kwargs.pop("id")), data=kwargs
+        )
 
     def check_email(self, **kwargs):
         """

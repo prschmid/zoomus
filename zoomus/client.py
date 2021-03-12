@@ -17,7 +17,7 @@ COMPONENT_CLASSES = {
         "recording": components.recording.RecordingComponent,
         "report": components.report.ReportComponent,
         "user": components.user.UserComponent,
-        "webinar": components.webinar.WebinarComponent
+        "webinar": components.webinar.WebinarComponent,
     },
     API_VERSION_2: {
         "live_stream": components.live_stream.LiveStreamComponentV2,
@@ -28,7 +28,7 @@ COMPONENT_CLASSES = {
         "recording": components.recording.RecordingComponentV2,
         "report": components.report.ReportComponentV2,
         "user": components.user.UserComponentV2,
-        "webinar": components.webinar.WebinarComponentV2
+        "webinar": components.webinar.WebinarComponentV2,
     },
 }
 
