@@ -9,18 +9,21 @@ class PollComponentV2(base.BaseComponent):
         self.type = kwargs.get('type')
         super().__init__(*args, **kwargs)
 
-
     def list(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.get_request(
-            f"/{self.type}/{kwargs.get('id')}/polls"
+            "/{}/{}/polls".format(
+                self.type, kwargs.get("id")
+            )
         )
 
     def create(self, **kwargs):
         util.require_keys(kwargs, "id")
         util.require_keys(kwargs, "data")
         return self.post_request(
-            f"/{self.type}/{kwargs.get('id')}/polls",
+            "/{}/{}/polls".format(
+                self.type, kwargs.get('id')
+            ),
             data=kwargs.get('data')
         )
 
@@ -28,7 +31,9 @@ class PollComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         util.require_keys(kwargs, "poll_id")
         return self.get_request(
-            f"/{self.type}/{kwargs.get('id')}/polls/{kwargs.get('poll_id')}"
+            "/{}/{kwargs.get('id')}/polls/{}".format(
+                self.type, kwargs.get('poll_id')
+            )
         )
 
     def update(self, **kwargs):
@@ -36,7 +41,9 @@ class PollComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "poll_id")
         util.require_keys(kwargs, "data")
         return self.patch_request(
-            f"/{self.type}/{kwargs.get('id')}/polls/{kwargs.get('poll_id')}",
+            "/{}/{kwargs.get('id')}/polls/{}".format(
+                self.type, kwargs.get('poll_id')
+            ),
             data=kwargs.get('data')
         )
 
@@ -44,7 +51,9 @@ class PollComponentV2(base.BaseComponent):
         util.require_keys(kwargs, "id")
         util.require_keys(kwargs, "poll_id")
         return self.delete_request(
-            f"/{self.type}/{kwargs.get('id')}/polls/{kwargs.get('poll_id')}"
+            "/{}/{kwargs.get('id')}/polls/{}".format(
+                self.type, kwargs.get('poll_id')
+            )
         )
 
     class Meta:
