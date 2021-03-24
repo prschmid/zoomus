@@ -1,6 +1,7 @@
 import unittest
 
 from zoomus import components, ZoomClient, util
+from zoomus.client import API_BASE_URIS
 
 try:
     from unittest import mock
@@ -26,6 +27,7 @@ class ZoomClientTestCase(unittest.TestCase):
                 "data_type": "json",
                 "token": util.generate_jwt("KEY", "SECRET"),
                 "version": util.API_VERSION_2,
+                "base_uri": API_BASE_URIS[util.API_VERSION_2],
             },
         )
 
@@ -103,6 +105,42 @@ class ZoomClientTestCase(unittest.TestCase):
     def test_api_version_defaults_to_2(self):
         client = ZoomClient("KEY", "SECRET")
         self.assertEqual(client.config["version"], util.API_VERSION_2)
+        for key in client.components.keys():
+            self.assertEqual(
+                client.components[key].base_uri, API_BASE_URIS[util.API_VERSION_2]
+            )
+
+    def test_can_set_api_version_to_1(self):
+        client = ZoomClient("KEY", "SECRET", version=util.API_VERSION_1)
+        self.assertEqual(client.config["version"], util.API_VERSION_1)
+        for key in client.components.keys():
+            self.assertEqual(
+                client.components[key].base_uri, API_BASE_URIS[util.API_VERSION_1]
+            )
+
+    def test_can_set_base_uri_to_gdpr(self):
+        client = ZoomClient("KEY", "SECRET", base_uri=API_BASE_URIS[util.API_GDPR])
+        self.assertEqual(client.config["version"], util.API_VERSION_2)
+        for key in client.components.keys():
+            self.assertEqual(
+                client.components[key].base_uri, API_BASE_URIS[util.API_GDPR]
+            )
+
+    def test_can_set_custom_base_uri(self):
+        client = ZoomClient(
+            "KEY", "SECRET", version=util.API_VERSION_1, base_uri="https://www.test.com"
+        )
+        self.assertEqual(client.config["version"], util.API_VERSION_1)
+        for key in client.components.keys():
+            self.assertEqual(client.components[key].base_uri, "https://www.test.com")
+
+    def test_can_set_api_version_to_1_and_set_custom_base_uri(self):
+        client = ZoomClient("KEY", "SECRET", base_uri=API_BASE_URIS[util.API_GDPR])
+        self.assertEqual(client.config["version"], util.API_VERSION_2)
+        for key in client.components.keys():
+            self.assertEqual(
+                client.components[key].base_uri, API_BASE_URIS[util.API_GDPR]
+            )
 
     def test_can_get_api_key(self):
         client = ZoomClient("KEY", "SECRET")

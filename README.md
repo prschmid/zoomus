@@ -49,22 +49,26 @@ for user in user_list['users']:
 
 What one will note is that the returned object from a call using the client is a [requests](https://pypi.org/project/requests/) `Response` object. This is done so that if there is any error working with the API that one has complete control of handling all errors. As such, to actually get the list of users in the example above, one will have to load the JSON from the content of the `Response` object that is returned.
 
+### Create the client for EU users needing GDPR compliance
+
+Zoom has EU specific endpoints that can be used to meet GDPR compliance. In oder for youto make use of those, simply set the base_uri to the appropriate one when initializing the client. For more details on the Zoom API, please refer to the [Zoom API documentation](https://marketplace.zoom.us/docs/api-reference/introduction)
+
+```python
+import json
+from zoomus import ZoomClient
+
+client = ZoomClient('API_KEY', 'API_SECRET', base_uri="https://eu01api-www4local.zoom.us")
+```
+
 ### Create the client v1
 
-Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows.
+Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows. Note, we have stopped support for the V1 API, so there is only limited functionality and no new V1 API functionality is likely to be added.
 
 ```python
 import json
 from zoomus import ZoomClient
 
 client = ZoomClient('API_KEY', 'API_SECRET', version=1)
-
-user_list_response = client.user.list()
-user_list = json.loads(user_list_response.content)
-
-for user in user_list['users']:
-    user_id = user['id']
-    print(json.loads(client.meeting.list(host_id=user_id).content))
 ```
 
 ### Using with a manage context

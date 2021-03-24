@@ -3,12 +3,13 @@
 from __future__ import absolute_import, unicode_literals
 
 from zoomus import components, util
-from zoomus.util import API_VERSION_1, API_VERSION_2
+from zoomus.util import API_VERSION_1, API_VERSION_2, API_GDPR
 
 
 API_BASE_URIS = {
     API_VERSION_1: "https://api.zoom.us/v1",
     API_VERSION_2: "https://api.zoom.us/v2",
+    API_GDPR: "https://eu01api-www4local.zoom.us",
 }
 
 COMPONENT_CLASSES = {
@@ -41,7 +42,13 @@ class ZoomClient(util.ApiClient):
     """Base URL for Zoom API"""
 
     def __init__(
-        self, api_key, api_secret, data_type="json", timeout=15, version=API_VERSION_2
+        self,
+        api_key,
+        api_secret,
+        data_type="json",
+        timeout=15,
+        version=API_VERSION_2,
+        base_uri=None,
     ):
         """Create a new Zoom client
 
@@ -49,14 +56,21 @@ class ZoomClient(util.ApiClient):
         :param api_secret: The Zoom.us API secret
         :param data_type: The expected return data type. Either 'json' or 'xml'
         :param timeout: The time out to use for API requests
+        :param version: The API version to use (Default is V2). The available
+                        options are API_VERSION_1 (deprecated by Zoom),
+                        or API_VERSION_2 (default)
+        :param base_uri: Set the base URI to use. By default this is chosen
+                         based on the API version chosen, but it can be
+                         overriden so that the GDPR compliant base URI can
+                         be used in the EU.
         """
         try:
-            BASE_URI = API_BASE_URIS[version]
+            base_uri = base_uri or API_BASE_URIS[version]
             self.components = COMPONENT_CLASSES[version].copy()
         except KeyError:
             raise RuntimeError("API version not supported: %s" % version)
 
-        super(ZoomClient, self).__init__(base_uri=BASE_URI, timeout=timeout)
+        super(ZoomClient, self).__init__(base_uri=base_uri, timeout=timeout)
 
         # Setup the config details
         self.config = {
@@ -64,13 +78,14 @@ class ZoomClient(util.ApiClient):
             "api_secret": api_secret,
             "data_type": data_type,
             "version": version,
+            "base_uri": base_uri,
             "token": util.generate_jwt(api_key, api_secret),
         }
 
         # Instantiate the components
         for key in self.components.keys():
             self.components[key] = self.components[key](
-                base_uri=BASE_URI, config=self.config
+                base_uri=base_uri, config=self.config
             )
 
     def __enter__(self):
