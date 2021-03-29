@@ -9,7 +9,7 @@ from zoomus.util import API_VERSION_1, API_VERSION_2, API_GDPR
 API_BASE_URIS = {
     API_VERSION_1: "https://api.zoom.us/v1",
     API_VERSION_2: "https://api.zoom.us/v2",
-    API_GDPR: "https://eu01api-www4local.zoom.us",
+    API_GDPR: "https://eu01api-www4local.zoom.us/v2",
 }
 
 COMPONENT_CLASSES = {

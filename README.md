@@ -53,11 +53,13 @@ What one will note is that the returned object from a call using the client is a
 
 Zoom has EU specific endpoints that can be used to meet GDPR compliance. In oder for youto make use of those, simply set the base_uri to the appropriate one when initializing the client. For more details on the Zoom API, please refer to the [Zoom API documentation](https://marketplace.zoom.us/docs/api-reference/introduction)
 
+Caution, the EU endpoint will not function unless your account is an EU account and has been setup as such with Zoom.
+
 ```python
 import json
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET', base_uri="https://eu01api-www4local.zoom.us")
+client = ZoomClient('API_KEY', 'API_SECRET', base_uri="https://eu01api-www4local.zoom.us/v2")
 ```
 
 ### Create the client v1
