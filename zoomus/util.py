@@ -12,6 +12,7 @@ import jwt
 
 API_VERSION_1 = 1
 API_VERSION_2 = 2
+API_GDPR = "gdpr"
 
 
 class ApiClient(object):
