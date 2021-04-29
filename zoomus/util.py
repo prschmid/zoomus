@@ -10,9 +10,9 @@ import requests
 import time
 import jwt
 
-
 API_VERSION_1 = 1
 API_VERSION_2 = 2
+API_GDPR = "gdpr"
 
 
 class ApiClient(object):
@@ -283,7 +283,7 @@ def generate_jwt(key, secret):
     payload = {"iss": key, "exp": int(time.time() + 3600)}
 
     token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
-    return token.decode("utf-8")
+    return token
 
 
 def encode_uuid(val):

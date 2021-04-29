@@ -75,7 +75,8 @@ class UpdateV2TestCase(unittest.TestCase):
     @responses.activate
     def test_start_time_gets_transformed(self):
         responses.add(
-            responses.PATCH, "http://foo.com/meetings/42",
+            responses.PATCH,
+            "http://foo.com/meetings/42",
         )
         response = self.component.update(id="42", start_time=datetime(2020, 1, 1, 1, 1))
         self.assertEqual(

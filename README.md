@@ -49,22 +49,28 @@ for user in user_list['users']:
 
 What one will note is that the returned object from a call using the client is a [requests](https://pypi.org/project/requests/) `Response` object. This is done so that if there is any error working with the API that one has complete control of handling all errors. As such, to actually get the list of users in the example above, one will have to load the JSON from the content of the `Response` object that is returned.
 
+### Create the client for EU users needing GDPR compliance
+
+Zoom has EU specific endpoints that can be used to meet GDPR compliance. In oder for youto make use of those, simply set the base_uri to the appropriate one when initializing the client. For more details on the Zoom API, please refer to the [Zoom API documentation](https://marketplace.zoom.us/docs/api-reference/introduction)
+
+Caution, the EU endpoint will not function unless your account is an EU account and has been setup as such with Zoom.
+
+```python
+import json
+from zoomus import ZoomClient
+
+client = ZoomClient('API_KEY', 'API_SECRET', base_uri="https://eu01api-www4local.zoom.us/v2")
+```
+
 ### Create the client v1
 
-Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows.
+Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows. Note, we have stopped support for the V1 API, so there is only limited functionality and no new V1 API functionality is likely to be added.
 
 ```python
 import json
 from zoomus import ZoomClient
 
 client = ZoomClient('API_KEY', 'API_SECRET', version=1)
-
-user_list_response = client.user.list()
-user_list = json.loads(user_list_response.content)
-
-for user in user_list['users']:
-    user_id = user['id']
-    print(json.loads(client.meeting.list(host_id=user_id).content))
 ```
 
 ### Using with a manage context
@@ -80,6 +86,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.create(...)
 * client.user.cust_create(...)
 * client.user.update(...)*
+* client.user.check_email(...)
+* client.user.update_email(...)
 * client.user.list(...)
 * client.user.pending(...)
 * client.user.get(...)
@@ -91,6 +99,9 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.meeting.delete(...)
 * client.meeting.list(...)
 * client.meeting.update(...)
+* client.meeting.add_registrant(...)
+* client.meeting.list_registrants(...)
+* client.meeting.update_registrant_status(...)
 
 * client.report.get_account_report(...)
 * client.report.get_user_report(...)
@@ -102,12 +113,23 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.webinar.get(...)
 * client.webinar.end(...)
 * client.webinar.register(...)
+* client.webinar.add_panelists(...)
+* client.webinar.list_panelists(...)
+* client.webinar.remove_panelists(...)
 
 * client.phone.call_logs(...)
 * client.phone.calling_plans(...)
 * client.phone.numbers_get(...)
 * client.phone.numbers_list(...)
 * client.phone.users(...)
+
+* client.group.list(...)
+* client.group.create(...)
+* client.group.get(...)
+* client.group.delete(...)
+* client.group.list_members(...)
+* client.group.add_members(...)
+* client.group.delete_member(...)
 
 ## Running the Tests
 
