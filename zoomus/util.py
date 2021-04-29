@@ -10,9 +10,9 @@ import requests
 import time
 import jwt
 
-
 API_VERSION_1 = 1
 API_VERSION_2 = 2
+API_GDPR = "gdpr"
 
 
 class ApiClient(object):
@@ -158,7 +158,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
-            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
+            headers = {
+                "Authorization": "Bearer {}".format(self.config.get("token")),
+                "Content-Type": "application/json",
+            }
         return requests.delete(
             self.url_for(endpoint),
             params=params,
@@ -182,7 +185,10 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
-            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
+            headers = {
+                "Authorization": "Bearer {}".format(self.config.get("token")),
+                "Content-Type": "application/json",
+            }
         return requests.put(
             self.url_for(endpoint),
             params=params,
@@ -259,7 +265,7 @@ def generate_jwt(key, secret):
     payload = {"iss": key, "exp": int(time.time() + 3600)}
 
     token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
-    return token.decode("utf-8")
+    return token
 
 
 def encode_uuid(val):

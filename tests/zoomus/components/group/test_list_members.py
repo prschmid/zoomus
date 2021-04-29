@@ -12,9 +12,9 @@ def suite():
     return suite
 
 
-class ParticipantsV2TestCase(unittest.TestCase):
+class MembersV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.past_meeting.PastMeetingComponentV2(
+        self.component = components.group.GroupComponentV2(
             base_uri="http://www.foo.com",
             config={"version": util.API_VERSION_2, "token": "token"},
         )
@@ -23,18 +23,18 @@ class ParticipantsV2TestCase(unittest.TestCase):
     def test_can_list(self):
         responses.add(
             responses.GET,
-            "http://www.foo.com/past_meetings/ID/participants",
+            "http://www.foo.com/groups/ID/members",
         )
-        self.component.get_participants(meeting_id="ID")
+        self.component.list_members(groupid="ID")
         expected_headers = {"Authorization": "Bearer token"}
         actual_headers = responses.calls[0].request.headers
         self.assertTrue(
             set(expected_headers.items()).issubset(set(actual_headers.items()))
         )
 
-    def test_requires_user_id(self):
-        with self.assertRaisesRegexp(ValueError, "'meeting_id' must be set"):
-            self.component.get_participants()
+    def test_requires_group_id(self):
+        with self.assertRaisesRegexp(ValueError, "'groupid' must be set"):
+            self.component.list_members()
 
 
 if __name__ == "__main__":

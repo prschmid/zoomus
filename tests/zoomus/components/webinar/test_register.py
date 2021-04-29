@@ -82,7 +82,8 @@ class RegisterV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_register(self):
         responses.add(
-            responses.POST, "http://foo.com/webinars/42/registrants",
+            responses.POST,
+            "http://foo.com/webinars/42/registrants",
         )
         response = self.component.register(
             id="42", email="foo@bar.com", first_name="Foo", last_name="Bar"
