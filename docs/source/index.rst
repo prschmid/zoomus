@@ -96,7 +96,7 @@ Create user using API V2:
   params = {
     "action": "create",
     "user_info": {
-      "email": "dhjdfkghdskjf@fgkjfdlgjfkd.gh",
+      "email": "example@test.com",
       "type": 1,
       "first_name": "Terry",
       "last_name": "Jones"
