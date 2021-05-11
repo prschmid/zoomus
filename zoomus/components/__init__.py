@@ -14,4 +14,5 @@ from . import (
     report,
     user,
     webinar,
+    room,
 )

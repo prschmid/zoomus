@@ -62,6 +62,7 @@ class ZoomClientTestCase(unittest.TestCase):
                     "user",
                     "webinar",
                     "group",
+                    "room",
                 ]
             ),
             set(client.components.keys()),
@@ -100,6 +101,9 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertIsInstance(
             client.components["live_stream"],
             components.live_stream.LiveStreamComponentV2,
+        )
+        self.assertIsInstance(
+            client.components["room"], components.room.RoomComponentV2
         )
 
     def test_api_version_defaults_to_2(self):
@@ -199,6 +203,10 @@ class ZoomClientTestCase(unittest.TestCase):
     def test_can_get_group_component(self):
         client = ZoomClient("KEY", "SECRET")
         self.assertIsInstance(client.group, components.group.GroupComponentV2)
+
+    def test_can_get_room_component(self):
+        client = ZoomClient("KEY", "SECRET")
+        self.assertIsInstance(client.room, components.room.RoomComponentV2)
 
     def test_can_use_client_with_context(self):
         with ZoomClient("KEY", "SECRET") as client:

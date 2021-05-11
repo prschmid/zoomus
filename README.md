@@ -131,6 +131,15 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.group.add_members(...)
 * client.group.delete_member(...)
 
+* client.room.list(...)
+* client.room.create(...)
+* client.room.get(...)
+* client.room.get_settings(...)
+* client.room.get_devices(...)
+* client.room.delete(...)
+* client.room.check_in_or_out(...)
+* client.room.update(...)
+
 ## Running the Tests
 
 ### Simple
