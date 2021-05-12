@@ -10,6 +10,7 @@ def suite():
     suite.addTest(unittest.makeSuite(UpdateStatusV2TestCase))
     return suite
 
+
 class UpdateStatusV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.meeting.MeetingComponentV2(
