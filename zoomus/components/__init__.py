@@ -12,7 +12,7 @@ from . import (
     phone,
     recording,
     report,
+    room,
     user,
     webinar,
-    room,
 )
