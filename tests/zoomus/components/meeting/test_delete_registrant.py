@@ -27,10 +27,10 @@ class DeleteRegistrantV2TestCase(unittest.TestCase):
     def test_can_delete_registrant(self):
         responses.add(
             responses.DELETE,
-            "http://foo.com/meetings/1/registrants/1",
+            "http://foo.com/meetings/ID/registrants/REGISTRANT_ID",
         )
         self.component.delete_registrant(
-            id="1", registrant_id ="1"
+            id="ID", registrant_id ="REGISTRANT_ID"
         )
 
     def test_requires_meeting_id(self):
