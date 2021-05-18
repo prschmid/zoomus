@@ -77,6 +77,12 @@ class MeetingComponentV2(base.BaseComponent):
             "/meetings/{}/registrants".format(kwargs.get("id")), data=kwargs
         )
 
+    def delete_registrant(self, **kwargs):
+        util.require_keys(kwargs, ["id", "registrant_id"])
+        return self.delete_request(
+            "/meetings/{}/registrants/{}".format(kwargs.get("id"), kwargs.get("registrant_id")), data=kwargs
+        )
+
     def list_registrants(self, **kwargs):
         util.require_keys(kwargs, "id")
         return self.get_request(
