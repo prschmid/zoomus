@@ -92,6 +92,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.pending(...)
 * client.user.get(...)
 * client.user.get_by_email(...)
+* client.user.get_settings(...)
+* client.user.update_settings(...)
 
 * client.meeting.get(...)
 * client.meeting.end(...)
@@ -102,6 +104,7 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.meeting.add_registrant(...)
 * client.meeting.list_registrants(...)
 * client.meeting.update_registrant_status(...)
+* client.meeting.update_status(...)
 
 * client.report.get_account_report(...)
 * client.report.get_user_report(...)
@@ -130,6 +133,15 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.group.list_members(...)
 * client.group.add_members(...)
 * client.group.delete_member(...)
+
+* client.room.list(...)
+* client.room.create(...)
+* client.room.get(...)
+* client.room.get_settings(...)
+* client.room.get_devices(...)
+* client.room.delete(...)
+* client.room.check_in_or_out(...)
+* client.room.update(...)
 
 ## Running the Tests
 

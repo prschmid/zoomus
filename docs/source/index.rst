@@ -144,6 +144,10 @@ Zoom User Methods provided by zoomus client:
 
   client.user.get_by_email(...)
 
+  client.user.get_settings(...)
+
+  client.user.update_settings(...)
+
 
 .. _Zoom Meeting Methods provided by zoomus client:
 
@@ -170,6 +174,8 @@ Zoom Meeting Methods provided by zoomus client:
   client.meeting.list_registrants(...)
 
   client.meeting.update_registrant_status(...)
+
+  client.meeting.update_status(...)
 
 
 .. _Zoom Report Methods provided by zoomus client:
@@ -256,6 +262,27 @@ Zoom Groups Methods provided by zoomus client:
 
   client.group.delete_member(...)
 
+Zoom Rooms Methods provided by zoomus client:
+**********************************************
+*Refer Zoom Rooms API Docs for params info* `https://marketplace.zoom.us/docs/api-reference/zoom-api/rooms/`
+
+::
+
+  client.room.list(...)
+
+  client.room.create(...)
+
+  client.room.get(...)
+
+  client.room.get_settings(...)
+
+  client.room.get_devices(...)
+
+  client.room.delete(...)
+
+  client.room.check_in_or_out(...)
+
+  client.room.update(...)
 
 .. _Running the Tests:
 
