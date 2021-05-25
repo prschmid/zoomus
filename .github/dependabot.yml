@@ -1,0 +1,38 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - prschmid
+  assignees:
+  - prschmid
+  labels:
+  - dependencies
+  ignore:
+  - dependency-name: black
+    versions:
+    - 21.4b0
+    - 21.4b1
+  - dependency-name: pre-commit
+    versions:
+    - 2.10.1
+    - 2.11.0
+    - 2.11.1
+    - 2.12.0
+    - 2.12.1
+  - dependency-name: responses
+    versions:
+    - 0.13.0
+    - 0.13.1
+    - 0.13.2
+  - dependency-name: tox
+    versions:
+    - 3.21.4
+    - 3.22.0
+    - 3.23.0
+  - dependency-name: coverage
+    versions:
+    - "5.5"
