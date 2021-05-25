@@ -52,6 +52,7 @@ class ZoomClientTestCase(unittest.TestCase):
             set(
                 [
                     "contacts",
+                    "group",
                     "live_stream",
                     "meeting",
                     "metric",
@@ -59,10 +60,9 @@ class ZoomClientTestCase(unittest.TestCase):
                     "phone",
                     "recording",
                     "report",
+                    "room",
                     "user",
                     "webinar",
-                    "group",
-                    "room",
                 ]
             ),
             set(client.components.keys()),
