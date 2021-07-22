@@ -1,6 +1,6 @@
 # zoomus
 
-[![Build Status](https://img.shields.io/travis/prschmid/zoomus)](https://travis-ci.org/prschmid/zoomus)
+[![Build Status](https://img.shields.io/travis/prschmid/zoomus)](https://travis-ci.com/prschmid/zoomus)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/zoomus)](https://pypi.org/project/zoomus/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/zoomus)](https://pypi.org/project/zoomus/)
 [![PyPI Version](https://img.shields.io/pypi/v/zoomus)](https://pypi.org/project/zoomus/)
@@ -23,7 +23,7 @@ pip install zoomus
 
 ## Compatibility
 
-`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.org/prschmid/zoomus)
+`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.com/github/prschmid/zoomus)
 
 Note, as this library heavily depends on the [requests](https://pypi.org/project/requests/) library, official compatibility is limited to the official compatibility of `requests`.
 
