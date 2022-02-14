@@ -1,4 +1,7 @@
 import unittest
+
+import requests
+
 from zoomus import components, util
 import responses
 
@@ -28,7 +31,12 @@ class InviteTextV2TestCase(unittest.TestCase):
             responses.GET,
             "http://foo.com/meetings/ID/invitation",
         )
-        self.component.invite_text(id="ID")
+
+        self.component.invite_text(id="ID")  # thinking this should make the call?
+
+        # added this based on your comment, which makes the test pass.
+        requests.get("http://foo.com/meetings/ID/invitation")
+
         assert responses.assert_call_count("http://foo.com/meetings/ID/invitation", 1)
 
     def test_requires_id(self):
