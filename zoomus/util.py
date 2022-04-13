@@ -2,13 +2,13 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from urllib.parse import quote
-
 import contextlib
 import json
-import requests
 import time
+from urllib.parse import quote
+
 import jwt
+import requests
 
 API_VERSION_1 = 1
 API_VERSION_2 = 2
@@ -85,7 +85,7 @@ class ApiClient(object):
         )
 
     def post_request(
-        self, endpoint, params=None, data=None, headers=None, cookies=None
+        self, endpoint, params=None, data=None, headers=None, cookies=None, files=None
     ):
         """Helper function for POST requests
 
@@ -99,10 +99,15 @@ class ApiClient(object):
         """
         if data and not is_str_type(data):
             data = json.dumps(data)
-        if headers is None and self.config.get("version") == API_VERSION_2:
+        if headers is None and self.config.get("version") == API_VERSION_2 and files is None:
             headers = {
                 "Authorization": "Bearer {}".format(self.config.get("token")),
                 "Content-Type": "application/json",
+            }
+        elif headers is None and self.config.get("version") == API_VERSION_2 and files is not None:
+            headers = {
+                "Authorization": "Bearer {}".format(self.config.get("token")),
+                "Accept": "application/json",
             }
         return requests.post(
             self.url_for(endpoint),
@@ -111,6 +116,7 @@ class ApiClient(object):
             headers=headers,
             cookies=cookies,
             timeout=self.timeout,
+            files=files,
         )
 
     def patch_request(

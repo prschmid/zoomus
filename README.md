@@ -94,6 +94,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.get_by_email(...)
 * client.user.get_settings(...)
 * client.user.update_settings(...)
+* client.user.upload_picture(...)
+* client.user.remove_picture(...)
 
 * client.meeting.get(...)
 * client.meeting.end(...)

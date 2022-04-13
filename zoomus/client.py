@@ -3,8 +3,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from zoomus import components, util
-from zoomus.util import API_VERSION_1, API_VERSION_2, API_GDPR
-
+from zoomus.util import API_GDPR, API_VERSION_1, API_VERSION_2
 
 API_BASE_URIS = {
     API_VERSION_1: "https://api.zoom.us/v1",
@@ -31,7 +30,7 @@ COMPONENT_CLASSES = {
         "recording": components.recording.RecordingComponentV2,
         "report": components.report.ReportComponentV2,
         "room": components.room.RoomComponentV2,
-        "user": components.user.UserComponentV2,
+        "user": components.user.UserComponentV3,
         "webinar": components.webinar.WebinarComponentV2,
     },
 }

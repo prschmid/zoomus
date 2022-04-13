@@ -22,7 +22,7 @@ class BaseComponent(util.ApiClient):
         )
 
     def post_request(
-        self, endpoint, params=None, data=None, headers=None, cookies=None
+        self, endpoint, params=None, data=None, headers=None, cookies=None, files=None
     ):
         """Helper function for POST requests
 
@@ -48,5 +48,5 @@ class BaseComponent(util.ApiClient):
                 "Content-Type": "application/json",
             }
         return super(BaseComponent, self).post_request(
-            endpoint, params=params, data=data, headers=headers, cookies=cookies
+            endpoint, params=params, data=data, headers=headers, cookies=cookies, files=files
         )
