@@ -59,5 +59,29 @@ class DeleteV2TestCase(unittest.TestCase):
             self.component.delete()
 
 
+class DeleteSingleRecordingV2TestCase(unittest.TestCase):
+    def setUp(self):
+        self.component = components.recording.RecordingComponentV2(
+            base_uri="http://foo.com",
+            config={
+                "api_key": "KEY",
+                "api_secret": "SECRET",
+                "version": util.API_VERSION_2,
+            },
+        )
+
+    @responses.activate
+    def test_can_delete(self):
+        responses.add(
+            responses.DELETE,
+            "http://foo.com/meetings/42/recordings/abc-bca?meeting_id=42&recording_id=abc-bca",
+        )
+        self.component.delete_single_recording(meeting_id="42", recording_id="abc-bca")
+
+    def test_requires_id(self):
+        with self.assertRaisesRegexp(ValueError, "'recording_id' must be set"):
+            self.component.delete_single_recording(meeting_id="42")
+
+
 if __name__ == "__main__":
     unittest.main()

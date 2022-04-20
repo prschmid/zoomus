@@ -51,3 +51,14 @@ class RecordingComponentV2(base.BaseComponent):
         return self.delete_request(
             "/meetings/{}/recordings".format(kwargs.get("meeting_id")), params=kwargs
         )
+
+    def delete_single_recording(self, **kwargs):
+        util.require_keys(kwargs, "meeting_id")
+        util.require_keys(kwargs, "recording_id")
+        return self.delete_request(
+            "/meetings/{}/recordings/{}".format(
+                kwargs.get("meeting_id"),
+                kwargs.get("recording_id"),
+            ),
+            params=kwargs,
+        )
