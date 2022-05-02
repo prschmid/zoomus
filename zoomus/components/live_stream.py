@@ -76,8 +76,9 @@ class LiveStreamComponentV2(base.BaseComponent):
         requests.Response: The response object
         """
         util.require_keys(kwargs, "meeting_id")
-        return self.get_request("/meetings/{}/livestream".format(kwargs.get("meeting_id")),
-                                 params=kwargs)
+        return self.get_request(
+            "/meetings/{}/livestream".format(kwargs.get("meeting_id")), params=kwargs
+        )
 
     def update_webinar(self, **kwargs):
         """
@@ -131,7 +132,6 @@ class LiveStreamComponentV2(base.BaseComponent):
             data=kwargs,
         )
 
-
     def get_webinar_livestream(self, **kwargs):
         """Get the webinar's live stream details
         Expects:
@@ -149,5 +149,6 @@ class LiveStreamComponentV2(base.BaseComponent):
         requests.Response: The response object
         """
         util.require_keys(kwargs, "webinar_id")
-        return self.get_request("/webinars/{}/livestream".format(kwargs.get("webinar_id")),
-                                 params=kwargs)
+        return self.get_request(
+            "/webinars/{}/livestream".format(kwargs.get("webinar_id")), params=kwargs
+        )

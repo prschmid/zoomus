@@ -1,7 +1,7 @@
 import unittest
+import responses
 
 from zoomus import components, util
-import responses
 
 
 def suite():
@@ -54,7 +54,6 @@ class UpdateV2TestCase(unittest.TestCase):
             self.component.update()
             self.assertEqual(context.exception.message, "'meeting_id' must be set")
 
-
     @responses.activate
     def test_can_update_webinars(self):
         responses.add(responses.PATCH, "http://foo.com/webinars/42/livestream")
@@ -86,6 +85,7 @@ class UpdateV2TestCase(unittest.TestCase):
         with self.assertRaises(ValueError) as context:
             self.component.update_webinar()
             self.assertEqual(context.exception.message, "'webinar_id' must be set")
+
 
 if __name__ == "__main__":
     unittest.main()
