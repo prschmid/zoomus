@@ -221,8 +221,6 @@ def is_str_type(val):
              instance of str or unicode. In python3 it will return ``True`` if
              it is an instance of str
     """
-    with ignored(NameError):
-        return isinstance(val, basestring)
     return isinstance(val, str)
 
 
