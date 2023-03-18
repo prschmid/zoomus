@@ -37,7 +37,7 @@ As Zoom's default is now the V2 API, the client will default to the V2 version o
 import json
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET')
+client = ZoomClient('API_KEY', 'API_SECRET','API_ACCOUNT_ID')
 
 user_list_response = client.user.list()
 user_list = json.loads(user_list_response.content)
@@ -59,7 +59,7 @@ Caution, the EU endpoint will not function unless your account is an EU account 
 import json
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET', base_uri="https://eu01api-www4local.zoom.us/v2")
+client = ZoomClient('API_KEY', 'API_SECRET','API_ACCOUNT_ID', base_uri="https://eu01api-www4local.zoom.us/v2")
 ```
 
 ### Create the client v1

@@ -46,6 +46,7 @@ class ZoomClient(util.ApiClient):
         self,
         api_key,
         api_secret,
+        api_account,
         data_type="json",
         timeout=15,
         version=API_VERSION_2,
@@ -55,6 +56,7 @@ class ZoomClient(util.ApiClient):
 
         :param api_key: The Zooom.us API key
         :param api_secret: The Zoom.us API secret
+        :param api_account: The Zoom.us API secret
         :param data_type: The expected return data type. Either 'json' or 'xml'
         :param timeout: The time out to use for API requests
         :param version: The API version to use (Default is V2). The available
@@ -77,10 +79,11 @@ class ZoomClient(util.ApiClient):
         self.config = {
             "api_key": api_key,
             "api_secret": api_secret,
+            "api_account": api_account,
             "data_type": data_type,
             "version": version,
             "base_uri": base_uri,
-            "token": util.generate_jwt(api_key, api_secret),
+            "token": util.generate_jwt(api_key, api_secret, api_account),
         }
 
         # Instantiate the components
@@ -97,7 +100,7 @@ class ZoomClient(util.ApiClient):
 
     def refresh_token(self):
         self.config["token"] = (
-            util.generate_jwt(self.config["api_key"], self.config["api_secret"]),
+            util.generate_jwt(self.config["api_key"], self.config["api_secret"], self.config["api_account"]),
         )
 
     @property
