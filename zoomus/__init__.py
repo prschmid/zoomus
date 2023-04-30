@@ -3,7 +3,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from zoomus.client import ZoomClient
-from zoomus.clientServerToServerOAuth import ZoomClientServerToServerOAuth
+from zoomus.client_s2s_oauth import ZoomClientServerToServerOAuth
 from zoomus.util import API_VERSION_1, API_VERSION_2
 
 
