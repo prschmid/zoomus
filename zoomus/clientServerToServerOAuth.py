@@ -3,9 +3,9 @@ import base64
 import requests
 
 
-# The currently availible library for Zoom still uses JWT. We will extend it
+# The currently available library for Zoom still uses JWT. We will extend it
 # and override a few things to get it working with Server-to-Server OAuth.
-# Fortunatly, it all comes down to bearer tokens in the end, so we just need
+# Fortunately, it all comes down to bearer tokens in the end, so we just need
 # to patch a few things.
 class ZoomClientServerToServerOAuth(zoomus.util.ApiClient):
     def __init__(
