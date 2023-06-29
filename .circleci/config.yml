@@ -1,0 +1,30 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+
+jobs:
+  test
+    executor: python/default # use the default executor defined within the orb
+    steps:
+      - checkout # checkout source code
+      - python/install-packages:
+          pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: requirements.txt
+          pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: requirements-test.txt
+          pkg-manager: pip
+      - run:
+          name: Run tests
+          command: nosetests
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+workflows:
+  main:
+    jobs:
+      - test
