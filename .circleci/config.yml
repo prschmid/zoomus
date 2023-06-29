@@ -4,7 +4,7 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-  test
+  test:
     executor: python/default # use the default executor defined within the orb
     steps:
       - checkout # checkout source code
