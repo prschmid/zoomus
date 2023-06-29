@@ -4,7 +4,7 @@ orbs:
   python: circleci/python@2.1.1
 
 jobs:
-  test:
+  build_and_test:
     docker:
       - image: cimg/python:3.11.4
     steps:
@@ -12,10 +12,7 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
       - python/install-packages:
-          pip-dependency-file: requirements.txt
-          pkg-manager: pip
-      - python/install-packages:
-          pip-dependency-file: requirements-test.txt
+          pip-dependency-file: requirements-tests.txt
           pkg-manager: pip
       - run:
           name: Run tests
@@ -28,4 +25,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - test
+      - build_and_test
