@@ -4,14 +4,15 @@ from __future__ import absolute_import, unicode_literals
 
 from urllib.parse import quote
 
+import base64
 import contextlib
 import json
 import requests
 import time
-import jwt
 
 API_VERSION_1 = 1
 API_VERSION_2 = 2
+API_GDPR = "gdpr"
 
 
 class ApiClient(object):
@@ -258,12 +259,24 @@ def date_to_str(d):
     return d.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def generate_jwt(key, secret):
-    header = {"alg": "HS256", "typ": "JWT"}
+def generate_token(oauth_uri, key, secret, account_id):
+    base64_auth_string = base64.b64encode(f"{key}:{secret}".encode("ascii")).decode(
+        "ascii"
+    )
 
-    payload = {"iss": key, "exp": int(time.time() + 3600)}
+    # Define the payload
+    payload = {
+        "grant_type": "account_credentials",
+        "account_id": account_id,
+    }
+    # Define the headers
+    headers = {
+        "Authorization": f"Basic {base64_auth_string}",
+    }
 
-    token = jwt.encode(payload, secret, algorithm="HS256", headers=header)
+    # Make the request
+    response = requests.post(oauth_uri, data=payload, headers=headers)
+    token = response.json().get("access_token")
     return token
 
 

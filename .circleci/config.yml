@@ -1,0 +1,31 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/python:3.9.16
+    steps:
+      - checkout # checkout source code
+      - python/install-packages:
+          pkg-manager: pip
+      - python/install-packages:
+          pip-dependency-file: requirements-tests.txt
+          pkg-manager: pip
+      - run:
+          name: Check Formatting
+          command: black --check --target-version py39 zoomus
+      - run:
+          name: Run tests
+          command: nosetests
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+workflows:
+  main:
+    jobs:
+      - build_and_test

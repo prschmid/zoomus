@@ -1,6 +1,6 @@
 # zoomus
 
-[![Build Status](https://img.shields.io/travis/prschmid/zoomus)](https://travis-ci.org/prschmid/zoomus)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/prschmid/zoomus/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/prschmid/zoomus/tree/main)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/zoomus)](https://pypi.org/project/zoomus/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/zoomus)](https://pypi.org/project/zoomus/)
 [![PyPI Version](https://img.shields.io/pypi/v/zoomus)](https://pypi.org/project/zoomus/)
@@ -23,7 +23,7 @@ pip install zoomus
 
 ## Compatibility
 
-`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.org/prschmid/zoomus)
+`zoomus` has been tested for Python 3.6, 3.7, and 3.8 using [Travis CI](https://travis-ci.com/github/prschmid/zoomus)
 
 Note, as this library heavily depends on the [requests](https://pypi.org/project/requests/) library, official compatibility is limited to the official compatibility of `requests`.
 
@@ -37,7 +37,7 @@ As Zoom's default is now the V2 API, the client will default to the V2 version o
 import json
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET')
+client = ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID')
 
 user_list_response = client.user.list()
 user_list = json.loads(user_list_response.content)
@@ -49,28 +49,34 @@ for user in user_list['users']:
 
 What one will note is that the returned object from a call using the client is a [requests](https://pypi.org/project/requests/) `Response` object. This is done so that if there is any error working with the API that one has complete control of handling all errors. As such, to actually get the list of users in the example above, one will have to load the JSON from the content of the `Response` object that is returned.
 
-### Create the client v1
+### Create the client for EU users needing GDPR compliance
 
-Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows.
+Zoom has EU specific endpoints that can be used to meet GDPR compliance. In oder for youto make use of those, simply set the base_uri to the appropriate one when initializing the client. For more details on the Zoom API, please refer to the [Zoom API documentation](https://marketplace.zoom.us/docs/api-reference/introduction)
+
+Caution, the EU endpoint will not function unless your account is an EU account and has been setup as such with Zoom.
 
 ```python
 import json
 from zoomus import ZoomClient
 
-client = ZoomClient('API_KEY', 'API_SECRET', version=1)
+client = ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID', base_uri="https://eu01api-www4local.zoom.us/v2")
+```
 
-user_list_response = client.user.list()
-user_list = json.loads(user_list_response.content)
+### Create the client v1
 
-for user in user_list['users']:
-    user_id = user['id']
-    print(json.loads(client.meeting.list(host_id=user_id).content))
+Zoom has yet to officially remove support for the V1 API, and so to use the V1 API one can instantiate a client as follows. Note, we have stopped support for the V1 API, so there is only limited functionality and no new V1 API functionality is likely to be added.
+
+```python
+import json
+from zoomus import ZoomClient
+
+client = ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID', version=1)
 ```
 
 ### Using with a manage context
 
 ```python
-with ZoomClient('API_KEY', 'API_SECRET') as client:
+with ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID') as client:
     user_list_response = client.users.list()
     ...
 ```
@@ -86,6 +92,8 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.user.pending(...)
 * client.user.get(...)
 * client.user.get_by_email(...)
+* client.user.get_settings(...)
+* client.user.update_settings(...)
 
 * client.meeting.get(...)
 * client.meeting.end(...)
@@ -96,6 +104,7 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.meeting.add_registrant(...)
 * client.meeting.list_registrants(...)
 * client.meeting.update_registrant_status(...)
+* client.meeting.update_status(...)
 
 * client.report.get_account_report(...)
 * client.report.get_user_report(...)
@@ -124,6 +133,15 @@ with ZoomClient('API_KEY', 'API_SECRET') as client:
 * client.group.list_members(...)
 * client.group.add_members(...)
 * client.group.delete_member(...)
+
+* client.room.list(...)
+* client.room.create(...)
+* client.room.get(...)
+* client.room.get_settings(...)
+* client.room.get_devices(...)
+* client.room.delete(...)
+* client.room.check_in_or_out(...)
+* client.room.update(...)
 
 ## Running the Tests
 

@@ -44,7 +44,7 @@ class BaseComponentTestCase(unittest.TestCase):
         component.post_request("foo", params={"foo": "bar"})
 
     @responses.activate
-    def test_v2_post_request_passes_jwt_token(self):
+    def test_v2_post_request_passes_token(self):
         component = components.base.BaseComponent(
             base_uri="http://www.foo.com",
             config={
