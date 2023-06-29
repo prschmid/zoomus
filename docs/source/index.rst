@@ -1,4 +1,4 @@
-**Zoomus 1.1.5**
+**Zoomus 1.2.0**
 ================
 
 |Build Status|
