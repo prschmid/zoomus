@@ -6,7 +6,7 @@ orbs:
 jobs:
   test:
     executor: python/default
-      tag: '3.11'
+    tag: '3.11'
     steps:
       - checkout # checkout source code
       - python/install-packages:
