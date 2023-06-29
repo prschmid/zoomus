@@ -1,6 +1,6 @@
 # zoomus
 
-[![Build Status](https://img.shields.io/travis/prschmid/zoomus)](https://travis-ci.com/prschmid/zoomus)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/prschmid/zoomus/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/prschmid/zoomus/tree/main)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/zoomus)](https://pypi.org/project/zoomus/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/zoomus)](https://pypi.org/project/zoomus/)
 [![PyPI Version](https://img.shields.io/pypi/v/zoomus)](https://pypi.org/project/zoomus/)
