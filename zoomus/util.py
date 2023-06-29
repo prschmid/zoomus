@@ -260,9 +260,10 @@ def date_to_str(d):
 
 
 def generate_token(oauth_uri, key, secret, account_id):
-    base64_auth_string = base64.b64encode(f"{key}:{secret}".encode("ascii")) \
-                               .decode("ascii")
-    
+    base64_auth_string = base64.b64encode(f"{key}:{secret}".encode("ascii")).decode(
+        "ascii"
+    )
+
     # Define the payload
     payload = {
         "grant_type": "account_credentials",
@@ -275,7 +276,7 @@ def generate_token(oauth_uri, key, secret, account_id):
 
     # Make the request
     response = requests.post(oauth_uri, data=payload, headers=headers)
-    token = response.json().get('access_token')
+    token = response.json().get("access_token")
     return token
 
 

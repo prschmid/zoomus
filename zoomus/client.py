@@ -70,7 +70,7 @@ class ZoomClient(util.ApiClient):
                          overriden so that the GDPR compliant base URI can
                          be used in the EU.
         :param oauth_uri: Set the URI to use to get an OAuth token. By default
-                          this is set to what is defined by the constant 
+                          this is set to what is defined by the constant
                           OAUTH_URI
         """
         try:
@@ -113,7 +113,7 @@ class ZoomClient(util.ApiClient):
                 self.config["oauth_uri"],
                 self.config["api_key"],
                 self.config["api_secret"],
-                self.config["api_account_id"]
+                self.config["api_account_id"],
             ),
         )
 
