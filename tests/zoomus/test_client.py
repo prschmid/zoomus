@@ -17,7 +17,6 @@ def suite():
 
 
 class ZoomClientTestCase(unittest.TestCase):
-
     @mock.patch("zoomus.client.util.generate_token")
     def test_invalid_api_version_raises_error(self, mock_token):
         with self.assertRaisesRegexp(RuntimeError, "API version not supported: 42"):
@@ -51,6 +50,7 @@ class ZoomClientTestCase(unittest.TestCase):
                     "phone",
                     "recording",
                     "report",
+                    "role",
                     "room",
                     "user",
                     "webinar",
@@ -96,6 +96,9 @@ class ZoomClientTestCase(unittest.TestCase):
         self.assertIsInstance(
             client.components["room"], components.room.RoomComponentV2
         )
+        self.assertIsInstance(
+            client.components["role"], components.role.RoleComponentV2
+        )
 
     @mock.patch("zoomus.client.util.generate_token")
     def test_api_version_defaults_to_2(self, mock_token):
@@ -117,7 +120,9 @@ class ZoomClientTestCase(unittest.TestCase):
 
     @mock.patch("zoomus.client.util.generate_token")
     def test_can_set_base_uri_to_gdpr(self, mock_token):
-        client = ZoomClient("KEY", "SECRET", "ACCOUNT_ID", base_uri=API_BASE_URIS[util.API_GDPR])
+        client = ZoomClient(
+            "KEY", "SECRET", "ACCOUNT_ID", base_uri=API_BASE_URIS[util.API_GDPR]
+        )
         self.assertEqual(client.config["version"], util.API_VERSION_2)
         for key in client.components.keys():
             self.assertEqual(
@@ -127,7 +132,11 @@ class ZoomClientTestCase(unittest.TestCase):
     @mock.patch("zoomus.client.util.generate_token")
     def test_can_set_custom_base_uri(self, mock_token):
         client = ZoomClient(
-            "KEY", "SECRET", "ACCOUNT_ID", version=util.API_VERSION_1, base_uri="https://www.test.com"
+            "KEY",
+            "SECRET",
+            "ACCOUNT_ID",
+            version=util.API_VERSION_1,
+            base_uri="https://www.test.com",
         )
         self.assertEqual(client.config["version"], util.API_VERSION_1)
         for key in client.components.keys():
@@ -135,7 +144,9 @@ class ZoomClientTestCase(unittest.TestCase):
 
     @mock.patch("zoomus.client.util.generate_token")
     def test_can_set_api_version_to_1_and_set_custom_base_uri(self, mock_token):
-        client = ZoomClient("KEY", "SECRET", "ACCOUNT_ID", base_uri=API_BASE_URIS[util.API_GDPR])
+        client = ZoomClient(
+            "KEY", "SECRET", "ACCOUNT_ID", base_uri=API_BASE_URIS[util.API_GDPR]
+        )
         self.assertEqual(client.config["version"], util.API_VERSION_2)
         for key in client.components.keys():
             self.assertEqual(
@@ -217,6 +228,11 @@ class ZoomClientTestCase(unittest.TestCase):
     def test_can_get_room_component(self, mock_token):
         client = ZoomClient("KEY", "SECRET", "ACCOUNT_ID")
         self.assertIsInstance(client.room, components.room.RoomComponentV2)
+
+    @mock.patch("zoomus.client.util.generate_token")
+    def test_can_get_role_component(self, mock_token):
+        client = ZoomClient("KEY", "SECRET", "ACCOUNT_ID")
+        self.assertIsInstance(client.role, components.role.RoleComponentV2)
 
     @mock.patch("zoomus.client.util.generate_token")
     def test_can_use_client_with_context(self, mock_token):
