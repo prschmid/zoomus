@@ -143,6 +143,15 @@ with ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID') as client:
 * client.room.check_in_or_out(...)
 * client.room.update(...)
 
+* client.role.assign(...)
+* client.role.create(...)
+* client.role.delete(...)
+* client.role.get(...)
+* client.role.get_members(...)
+* client.role.list(...)
+* client.role.unassign(...)
+* client.role.update(...)
+
 ## Running the Tests
 
 ### Simple
