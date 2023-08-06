@@ -25,9 +25,7 @@ class DeleteAssistantV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_add_assistants(self):
         responses.add(responses.DELETE, "http://foo.com/users/ID/assistants/ASSISTID")
-        response = self.component.delete_assistant(
-            id="ID", assistant_id="ASSISTID"
-        )
+        response = self.component.delete_assistant(id="ID", assistant_id="ASSISTID")
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):

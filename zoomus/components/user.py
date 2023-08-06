@@ -112,34 +112,30 @@ class UserComponentV2(base.BaseComponent):
         return self.get_request(
             "/users/{}/settings".format(kwargs.pop("id")), params=kwargs
         )
-    
+
     def add_assistants(self, **kwargs):
         util.require_keys(kwargs, ["id", "assistants"])
-        body = {
-            "assistants": kwargs['assistants']
-        }
+        body = {"assistants": kwargs["assistants"]}
 
         return self.post_request(
             "/users/{}/assistants".format(kwargs.pop("id")), data=kwargs
         )
-    
+
     def list_assistants(self, **kwargs):
         util.require_keys(kwargs, "id")
 
-        return self.get_request(
-            "/users/{}/assistants".format(kwargs.pop("id"))
-        )
-    
+        return self.get_request("/users/{}/assistants".format(kwargs.pop("id")))
+
     def delete_assistant(self, **kwargs):
         util.require_keys(kwargs, ["id", "assistant_id"])
 
         return self.delete_request(
-            "/users/{id}/assistants/{assistant_id}".format(id=kwargs.pop("id"), assistant_id=kwargs['assistant_id'])
+            "/users/{id}/assistants/{assistant_id}".format(
+                id=kwargs.pop("id"), assistant_id=kwargs["assistant_id"]
+            )
         )
-    
+
     def delete_all_assistants(self, **kwargs):
         util.require_keys(kwargs, "id")
 
-        return self.delete_request(
-            "/users/{}/assistants".format(kwargs.pop("id"))
-        )
+        return self.delete_request("/users/{}/assistants".format(kwargs.pop("id")))

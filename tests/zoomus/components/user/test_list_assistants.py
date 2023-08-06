@@ -25,9 +25,7 @@ class ListAssistantV2TestCase(unittest.TestCase):
     @responses.activate
     def test_can_list_assistants(self):
         responses.add(responses.GET, "http://foo.com/users/ID/assistants")
-        response = self.component.list_assistants(
-            id="ID"
-        )
+        response = self.component.list_assistants(id="ID")
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
