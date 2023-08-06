@@ -94,6 +94,10 @@ with ZoomClient('API_KEY', 'API_SECRET', 'ACCOUNT_ID') as client:
 * client.user.get_by_email(...)
 * client.user.get_settings(...)
 * client.user.update_settings(...)
+* client.user.add_assistants(...)
+* client.user.delete_all_assistants(...)
+* client.user.delete_assistant(...)
+* client.user.list_assistants(...)
 
 * client.meeting.get(...)
 * client.meeting.end(...)
