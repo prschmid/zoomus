@@ -244,7 +244,7 @@ class ZoomClientTestCase(unittest.TestCase):
         client = ZoomClient("KEY", "SECRET", "ACCOUNT_ID")
         client.refresh_token()
         mock_token.assert_called_with(OAUTH_URI, "KEY", "SECRET", "ACCOUNT_ID")
-        self.assertEqual(client.config["token"], (mock_token.return_value,))
+        self.assertEqual(client.config["token"], mock_token.return_value)
 
 
 if __name__ == "__main__":
