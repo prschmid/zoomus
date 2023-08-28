@@ -110,10 +110,11 @@ class ZoomClient(util.ApiClient):
 
     def refresh_token(self):
         self.config["token"] = util.generate_token(
-                self.config["oauth_uri"],
-                self.config["api_key"],
-                self.config["api_secret"],
-                self.config["api_account_id"])
+            self.config["oauth_uri"],
+            self.config["api_key"],
+            self.config["api_secret"],
+            self.config["api_account_id"],
+        )
 
     @property
     def api_key(self):
