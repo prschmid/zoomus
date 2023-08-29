@@ -17,13 +17,13 @@ class BaseComponentTestCase(unittest.TestCase):
         component = components.base.BaseComponent(
             base_uri="http://www.foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_1,
             },
         )
         responses.add(
-            responses.POST, "http://www.foo.com/foo?api_key=KEY&api_secret=SECRET"
+            responses.POST, "http://www.foo.com/foo?api_key=CLIENT_ID&api_secret=SECRET"
         )
         component.post_request("foo")
 
@@ -32,14 +32,14 @@ class BaseComponentTestCase(unittest.TestCase):
         component = components.base.BaseComponent(
             base_uri="http://www.foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_1,
             },
         )
         responses.add(
             responses.POST,
-            "http://www.foo.com/foo?foo=bar&api_key=KEY&api_secret=SECRET",
+            "http://www.foo.com/foo?foo=bar&api_key=CLIENT_ID&api_secret=SECRET",
         )
         component.post_request("foo", params={"foo": "bar"})
 
@@ -48,8 +48,8 @@ class BaseComponentTestCase(unittest.TestCase):
         component = components.base.BaseComponent(
             base_uri="http://www.foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_2,
                 "token": 42,
             },

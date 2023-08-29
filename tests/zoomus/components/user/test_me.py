@@ -18,7 +18,7 @@ def suite():
 class GetV1TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponent(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com", config={"client_id": "CLIENT_ID", "client_secret": "SECRET"}
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
@@ -30,7 +30,7 @@ class GetV1TestCase(unittest.TestCase):
 class MeV2TestCase(unittest.TestCase):
     def setUp(self):
         self.component = components.user.UserComponentV2(
-            base_uri="http://foo.com", config={"api_key": "KEY", "api_secret": "SECRET"}
+            base_uri="http://foo.com", config={"client_id": "CLIENT_ID", "client_secret": "SECRET"}
         )
 
     @patch.object(components.base.BaseComponent, "get_request", return_value=True)
