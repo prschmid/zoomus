@@ -58,3 +58,9 @@ class ReportComponentV2(base.BaseComponent):
         return self.get_request(
             "/report/meetings/{}/participants".format(kwargs.get("id")), params=kwargs
         )
+
+    def get_webinar_participants_report(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/report/webinars/{}/participants".format(kwargs.get("id")), params=kwargs
+        )
