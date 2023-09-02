@@ -706,7 +706,6 @@ class DateToStrTestCase(unittest.TestCase):
 
 
 class IsStrTypeTestCase(unittest.TestCase):
-
     from sys import version_info
 
     def test_str_is_str_type(self):
