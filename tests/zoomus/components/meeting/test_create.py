@@ -18,8 +18,8 @@ class CreateV1TestCase(unittest.TestCase):
         self.component = components.meeting.MeetingComponent(
             base_uri="http://foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_1,
             },
         )
@@ -28,7 +28,7 @@ class CreateV1TestCase(unittest.TestCase):
     def test_can_create(self):
         responses.add(
             responses.POST,
-            "http://foo.com/meeting/create?host_id=ID&topic=TOPIC&type=TYPE&api_key=KEY&api_secret=SECRET",
+            "http://foo.com/meeting/create?host_id=ID&topic=TOPIC&type=TYPE&api_key=CLIENT_ID&api_secret=SECRET",
         )
         self.component.create(host_id="ID", topic="TOPIC", type="TYPE")
 
@@ -48,7 +48,7 @@ class CreateV1TestCase(unittest.TestCase):
     def test_does_convert_startime_to_str_if_datetime(self):
         responses.add(
             responses.POST,
-            "http://foo.com/meeting/create?host_id=ID&topic=TOPIC&type=TYPE&api_key=KEY&api_secret=SECRET&start_time=2020-01-01T01%3A01%3A00Z",
+            "http://foo.com/meeting/create?host_id=ID&topic=TOPIC&type=TYPE&api_key=CLIENT_ID&api_secret=SECRET&start_time=2020-01-01T01%3A01%3A00Z",
         )
         start_time = datetime.datetime(2020, 1, 1, 1, 1)
         self.component.create(
@@ -61,8 +61,8 @@ class CreateV2TestCase(unittest.TestCase):
         self.component = components.meeting.MeetingComponentV2(
             base_uri="http://foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_2,
             },
         )

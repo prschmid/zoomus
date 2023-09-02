@@ -28,6 +28,14 @@ class MetricComponentV2(base.BaseComponent):
             params=kwargs,
         )
 
+    def list_webinar_participants(self, **kwargs):
+        util.require_keys(kwargs, "webinar_id")
+        kwargs["webinar_id"] = util.encode_uuid(kwargs.get("webinar_id"))
+        return self.get_request(
+            "/metrics/webinars/{}/participants".format(kwargs.get("webinar_id")),
+            params=kwargs,
+        )
+
     def get_participant_qos(self, **kwargs):
         util.require_keys(kwargs, ("meeting_id", "participant_id"))
         kwargs["meeting_id"] = util.encode_uuid(kwargs.get("meeting_id"))

@@ -41,6 +41,10 @@ class BaseComponent(util.ApiClient):
         params = params or {}
         if self.config["version"] == util.API_VERSION_1:
             params.update(self.config)
+            params["api_key"] = params["client_id"]
+            params["api_secret"] = params["client_secret"]
+            del params["client_id"]
+            del params["client_secret"]
             del params["version"]
         if headers is None and self.config.get("version") == util.API_VERSION_2:
             headers = {

@@ -1,4 +1,4 @@
-**Zoomus 1.2.0**
+**Zoomus 1.2.1**
 ================
 
 |Build Status|
@@ -47,7 +47,7 @@ To install zoomus::
 **Usage**
 ---------
 
-Initialize client with API_KEY and API_SECRET
+Initialize client with CLIENT_ID and CLIENT_SECRET
 *********************************************
 
 As Zoom's default is now the V2 API, the client will default to the V2 version of the API
@@ -60,7 +60,7 @@ As Zoom's default is now the V2 API, the client will default to the V2 version o
   import json
   from zoomus import ZoomClient
 
-  client = ZoomClient('API_KEY', 'API_SECRET')
+  client = ZoomClient('CLIENT_ID', 'CLIENT_SECRET')
 
 *For API V1*
 #############
@@ -72,7 +72,7 @@ Zoom has yet to officially remove support for the V1 API, and so to use the V1 A
   import json
   from zoomus import ZoomClient
 
-  client = ZoomClient('API_KEY', 'API_SECRET', version=1)
+  client = ZoomClient('CLIENT_ID', 'CLIENT_SECRET', version=1)
 
 
 *Using with a manage context*
@@ -80,7 +80,7 @@ Zoom has yet to officially remove support for the V1 API, and so to use the V1 A
 
 ::
 
-  with ZoomClient('API_KEY', 'API_SECRET') as client:
+  with ZoomClient('CLIENT_ID', 'CLIENT_SECRET') as client:
     user_list_response = client.users.list()
 
 

@@ -7,13 +7,13 @@ import responses
 def suite():
     """Define all the tests of the module."""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UpdateStatusV2TestCase))
+    suite.addTest(unittest.makeSuite(GetMembersV2TestCase))
     return suite
 
 
-class UpdateStatusV2TestCase(unittest.TestCase):
+class GetMembersV2TestCase(unittest.TestCase):
     def setUp(self):
-        self.component = components.meeting.MeetingComponentV2(
+        self.component = components.role.RoleComponentV2(
             base_uri="http://foo.com",
             config={
                 "client_id": "CLIENT_ID",
@@ -23,14 +23,13 @@ class UpdateStatusV2TestCase(unittest.TestCase):
         )
 
     @responses.activate
-    def test_can_update_status(self):
-        responses.add(responses.PUT, "http://foo.com/meetings/42/status")
-        response = self.component.update_status(id="42", action="foo")
-        self.assertEqual(response.request.body, '{"action": "foo"}')
+    def test_can_get_members(self):
+        responses.add(responses.GET, "http://foo.com/roles/42/members")
+        response = self.component.get_members(id="42")
 
     def test_requires_id(self):
         with self.assertRaisesRegexp(ValueError, "'id' must be set"):
-            self.component.update()
+            self.component.get_members()
 
 
 if __name__ == "__main__":

@@ -18,8 +18,8 @@ class ListV1TestCase(unittest.TestCase):
         self.component = components.recording.RecordingComponent(
             base_uri="http://foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_1,
             },
         )
@@ -28,7 +28,7 @@ class ListV1TestCase(unittest.TestCase):
     def test_can_list(self):
         responses.add(
             responses.POST,
-            "http://foo.com/recording/list?host_id=ID&api_key=KEY&api_secret=SECRET",
+            "http://foo.com/recording/list?host_id=ID&api_key=CLIENT_ID&api_secret=SECRET",
         )
         self.component.list(host_id="ID")
 
@@ -42,7 +42,7 @@ class ListV1TestCase(unittest.TestCase):
         end_time = datetime.datetime(2020, 1, 1, 1, 1)
         responses.add(
             responses.POST,
-            "http://foo.com/recording/list?host_id=42&meeting_number=111&api_key=KEY&api_secret=SECRET"
+            "http://foo.com/recording/list?host_id=42&meeting_number=111&api_key=CLIENT_ID&api_secret=SECRET"
             "&from=1969-01-01T01%3A01%3A00Z&to=2020-01-01T01%3A01%3A00Z",
         )
         self.component.list(
@@ -55,8 +55,8 @@ class ListV2TestCase(unittest.TestCase):
         self.component = components.recording.RecordingComponentV2(
             base_uri="http://foo.com",
             config={
-                "api_key": "KEY",
-                "api_secret": "SECRET",
+                "client_id": "CLIENT_ID",
+                "client_secret": "SECRET",
                 "version": util.API_VERSION_2,
             },
         )
