@@ -102,3 +102,9 @@ class MeetingComponentV2(base.BaseComponent):
         return self.get_request(
             "/metrics/meetings/{}/participants".format(kwargs.get("id")), params=kwargs
         )
+
+    def invite_text(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        return self.get_request(
+            "/meetings/{}/invitation".format(kwargs.get("id")), params=kwargs
+        )
