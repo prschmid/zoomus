@@ -30,6 +30,7 @@ class ApiClient(object):
         self.timeout = timeout
         for k, v in kwargs.items():
             setattr(self, k, v)
+        self._session = None
 
     @property
     def timeout(self):
@@ -58,6 +59,29 @@ class ApiClient(object):
             value = value[:-1]
         self._base_uri = value
 
+    @property
+    def session(self):
+        """Provide a session if one is in use; otherwise, provide the requests module directly."""
+        if self._session is not None:
+            return self._session
+        return requests
+
+    @session.setter
+    def session(self, val):
+        self._session = val
+
+    @session.deleter
+    def session(self):
+        self._session = None
+
+    def __enter__(self):
+        self.session = requests.Session()
+        return self
+
+    def __exit__(self, *args):
+        self.session.close()
+        self.session = None
+
     def url_for(self, endpoint):
         """Get the URL for the given endpoint
 
@@ -80,7 +104,7 @@ class ApiClient(object):
         """
         if headers is None and self.config.get("version") == API_VERSION_2:
             headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
-        return requests.get(
+        return self.session.get(
             self.url_for(endpoint), params=params, headers=headers, timeout=self.timeout
         )
 
@@ -104,7 +128,7 @@ class ApiClient(object):
                 "Authorization": "Bearer {}".format(self.config.get("token")),
                 "Content-Type": "application/json",
             }
-        return requests.post(
+        return self.session.post(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -133,7 +157,7 @@ class ApiClient(object):
                 "Authorization": "Bearer {}".format(self.config.get("token")),
                 "Content-Type": "application/json",
             }
-        return requests.patch(
+        return self.session.patch(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -158,11 +182,8 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
-            headers = {
-                "Authorization": "Bearer {}".format(self.config.get("token")),
-                "Content-Type": "application/json",
-            }
-        return requests.delete(
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
+        return self.session.delete(
             self.url_for(endpoint),
             params=params,
             data=data,
@@ -185,11 +206,8 @@ class ApiClient(object):
         if data and not is_str_type(data):
             data = json.dumps(data)
         if headers is None and self.config.get("version") == API_VERSION_2:
-            headers = {
-                "Authorization": "Bearer {}".format(self.config.get("token")),
-                "Content-Type": "application/json",
-            }
-        return requests.put(
+            headers = {"Authorization": "Bearer {}".format(self.config.get("token"))}
+        return self.session.put(
             self.url_for(endpoint),
             params=params,
             data=data,
