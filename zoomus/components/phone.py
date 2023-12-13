@@ -43,3 +43,16 @@ class PhoneComponentV2(base.BaseComponent):
 
     def users(self, **kwargs):
         return self.get_request("/phone/users", params=kwargs)
+    
+    def call_queues(self, **kwargs):
+        print("calling call_queues")
+        return self.get_request("/phone/call_queues")
+    
+    def call_queues_create(self, **kwargs):
+        print("module calling call_queues_create")
+        util.require_keys(kwargs, ["name"])
+
+       
+
+        print(kwargs)
+        return self.post_request("/phone/call_queues", data=kwargs)
