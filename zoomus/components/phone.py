@@ -56,3 +56,27 @@ class PhoneComponentV2(base.BaseComponent):
 
         print(kwargs)
         return self.post_request("/phone/call_queues", data=kwargs)
+    
+    def call_queue_members(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        
+        print("adding call_queue_members")
+        
+        value = kwargs.pop("id")
+        print(kwargs)
+        
+        return self.post_request("/phone/call_queues/{}/members".format(value), data=kwargs)
+    
+    
+    
+    def call_queue_manager(self, **kwargs):
+        util.require_keys(kwargs, "id")
+        
+        print("calling call_queues_manager")
+        
+        value = kwargs.pop("id")
+        print(kwargs)
+        
+        return self.put_request("/phone/call_queues/{}/manager".format(value), data=kwargs)
+    
+    
