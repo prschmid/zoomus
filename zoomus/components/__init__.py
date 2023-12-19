@@ -16,4 +16,5 @@ from . import (
     room,
     user,
     webinar,
+    contact_center
 )
